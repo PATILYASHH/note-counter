@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon } from 'lucide-react';
-import { supabase } from './lib/supabase';
+import { supabase, isSupabaseConfigured } from './lib/supabase';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
@@ -141,6 +141,13 @@ function App() {
 
   const handleAdInquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (!isSupabaseConfigured() || !supabase) {
+      alert('Advertisement inquiries are not available at the moment. Please try again later.');
+      setShowAdInquiry(false);
+      return;
+    }
+
     const formData = new FormData(e.currentTarget);
     const data = {
       name: formData.get('name'),

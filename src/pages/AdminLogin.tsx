@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { Lock, Mail, AlertCircle } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -11,51 +11,42 @@ const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    checkAuth();
+    if (isSupabaseConfigured()) {
+      checkAuth();
+    }
   }, []);
 
   const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-      navigate('/admin/dashboard');
+    if (!supabase) return;
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate('/admin/dashboard');
+      }
+    } catch (error) {
+      console.error('Auth check error:', error);
     }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!isSupabaseConfigured() || !supabase) {
+      setError('Supabase is not configured. Please check your environment variables.');
+      return;
+    }
+
     setError('');
     setLoading(true);
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: 'patilyasshh@gmail.com',
-        password: 'yashpatil@6191',
+        email,
+        password,
       });
 
       if (error) {
-        // If login fails, try to sign up first
-        const { error: signUpError } = await supabase.auth.signUp({
-          email: 'patilyasshh@gmail.com',
-          password: 'yashpatil@6191',
-        });
-
-        // If sign up succeeds or user already exists, try logging in again
-        if (!signUpError || signUpError.message.includes('already registered')) {
-          const { data: retryData, error: retryError } = await supabase.auth.signInWithPassword({
-            email: 'patilyasshh@gmail.com',
-            password: 'yashpatil@6191',
-          });
-
-          if (retryError) {
-            throw retryError;
-          }
-
-          if (retryData.user) {
-            navigate('/admin/dashboard');
-            return;
-          }
-        }
-
         throw error;
       }
 
@@ -69,6 +60,28 @@ const AdminLogin: React.FC = () => {
       setLoading(false);
     }
   };
+
+  if (!isSupabaseConfigured()) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+          <div className="flex items-center justify-center mb-4">
+            <AlertCircle className="text-yellow-500" size={48} />
+          </div>
+          <h1 className="text-2xl font-bold text-center mb-4">Configuration Required</h1>
+          <p className="text-gray-600 text-center mb-4">
+            Supabase environment variables are not configured. Please set up your Supabase project first.
+          </p>
+          <button
+            onClick={() => navigate('/')}
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
+          >
+            Go Back to App
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -93,6 +106,7 @@ const AdminLogin: React.FC = () => {
                 className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter your email"
                 disabled={loading}
+                required
               />
             </div>
           </div>
@@ -108,6 +122,7 @@ const AdminLogin: React.FC = () => {
                 className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter your password"
                 disabled={loading}
+                required
               />
             </div>
           </div>
