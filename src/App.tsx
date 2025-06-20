@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon } from 'lucide-react';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
@@ -45,7 +45,7 @@ function App() {
   const [sendToCalculator, setSendToCalculator] = useState(false);
   const [hideAmounts, setHideAmounts] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showAdInquiry, setShowAdInquiry] = useState(false);
+  const [showProModal, setShowProModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<'INR' | 'USD'>('INR');
   const [counts, setCounts] = useState<CountState>(() => {
     const savedCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
@@ -139,45 +139,10 @@ function App() {
     alert('Summary saved successfully!');
   };
 
-  const handleAdInquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    if (!isSupabaseConfigured() || !supabase) {
-      alert('Advertisement inquiries are not available at the moment. Please try again later.');
-      setShowAdInquiry(false);
-      return;
-    }
-
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      company: formData.get('company'),
-      message: formData.get('message')
-    };
-
-    try {
-      const { error } = await supabase
-        .from('ad_inquiries')
-        .insert([data]);
-
-      if (error) throw error;
-
-      const subject = encodeURIComponent('Advertisement Inquiry - Note Counter');
-      const body = encodeURIComponent(`
-Name: ${data.name}
-Company: ${data.company}
-Email: ${data.email}
-
-Message:
-${data.message}
-      `);
-      window.location.href = `mailto:patilyasshh@gmail.com?subject=${subject}&body=${body}`;
-      setShowAdInquiry(false);
-    } catch (error) {
-      console.error('Error saving inquiry:', error);
-      alert('There was an error submitting your inquiry. Please try again.');
-    }
+  const handleProUpgrade = () => {
+    // For now, just show an alert. In a real app, this would redirect to payment
+    alert('Pro features coming soon! This would redirect to the upgrade page.');
+    setShowProModal(false);
   };
 
   const leftColumnDenominations = CURRENCY_DENOMINATIONS[selectedCurrency].slice(0, Math.ceil(CURRENCY_DENOMINATIONS[selectedCurrency].length / 2));
@@ -194,87 +159,134 @@ ${data.message}
 
   const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : DollarSign;
 
-  const AdInquiryModal = () => (
+  const ProModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
+      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-800">Advertise with Us</h2>
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center">
+              <Crown className="text-yellow-500 mr-3" size={32} />
+              <h2 className="text-3xl font-bold text-gray-800">Upgrade to Pro Counter</h2>
+            </div>
             <button
-              onClick={() => setShowAdInquiry(false)}
+              onClick={() => setShowProModal(false)}
               className="text-gray-500 hover:text-gray-700"
             >
               <X size={24} />
             </button>
           </div>
           
-          <div className="mb-6">
-            <p className="text-gray-600">
-              Interested in advertising on Note Counter? Fill out the form below and we'll get back to you with advertising options and rates.
+          <div className="mb-8">
+            <p className="text-lg text-gray-600 mb-4">
+              Unlock powerful features to take your money counting to the next level!
             </p>
+            
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-lg border border-yellow-200 mb-6">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-orange-600 mb-2">$9.99/month</div>
+                <div className="text-gray-600">or $99/year (save 17%)</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">Pro Features</h3>
+                
+                <div className="flex items-start space-x-3">
+                  <Cloud className="text-blue-500 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-medium text-gray-800">Free Cloud Storage</h4>
+                    <p className="text-gray-600 text-sm">Unlimited cloud storage for all your counting data</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Smartphone className="text-green-500 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-medium text-gray-800">Multi-Device Access</h4>
+                    <p className="text-gray-600 text-sm">Access your data from any device, anywhere</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Shield className="text-purple-500 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-medium text-gray-800">Daily Data Backup</h4>
+                    <p className="text-gray-600 text-sm">Automatic daily backups ensure your data is never lost</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <FileText className="text-red-500 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-medium text-gray-800">PDF Export</h4>
+                    <p className="text-gray-600 text-sm">Export your counting reports as professional PDFs</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Printer className="text-indigo-500 mt-1" size={20} />
+                  <div>
+                    <h4 className="font-medium text-gray-800">Print Reports</h4>
+                    <p className="text-gray-600 text-sm">Print detailed reports directly from the app</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">Additional Benefits</h3>
+                
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                      Priority customer support
+                    </li>
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                      Advanced analytics and insights
+                    </li>
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                      Custom branding options
+                    </li>
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                      Team collaboration features
+                    </li>
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                      API access for integrations
+                    </li>
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                      No ads or promotional content
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <h4 className="font-medium text-blue-800 mb-2">30-Day Money Back Guarantee</h4>
+                  <p className="text-blue-700 text-sm">
+                    Try Pro risk-free! If you're not completely satisfied, get a full refund within 30 days.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center">
+              <button
+                onClick={handleProUpgrade}
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-4 px-8 rounded-lg font-bold text-lg hover:from-yellow-600 hover:to-orange-600 transition-all shadow-lg transform hover:scale-105 flex items-center justify-center mx-auto"
+              >
+                <Crown size={24} className="mr-2" />
+                Upgrade to Pro Now
+              </button>
+              <p className="text-gray-500 text-sm mt-2">
+                Cancel anytime • Secure payment • Instant activation
+              </p>
+            </div>
           </div>
-
-          <form onSubmit={handleAdInquirySubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Your Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                required
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                placeholder="Enter your full name"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                required
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                placeholder="Enter your email address"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Company Name
-              </label>
-              <input
-                type="text"
-                name="company"
-                required
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                placeholder="Enter your company name"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Message
-              </label>
-              <textarea
-                name="message"
-                required
-                rows={4}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                placeholder="Tell us about your advertising needs"
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center"
-            >
-              <Mail size={18} className="mr-2" />
-              Send Inquiry
-            </button>
-          </form>
         </div>
       </div>
     </div>
@@ -354,16 +366,16 @@ ${data.message}
             </section>
 
             <section>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">Advertising</h3>
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">Upgrade</h3>
               <button
                 onClick={() => {
                   setShowMenu(false);
-                  setShowAdInquiry(true);
+                  setShowProModal(true);
                 }}
-                className="w-full mt-2 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center"
+                className="w-full mt-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 px-4 rounded-md hover:from-yellow-600 hover:to-orange-600 transition-all shadow-md flex items-center justify-center font-medium"
               >
-                <Mail size={18} className="mr-2" />
-                Advertise with Us
+                <Crown size={20} className="mr-2" />
+                Become Pro Counter
               </button>
             </section>
           </div>
@@ -499,7 +511,7 @@ ${data.message}
             )}
 
             {showMenu && <MenuModal />}
-            {showAdInquiry && <AdInquiryModal />}
+            {showProModal && <ProModal />}
 
             <div className="container mx-auto p-4">
               {activeTab === 'counter' ? (
