@@ -156,7 +156,7 @@ function App() {
 
       if (error) throw error;
 
-      const subject = encodeURIComponent('Advertisement Inquiry - Count Note Pro');
+      const subject = encodeURIComponent('Advertisement Inquiry - Note Counter');
       const body = encodeURIComponent(`
 Name: ${data.name}
 Company: ${data.company}
@@ -203,7 +203,7 @@ ${data.message}
           
           <div className="mb-6">
             <p className="text-gray-600">
-              Interested in advertising on Count Note Pro? Fill out the form below and we'll get back to you with advertising options and rates.
+              Interested in advertising on Note Counter? Fill out the form below and we'll get back to you with advertising options and rates.
             </p>
           </div>
 
@@ -294,7 +294,7 @@ ${data.message}
                 <section>
                   <h4 className="text-lg font-medium text-gray-700 mb-2">Currency Support</h4>
                   <p className="text-gray-600 mb-2">
-                    Count Note Pro supports multiple currencies:
+                    Note Counter supports multiple currencies:
                   </p>
                   <ul className="list-disc list-inside space-y-1 text-gray-600">
                     <li>Switch between INR and USD from the currency selector</li>
@@ -376,7 +376,7 @@ ${data.message}
               <div className="container mx-auto flex justify-between items-center">
                 <h1 className="text-2xl font-bold flex items-center">
                   <CurrencyIcon className="mr-2" />
-                  Count Note Pro
+                  Note Counter
                 </h1>
                 <div className="md:hidden">
                   <button 
