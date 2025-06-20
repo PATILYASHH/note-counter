@@ -256,19 +256,15 @@ function App() {
                     </li>
                     <li className="flex items-center">
                       <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      API access for integrations
-                    </li>
-                    <li className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
                       No ads or promotional content
                     </li>
                   </ul>
                 </div>
 
                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <h4 className="font-medium text-blue-800 mb-2">30-Day Money Back Guarantee</h4>
+                  <h4 className="font-medium text-blue-800 mb-2">7-Day Free Trial</h4>
                   <p className="text-blue-700 text-sm">
-                    Try Pro risk-free! If you're not completely satisfied, get a full refund within 30 days.
+                    Try Pro risk-free! If you're not completely satisfied, get a full refund within 7 days.
                   </p>
                 </div>
               </div>
@@ -639,7 +635,7 @@ function App() {
                     className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
                   >
                     <Github size={20} className="mr-2" />
-                    <span>Developed by Yash Patil</span>
+                    <span>Yash Patil</span>
                   </a>
                   <a 
                     href="https://yashpatil.tech" 
@@ -659,7 +655,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">v5.3.4</span>
+                  <span className="text-gray-400 text-sm">Version 9.1.1</span>
                 </div>
               </div>
             </footer>
