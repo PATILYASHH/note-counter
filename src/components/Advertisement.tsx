@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { X } from 'lucide-react';
 
 interface Ad {
@@ -19,6 +19,11 @@ const Advertisement: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
+    // Only proceed if Supabase is configured
+    if (!isSupabaseConfigured() || !supabase) {
+      return;
+    }
+
     const checkLastShown = () => {
       const lastShown = localStorage.getItem('lastAdShown');
       if (!lastShown) {
@@ -44,6 +49,11 @@ const Advertisement: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Only proceed if Supabase is configured
+    if (!isSupabaseConfigured() || !supabase) {
+      return;
+    }
+
     fetchActiveAds();
     
     // Set up real-time subscription for ad updates
@@ -68,6 +78,8 @@ const Advertisement: React.FC = () => {
   }, []);
 
   const fetchActiveAds = async () => {
+    if (!supabase) return;
+
     try {
       const now = new Date().toISOString();
       
@@ -119,8 +131,8 @@ const Advertisement: React.FC = () => {
     return () => clearInterval(timer);
   }, [currentAdIndex, ads]);
 
-  // If no ads or ads haven't loaded yet
-  if (!currentAd || !showPopup) return null;
+  // If no ads or ads haven't loaded yet, or Supabase not configured
+  if (!isSupabaseConfigured() || !currentAd || !showPopup) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">

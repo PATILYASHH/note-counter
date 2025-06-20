@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Trash2, LogOut, Clock, Eye, X, Calendar, Mail, Check, XCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { Upload, Trash2, LogOut, Clock, Eye, X, Calendar, Mail, Check, XCircle, AlertCircle } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface Ad {
   id: string;
@@ -40,6 +40,11 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isSupabaseConfigured()) {
+      navigate('/admin');
+      return;
+    }
+
     checkAuth();
     fetchAds();
     fetchInquiries();
@@ -52,27 +57,29 @@ const AdminDashboard: React.FC = () => {
     const sevenDaysLater = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
     setEndTime(sevenDaysLater.toISOString().slice(0, 16));
     
-    const subscription = supabase
-      .channel('changes')
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'advertisements' 
-      }, () => {
-        fetchAds();
-      })
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'ad_inquiries' 
-      }, () => {
-        fetchInquiries();
-      })
-      .subscribe();
+    if (supabase) {
+      const subscription = supabase
+        .channel('changes')
+        .on('postgres_changes', { 
+          event: '*', 
+          schema: 'public', 
+          table: 'advertisements' 
+        }, () => {
+          fetchAds();
+        })
+        .on('postgres_changes', { 
+          event: '*', 
+          schema: 'public', 
+          table: 'ad_inquiries' 
+        }, () => {
+          fetchInquiries();
+        })
+        .subscribe();
 
-    return () => {
-      subscription.unsubscribe();
-    };
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
   }, []);
 
   useEffect(() => {
@@ -84,53 +91,84 @@ const AdminDashboard: React.FC = () => {
   }, [imageFile]);
 
   const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    if (!supabase) return;
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate('/admin');
+      }
+    } catch (error) {
+      console.error('Auth check error:', error);
       navigate('/admin');
     }
   };
 
   const fetchAds = async () => {
-    const { data, error } = await supabase
-      .from('advertisements')
-      .select('*')
-      .order('created_at', { ascending: false });
+    if (!supabase) return;
 
-    if (!error && data) {
-      setAds(data);
+    try {
+      const { data, error } = await supabase
+        .from('advertisements')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data) {
+        setAds(data);
+      }
+    } catch (error) {
+      console.error('Error fetching ads:', error);
     }
   };
 
   const fetchInquiries = async () => {
-    const { data, error } = await supabase
-      .from('ad_inquiries')
-      .select('*')
-      .order('created_at', { ascending: false });
+    if (!supabase) return;
 
-    if (!error && data) {
-      setInquiries(data);
+    try {
+      const { data, error } = await supabase
+        .from('ad_inquiries')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data) {
+        setInquiries(data);
+      }
+    } catch (error) {
+      console.error('Error fetching inquiries:', error);
     }
   };
 
   const updateInquiryStatus = async (id: string, status: string) => {
-    const { error } = await supabase
-      .from('ad_inquiries')
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq('id', id);
+    if (!supabase) return;
 
-    if (!error) {
-      fetchInquiries();
+    try {
+      const { error } = await supabase
+        .from('ad_inquiries')
+        .update({ status, updated_at: new Date().toISOString() })
+        .eq('id', id);
+
+      if (!error) {
+        fetchInquiries();
+      }
+    } catch (error) {
+      console.error('Error updating inquiry status:', error);
     }
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate('/admin');
+    if (!supabase) return;
+
+    try {
+      await supabase.auth.signOut();
+      navigate('/admin');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!imageFile || !linkUrl || !startTime || !endTime) return;
+    if (!imageFile || !linkUrl || !startTime || !endTime || !supabase) return;
 
     setUploading(true);
     try {
@@ -181,7 +219,7 @@ const AdminDashboard: React.FC = () => {
   };
 
   const handleDelete = async (id: string, imageUrl: string) => {
-    if (!confirm('Are you sure you want to delete this advertisement?')) return;
+    if (!confirm('Are you sure you want to delete this advertisement?') || !supabase) return;
 
     try {
       await supabase
@@ -204,6 +242,8 @@ const AdminDashboard: React.FC = () => {
   };
 
   const toggleActive = async (id: string, currentActive: boolean) => {
+    if (!supabase) return;
+
     try {
       await supabase
         .from('advertisements')
@@ -279,6 +319,28 @@ const AdminDashboard: React.FC = () => {
       </div>
     );
   };
+
+  if (!isSupabaseConfigured()) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+          <div className="flex items-center justify-center mb-4">
+            <AlertCircle className="text-yellow-500" size={48} />
+          </div>
+          <h1 className="text-2xl font-bold text-center mb-4">Configuration Required</h1>
+          <p className="text-gray-600 text-center mb-4">
+            Supabase environment variables are not configured. Please set up your Supabase project first.
+          </p>
+          <button
+            onClick={() => navigate('/')}
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
+          >
+            Go Back to App
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
