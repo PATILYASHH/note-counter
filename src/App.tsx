@@ -276,7 +276,7 @@ function App() {
                 className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-4 px-8 rounded-lg font-bold text-lg hover:from-yellow-600 hover:to-orange-600 transition-all shadow-lg transform hover:scale-105 flex items-center justify-center mx-auto"
               >
                 <Crown size={24} className="mr-2" />
-                Upgrade to Pro Now
+                Comming Soon
               </button>
               <p className="text-gray-500 text-sm mt-2">
                 Cancel anytime • Secure payment • Instant activation
@@ -655,7 +655,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">Version 9.1.1</span>
+                  <span className="text-gray-400 text-sm">Version 10.0</span>
                 </div>
               </div>
             </footer>
