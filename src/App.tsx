@@ -183,8 +183,8 @@ function App() {
             
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-lg border border-yellow-200 mb-6">
               <div className="text-center">
-                <div className="text-4xl font-bold text-orange-600 mb-2">$9.99/month</div>
-                <div className="text-gray-600">or $99/year (save 17%)</div>
+                <div className="text-4xl font-bold text-orange-600 mb-2">$1/months</div>
+                <div className="text-gray-600">or $10/year</div>
               </div>
             </div>
 
