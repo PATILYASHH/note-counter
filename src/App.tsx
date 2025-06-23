@@ -40,36 +40,58 @@ interface CountState {
 }
 
 function App() {
+  // Load saved currency preference or default to INR
+  const [selectedCurrency, setSelectedCurrency] = useState<'INR' | 'USD'>(() => {
+    const savedCurrency = localStorage.getItem('selectedCurrency');
+    return (savedCurrency === 'INR' || savedCurrency === 'USD') ? savedCurrency : 'INR';
+  });
+
   const [activeTab, setActiveTab] = useState<'counter' | 'history'>('counter');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sendToCalculator, setSendToCalculator] = useState(false);
   const [hideAmounts, setHideAmounts] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showProModal, setShowProModal] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<'INR' | 'USD'>('INR');
-  const [counts, setCounts] = useState<CountState>(() => {
-    const savedCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
-    if (savedCounts) {
-      return JSON.parse(savedCounts);
-    }
-    
+
+  // Initialize counts based on selected currency
+  const initializeCounts = (currency: 'INR' | 'USD'): CountState => {
     const initialCounts: CountState = {};
-    CURRENCY_DENOMINATIONS[selectedCurrency].forEach(denom => {
+    CURRENCY_DENOMINATIONS[currency].forEach(denom => {
       initialCounts[denom.value] = 0;
     });
     return initialCounts;
+  };
+
+  const [counts, setCounts] = useState<CountState>(() => {
+    const savedCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
+    if (savedCounts) {
+      try {
+        return JSON.parse(savedCounts);
+      } catch (error) {
+        console.error('Error parsing saved counts:', error);
+        return initializeCounts(selectedCurrency);
+      }
+    }
+    return initializeCounts(selectedCurrency);
   });
 
+  // Save currency preference whenever it changes
+  useEffect(() => {
+    localStorage.setItem('selectedCurrency', selectedCurrency);
+  }, [selectedCurrency]);
+
+  // Load counts when currency changes
   useEffect(() => {
     const savedCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
     if (savedCounts) {
-      setCounts(JSON.parse(savedCounts));
+      try {
+        setCounts(JSON.parse(savedCounts));
+      } catch (error) {
+        console.error('Error parsing saved counts:', error);
+        setCounts(initializeCounts(selectedCurrency));
+      }
     } else {
-      const initialCounts: CountState = {};
-      CURRENCY_DENOMINATIONS[selectedCurrency].forEach(denom => {
-        initialCounts[denom.value] = 0;
-      });
-      setCounts(initialCounts);
+      setCounts(initializeCounts(selectedCurrency));
     }
   }, [selectedCurrency]);
 
@@ -83,12 +105,17 @@ function App() {
     0
   );
 
+  // Save counts to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem(`denominationCounts_${selectedCurrency}`, JSON.stringify(counts));
+    try {
+      localStorage.setItem(`denominationCounts_${selectedCurrency}`, JSON.stringify(counts));
+    } catch (error) {
+      console.error('Error saving counts to localStorage:', error);
+    }
   }, [counts, selectedCurrency]);
 
   const handleCountChange = (denomination: number, count: number) => {
-    if (isNaN(count)) return;
+    if (isNaN(count) || count < 0) return;
     setCounts(prev => ({
       ...prev,
       [denomination]: count
@@ -97,20 +124,20 @@ function App() {
 
   const handleReset = () => {
     if (window.confirm('Are you sure you want to reset all counts?')) {
-      const resetCounts: CountState = {};
-      CURRENCY_DENOMINATIONS[selectedCurrency].forEach(denom => {
-        resetCounts[denom.value] = 0;
-      });
+      const resetCounts = initializeCounts(selectedCurrency);
       setCounts(resetCounts);
+      
+      // Also clear from localStorage immediately
+      try {
+        localStorage.setItem(`denominationCounts_${selectedCurrency}`, JSON.stringify(resetCounts));
+      } catch (error) {
+        console.error('Error clearing localStorage:', error);
+      }
     }
   };
 
   const handleSave = () => {
-    const currentCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
-    if (!currentCounts) return;
-    
-    const counts = JSON.parse(currentCounts);
-    
+    // Use current state instead of localStorage to avoid sync issues
     const totalAmount = Object.entries(counts).reduce(
       (sum, [denomination, count]) => sum + (Number(denomination) * Number(count)), 
       0
@@ -121,22 +148,39 @@ function App() {
       0
     );
     
-    const savedHistory = localStorage.getItem(`countNoteHistory_${selectedCurrency}`) || '[]';
-    const history = JSON.parse(savedHistory);
+    // Check if there's anything to save
+    if (totalCount === 0) {
+      alert('No counts to save. Please add some denominations first.');
+      return;
+    }
     
-    const newEntry = {
-      id: Date.now().toString(),
-      date: new Date().toLocaleString(),
-      totalAmount,
-      totalCount,
-      denominationCounts: counts,
-      currency: selectedCurrency
-    };
-    
-    const updatedHistory = [newEntry, ...history];
-    localStorage.setItem(`countNoteHistory_${selectedCurrency}`, JSON.stringify(updatedHistory));
-    
-    alert('Summary saved successfully!');
+    try {
+      const savedHistory = localStorage.getItem(`countNoteHistory_${selectedCurrency}`) || '[]';
+      const history = JSON.parse(savedHistory);
+      
+      const newEntry = {
+        id: Date.now().toString(),
+        date: new Date().toLocaleString(),
+        totalAmount,
+        totalCount,
+        denominationCounts: { ...counts }, // Create a copy
+        currency: selectedCurrency
+      };
+      
+      const updatedHistory = [newEntry, ...history];
+      localStorage.setItem(`countNoteHistory_${selectedCurrency}`, JSON.stringify(updatedHistory));
+      
+      alert('Summary saved successfully!');
+    } catch (error) {
+      console.error('Error saving to history:', error);
+      alert('Error saving summary. Please try again.');
+    }
+  };
+
+  const handleCurrencyChange = (newCurrency: 'INR' | 'USD') => {
+    if (newCurrency !== selectedCurrency) {
+      setSelectedCurrency(newCurrency);
+    }
   };
 
   const handleProUpgrade = () => {
@@ -404,7 +448,7 @@ function App() {
                 <div className="hidden md:flex space-x-4 items-center">
                   <select
                     value={selectedCurrency}
-                    onChange={(e) => setSelectedCurrency(e.target.value as 'INR' | 'USD')}
+                    onChange={(e) => handleCurrencyChange(e.target.value as 'INR' | 'USD')}
                     className="bg-white text-indigo-600 px-3 py-1 rounded-md font-medium"
                   >
                     <option value="INR">INR (₹)</option>
@@ -452,7 +496,10 @@ function App() {
                 <div className="container mx-auto p-2">
                   <select
                     value={selectedCurrency}
-                    onChange={(e) => setSelectedCurrency(e.target.value as 'INR' | 'USD')}
+                    onChange={(e) => {
+                      handleCurrencyChange(e.target.value as 'INR' | 'USD');
+                      setMobileMenuOpen(false);
+                    }}
                     className="w-full mb-2 bg-white text-indigo-600 px-3 py-2 rounded-md font-medium"
                   >
                     <option value="INR">INR (₹)</option>
