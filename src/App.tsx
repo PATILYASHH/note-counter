@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer } from 'lucide-react';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
@@ -40,36 +40,58 @@ interface CountState {
 }
 
 function App() {
+  // Load saved currency preference or default to INR
+  const [selectedCurrency, setSelectedCurrency] = useState<'INR' | 'USD'>(() => {
+    const savedCurrency = localStorage.getItem('selectedCurrency');
+    return (savedCurrency === 'INR' || savedCurrency === 'USD') ? savedCurrency : 'INR';
+  });
+
   const [activeTab, setActiveTab] = useState<'counter' | 'history'>('counter');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sendToCalculator, setSendToCalculator] = useState(false);
   const [hideAmounts, setHideAmounts] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showProModal, setShowProModal] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<'INR' | 'USD'>('INR');
-  const [counts, setCounts] = useState<CountState>(() => {
-    const savedCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
-    if (savedCounts) {
-      return JSON.parse(savedCounts);
-    }
-    
+
+  // Initialize counts based on selected currency
+  const initializeCounts = (currency: 'INR' | 'USD'): CountState => {
     const initialCounts: CountState = {};
-    CURRENCY_DENOMINATIONS[selectedCurrency].forEach(denom => {
+    CURRENCY_DENOMINATIONS[currency].forEach(denom => {
       initialCounts[denom.value] = 0;
     });
     return initialCounts;
+  };
+
+  const [counts, setCounts] = useState<CountState>(() => {
+    const savedCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
+    if (savedCounts) {
+      try {
+        return JSON.parse(savedCounts);
+      } catch (error) {
+        console.error('Error parsing saved counts:', error);
+        return initializeCounts(selectedCurrency);
+      }
+    }
+    return initializeCounts(selectedCurrency);
   });
 
+  // Save currency preference whenever it changes
+  useEffect(() => {
+    localStorage.setItem('selectedCurrency', selectedCurrency);
+  }, [selectedCurrency]);
+
+  // Load counts when currency changes
   useEffect(() => {
     const savedCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
     if (savedCounts) {
-      setCounts(JSON.parse(savedCounts));
+      try {
+        setCounts(JSON.parse(savedCounts));
+      } catch (error) {
+        console.error('Error parsing saved counts:', error);
+        setCounts(initializeCounts(selectedCurrency));
+      }
     } else {
-      const initialCounts: CountState = {};
-      CURRENCY_DENOMINATIONS[selectedCurrency].forEach(denom => {
-        initialCounts[denom.value] = 0;
-      });
-      setCounts(initialCounts);
+      setCounts(initializeCounts(selectedCurrency));
     }
   }, [selectedCurrency]);
 
@@ -83,12 +105,17 @@ function App() {
     0
   );
 
+  // Save counts to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem(`denominationCounts_${selectedCurrency}`, JSON.stringify(counts));
+    try {
+      localStorage.setItem(`denominationCounts_${selectedCurrency}`, JSON.stringify(counts));
+    } catch (error) {
+      console.error('Error saving counts to localStorage:', error);
+    }
   }, [counts, selectedCurrency]);
 
   const handleCountChange = (denomination: number, count: number) => {
-    if (isNaN(count)) return;
+    if (isNaN(count) || count < 0) return;
     setCounts(prev => ({
       ...prev,
       [denomination]: count
@@ -97,20 +124,20 @@ function App() {
 
   const handleReset = () => {
     if (window.confirm('Are you sure you want to reset all counts?')) {
-      const resetCounts: CountState = {};
-      CURRENCY_DENOMINATIONS[selectedCurrency].forEach(denom => {
-        resetCounts[denom.value] = 0;
-      });
+      const resetCounts = initializeCounts(selectedCurrency);
       setCounts(resetCounts);
+      
+      // Also clear from localStorage immediately
+      try {
+        localStorage.setItem(`denominationCounts_${selectedCurrency}`, JSON.stringify(resetCounts));
+      } catch (error) {
+        console.error('Error clearing localStorage:', error);
+      }
     }
   };
 
   const handleSave = () => {
-    const currentCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
-    if (!currentCounts) return;
-    
-    const counts = JSON.parse(currentCounts);
-    
+    // Use current state instead of localStorage to avoid sync issues
     const totalAmount = Object.entries(counts).reduce(
       (sum, [denomination, count]) => sum + (Number(denomination) * Number(count)), 
       0
@@ -121,22 +148,136 @@ function App() {
       0
     );
     
-    const savedHistory = localStorage.getItem(`countNoteHistory_${selectedCurrency}`) || '[]';
-    const history = JSON.parse(savedHistory);
+    // Check if there's anything to save
+    if (totalCount === 0) {
+      alert('No counts to save. Please add some denominations first.');
+      return;
+    }
     
-    const newEntry = {
-      id: Date.now().toString(),
-      date: new Date().toLocaleString(),
-      totalAmount,
-      totalCount,
-      denominationCounts: counts,
-      currency: selectedCurrency
+    try {
+      const savedHistory = localStorage.getItem(`countNoteHistory_${selectedCurrency}`) || '[]';
+      const history = JSON.parse(savedHistory);
+      
+      const newEntry = {
+        id: Date.now().toString(),
+        date: new Date().toLocaleString(),
+        totalAmount,
+        totalCount,
+        denominationCounts: { ...counts }, // Create a copy
+        currency: selectedCurrency
+      };
+      
+      const updatedHistory = [newEntry, ...history];
+      localStorage.setItem(`countNoteHistory_${selectedCurrency}`, JSON.stringify(updatedHistory));
+      
+      alert('Summary saved successfully!');
+    } catch (error) {
+      console.error('Error saving to history:', error);
+      alert('Error saving summary. Please try again.');
+    }
+  };
+
+  const handleCurrencyChange = (newCurrency: 'INR' | 'USD') => {
+    if (newCurrency !== selectedCurrency) {
+      setSelectedCurrency(newCurrency);
+    }
+  };
+
+  const handleExportData = () => {
+    try {
+      const exportData = {
+        version: '1.0',
+        exportDate: new Date().toISOString(),
+        currencies: ['INR', 'USD'].reduce((acc, currency) => {
+          const counts = localStorage.getItem(`denominationCounts_${currency}`);
+          const history = localStorage.getItem(`countNoteHistory_${currency}`);
+          const calcHistory = localStorage.getItem('calculatorHistory');
+          
+          acc[currency] = {
+            currentCounts: counts ? JSON.parse(counts) : {},
+            history: history ? JSON.parse(history) : []
+          };
+          
+          if (currency === selectedCurrency && calcHistory) {
+            acc[currency].calculatorHistory = JSON.parse(calcHistory);
+          }
+          
+          return acc;
+        }, {} as any),
+        settings: {
+          selectedCurrency: localStorage.getItem('selectedCurrency') || 'INR'
+        }
+      };
+
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `note-counter-data-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      alert('Data exported successfully!');
+    } catch (error) {
+      console.error('Error exporting data:', error);
+      alert('Error exporting data. Please try again.');
+    }
+  };
+
+  const handleImportData = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importData = JSON.parse(e.target?.result as string);
+          
+          if (!importData.version || !importData.currencies) {
+            throw new Error('Invalid data format');
+          }
+          
+          if (window.confirm('This will replace all your current data. Are you sure you want to continue?')) {
+            // Import data for each currency
+            Object.entries(importData.currencies).forEach(([currency, data]: [string, any]) => {
+              if (data.currentCounts) {
+                localStorage.setItem(`denominationCounts_${currency}`, JSON.stringify(data.currentCounts));
+              }
+              if (data.history) {
+                localStorage.setItem(`countNoteHistory_${currency}`, JSON.stringify(data.history));
+              }
+              if (data.calculatorHistory) {
+                localStorage.setItem('calculatorHistory', JSON.stringify(data.calculatorHistory));
+              }
+            });
+            
+            // Import settings
+            if (importData.settings?.selectedCurrency) {
+              localStorage.setItem('selectedCurrency', importData.settings.selectedCurrency);
+              setSelectedCurrency(importData.settings.selectedCurrency);
+            }
+            
+            // Reload the page to reflect changes
+            window.location.reload();
+          }
+        } catch (error) {
+          console.error('Error importing data:', error);
+          alert('Error importing data. Please check the file format and try again.');
+        }
+      };
+      reader.readAsText(file);
     };
     
-    const updatedHistory = [newEntry, ...history];
-    localStorage.setItem(`countNoteHistory_${selectedCurrency}`, JSON.stringify(updatedHistory));
-    
-    alert('Summary saved successfully!');
+    input.click();
   };
 
   const handleProUpgrade = () => {
@@ -290,88 +431,122 @@ function App() {
 
   const MenuModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-800">Menu</h2>
+      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-4 sm:p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Menu</h2>
             <button
               onClick={() => setShowMenu(false)}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-gray-500 hover:text-gray-700 p-1"
             >
               <X size={24} />
             </button>
           </div>
           
           <div className="space-y-6">
+            {/* Data Management Section */}
             <section>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">Documentation</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Data Management</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  onClick={() => {
+                    handleExportData();
+                    setShowMenu(false);
+                  }}
+                  className="flex items-center justify-center px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors shadow-md"
+                >
+                  <Download size={18} className="mr-2" />
+                  <span className="font-medium">Export Data</span>
+                </button>
+                <button
+                  onClick={() => {
+                    handleImportData();
+                    setShowMenu(false);
+                  }}
+                  className="flex items-center justify-center px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+                >
+                  <Upload size={18} className="mr-2" />
+                  <span className="font-medium">Import Data</span>
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 mt-2">
+                Export your data as a backup or import previously saved data. Includes all counting history, calculator history, and settings.
+              </p>
+            </section>
+
+            {/* Documentation Section */}
+            <section>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Documentation</h3>
               <div className="space-y-4">
-                <section>
-                  <h4 className="text-lg font-medium text-gray-700 mb-2">Currency Support</h4>
-                  <p className="text-gray-600 mb-2">
+                <div>
+                  <h4 className="text-base sm:text-lg font-medium text-gray-700 mb-2">Currency Support</h4>
+                  <p className="text-sm sm:text-base text-gray-600 mb-2">
                     Note Counter supports multiple currencies:
                   </p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                  <ul className="list-disc list-inside space-y-1 text-sm sm:text-base text-gray-600 ml-2">
                     <li>Switch between INR and USD from the currency selector</li>
                     <li>Each currency maintains its own separate history</li>
                     <li>Automatic formatting based on currency selection</li>
                   </ul>
-                </section>
+                </div>
 
-                <section>
-                  <h4 className="text-lg font-medium text-gray-700 mb-2">Quick Math Input</h4>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
-                    <li>Type <code className="bg-gray-100 px-1 rounded">+13</code> to add 13</li>
-                    <li>Type <code className="bg-gray-100 px-1 rounded">-5</code> to subtract 5</li>
+                <div>
+                  <h4 className="text-base sm:text-lg font-medium text-gray-700 mb-2">Quick Math Input</h4>
+                  <ul className="list-disc list-inside space-y-1 text-sm sm:text-base text-gray-600 ml-2">
+                    <li>Type <code className="bg-gray-100 px-1 rounded text-xs sm:text-sm">+13</code> to add 13</li>
+                    <li>Type <code className="bg-gray-100 px-1 rounded text-xs sm:text-sm">-5</code> to subtract 5</li>
                     <li>Press Enter or click outside to calculate</li>
                   </ul>
-                </section>
+                </div>
 
-                <section>
-                  <h4 className="text-lg font-medium text-gray-700 mb-2">Features</h4>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                <div>
+                  <h4 className="text-base sm:text-lg font-medium text-gray-700 mb-2">Features</h4>
+                  <ul className="list-disc list-inside space-y-1 text-sm sm:text-base text-gray-600 ml-2">
                     <li>Hide amounts for privacy</li>
                     <li>Save counts to history</li>
-                    <li>Built-in calculator</li>
+                    <li>Built-in calculator with history</li>
                     <li>Multiple currency support</li>
+                    <li>Export/Import data for backup</li>
                   </ul>
-                </section>
+                </div>
               </div>
             </section>
 
+            {/* Contact & Feedback Section */}
             <section>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">Contact & Feedback</h3>
-              <div className="space-y-4">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Contact & Feedback</h3>
+              <div className="space-y-3">
                 <a
                   href="mailto:patilyasshh@gmail.com"
-                  className="block px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                  className="flex items-center px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
                 >
-                  <Mail className="inline-block mr-2" size={18} />
-                  Send Feedback
+                  <Mail className="mr-2 flex-shrink-0" size={18} />
+                  <span className="text-sm sm:text-base">Send Feedback</span>
                 </a>
                 <a
                   href="https://www.yashpatil.tech/more/contact.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                  className="flex items-center px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
                 >
-                  <Globe className="inline-block mr-2" size={18} />
-                  Contact Developer
+                  <Globe className="mr-2 flex-shrink-0" size={18} />
+                  <span className="text-sm sm:text-base">Contact Developer</span>
                 </a>
               </div>
             </section>
 
+            {/* Upgrade Section */}
             <section>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">Upgrade</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Upgrade</h3>
               <button
                 onClick={() => {
                   setShowMenu(false);
                   setShowProModal(true);
                 }}
-                className="w-full mt-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 px-4 rounded-md hover:from-yellow-600 hover:to-orange-600 transition-all shadow-md flex items-center justify-center font-medium"
+                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 px-4 rounded-md hover:from-yellow-600 hover:to-orange-600 transition-all shadow-md flex items-center justify-center font-medium"
               >
-                <Crown size={20} className="mr-2" />
-                Become Pro Counter
+                <Crown size={20} className="mr-2 flex-shrink-0" />
+                <span className="text-sm sm:text-base">Become Pro Counter</span>
               </button>
             </section>
           </div>
@@ -389,9 +564,10 @@ function App() {
           <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
             <header className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-4 shadow-lg">
               <div className="container mx-auto flex justify-between items-center">
-                <h1 className="text-2xl font-bold flex items-center">
-                  <CurrencyIcon className="mr-2" />
-                  Note Counter
+                <h1 className="text-xl sm:text-2xl font-bold flex items-center">
+                  <CurrencyIcon className="mr-2" size={20} />
+                  <span className="hidden xs:inline">Note Counter</span>
+                  <span className="xs:hidden">Counter</span>
                 </h1>
                 <div className="md:hidden">
                   <button 
@@ -404,7 +580,7 @@ function App() {
                 <div className="hidden md:flex space-x-4 items-center">
                   <select
                     value={selectedCurrency}
-                    onChange={(e) => setSelectedCurrency(e.target.value as 'INR' | 'USD')}
+                    onChange={(e) => handleCurrencyChange(e.target.value as 'INR' | 'USD')}
                     className="bg-white text-indigo-600 px-3 py-1 rounded-md font-medium"
                   >
                     <option value="INR">INR (₹)</option>
@@ -452,7 +628,10 @@ function App() {
                 <div className="container mx-auto p-2">
                   <select
                     value={selectedCurrency}
-                    onChange={(e) => setSelectedCurrency(e.target.value as 'INR' | 'USD')}
+                    onChange={(e) => {
+                      handleCurrencyChange(e.target.value as 'INR' | 'USD');
+                      setMobileMenuOpen(false);
+                    }}
                     className="w-full mb-2 bg-white text-indigo-600 px-3 py-2 rounded-md font-medium"
                   >
                     <option value="INR">INR (₹)</option>
@@ -469,7 +648,7 @@ function App() {
                       setMobileMenuOpen(false);
                     }}
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       <CurrencyIcon className="mr-2" size={18} />
                       Money Counter
                     </div>
@@ -485,7 +664,7 @@ function App() {
                       setMobileMenuOpen(false);
                     }}
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       <History className="mr-2" size={18} />
                       History
                     </div>
@@ -497,7 +676,7 @@ function App() {
                     }}
                     className="w-full py-2 px-4 rounded-md font-medium mb-2 text-white hover:bg-indigo-700/50"
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       <MenuIcon className="mr-2" size={18} />
                       Menu
                     </div>
