@@ -2,9 +2,6 @@ setTimeout(() => {
   if (localStorage.getItem("feedbackSubmitted") === "yes") return;
 
   (function () {
-    const endpoint = "https://formspree.io/f/xovwngyk"; // ✅ Your Formspree endpoint
-
-    // === STYLES ===
     const style = document.createElement("style");
     style.innerHTML = `
       .fb-overlay {
@@ -24,45 +21,35 @@ setTimeout(() => {
         box-shadow: 0 0 25px rgba(0,0,0,0.2);
         position: relative;
         animation: fadeIn 0.4s ease;
+        text-align: center;
       }
       .fb-modal h2 {
         margin-top: 0;
-        text-align: center;
         color: #007bff;
       }
-      .fb-close {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 22px;
-        cursor: pointer;
-        color: #333;
+      .fb-message {
+        font-size: 14px;
+        color: #555;
+        margin-top: -10px;
+        margin-bottom: 20px;
+        line-height: 1.5;
       }
       .fb-form-group {
         margin-bottom: 15px;
+        text-align: left;
       }
       .fb-form-group label {
         display: block;
         font-weight: 600;
         margin-bottom: 5px;
       }
-      .fb-form-group input,
-      .fb-form-group textarea {
+      .fb-form-group select {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 8px;
         background: #fff;
         font-size: 14px;
-      }
-      .fb-stars span {
-        font-size: 28px;
-        cursor: pointer;
-        color: #ccc;
-        transition: color 0.2s;
-      }
-      .fb-stars .active {
-        color: #ffc107;
       }
       .fb-submit {
         width: 100%;
@@ -91,7 +78,29 @@ setTimeout(() => {
     `;
     document.head.appendChild(style);
 
-    // === OVERLAY & MODAL ===
+    const countries = [
+      "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
+      "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan",
+      "Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia",
+      "Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo (Brazzaville)","Congo (Kinshasa)",
+      "Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador",
+      "Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France",
+      "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau",
+      "Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland",
+      "Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea, North",
+      "Korea, South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya",
+      "Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands",
+      "Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique",
+      "Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia",
+      "Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines",
+      "Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa",
+      "San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia",
+      "Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland",
+      "Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia",
+      "Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan",
+      "Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
+    ];
+
     const overlay = document.createElement("div");
     overlay.className = "fb-overlay";
 
@@ -99,124 +108,87 @@ setTimeout(() => {
     modal.className = "fb-modal";
     overlay.appendChild(modal);
 
-    const close = document.createElement("span");
-    close.className = "fb-close";
-    close.innerHTML = "&times;";
-    close.onclick = () => document.body.removeChild(overlay);
-    modal.appendChild(close);
-
     const heading = document.createElement("h2");
-    heading.textContent = "Help Us Improve Our Service";
+    heading.textContent = "Please fill the info below. It will appear only once.";
     modal.appendChild(heading);
 
-    // === FORM ===
+    const message = document.createElement("div");
+    message.className = "fb-message";
+    message.innerHTML = `We are asking this to add more currencies into it.<br>Sorry for the disturbance.`;
+    modal.appendChild(message);
+
     const form = document.createElement("form");
-    form.id = "feedbackForm";
+    form.id = "countryForm";
+    form.method = "POST";
+    form.action = "https://formspree.io/f/xovwngyk";
 
-    const fields = [
-      { id: "country", label: "Country", type: "text", required: true },
-      { id: "business", label: "Business Type (optional)", type: "text", required: false },
-      { id: "feedback", label: "Feedback / Improvements", type: "textarea", required: true },
-      { id: "testimonial", label: "Testimonial (optional)", type: "textarea", required: false }
-    ];
+    const group = document.createElement("div");
+    group.className = "fb-form-group";
 
-    fields.forEach(f => {
-      const group = document.createElement("div");
-      group.className = "fb-form-group";
+    const label = document.createElement("label");
+    label.textContent = "Country";
+    group.appendChild(label);
 
-      const label = document.createElement("label");
-      label.textContent = f.label;
-      group.appendChild(label);
+    const select = document.createElement("select");
+    select.name = "country";
+    select.required = true;
 
-      let input = f.type === "textarea" ? document.createElement("textarea") : document.createElement("input");
-      input.id = input.name = f.id;
-      input.required = f.required;
-      group.appendChild(input);
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select your country";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    select.appendChild(defaultOption);
 
-      form.appendChild(group);
+    countries.forEach(c => {
+      const option = document.createElement("option");
+      option.value = c;
+      option.textContent = c;
+      select.appendChild(option);
     });
 
-    // === STAR RATING ===
-    const starGroup = document.createElement("div");
-    starGroup.className = "fb-form-group";
-    const starLabel = document.createElement("label");
-    starLabel.textContent = "Experience (out of 5)";
-    starGroup.appendChild(starLabel);
+    group.appendChild(select);
+    form.appendChild(group);
 
-    const starDiv = document.createElement("div");
-    starDiv.className = "fb-stars";
-
-    let selectedRating = 0;
-    const stars = [];
-
-    for (let i = 1; i <= 5; i++) {
-      const star = document.createElement("span");
-      star.innerHTML = "★";
-      star.dataset.value = i;
-      star.onclick = () => {
-        selectedRating = i;
-        stars.forEach((s, idx) => {
-          s.classList.toggle("active", idx < i);
-        });
-      };
-      stars.push(star);
-      starDiv.appendChild(star);
-    }
-
-    // hidden input to submit star rating
-    const ratingInput = document.createElement("input");
-    ratingInput.type = "hidden";
-    ratingInput.name = "experience";
-    form.appendChild(ratingInput);
-
-    starGroup.appendChild(starDiv);
-    form.appendChild(starGroup);
-
-    // === SUBMIT BUTTON ===
     const submitBtn = document.createElement("button");
     submitBtn.type = "submit";
     submitBtn.className = "fb-submit";
-    submitBtn.textContent = "Submit Feedback";
+    submitBtn.textContent = "Continue";
     form.appendChild(submitBtn);
 
-    // === SUCCESS MESSAGE ===
     const successMsg = document.createElement("div");
     successMsg.className = "fb-success";
-    successMsg.textContent = "Thanks for your feedback!";
+    successMsg.textContent = "Thanks!";
     form.appendChild(successMsg);
 
-    // === FORM HANDLER ===
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      if (selectedRating === 0) {
-        alert("Please rate your experience.");
+      if (!select.value) {
+        alert("Please select your country.");
         return;
       }
 
-      ratingInput.value = selectedRating + " / 5";
+      const formData = new FormData();
+      formData.append("country", select.value);
 
-      const formData = new FormData(form);
-      fetch(endpoint, {
+      fetch("https://formspree.io/f/xovwngyk", {
         method: "POST",
         body: formData,
-        headers: { Accept: "application/json" }
-      }).then(res => {
-        if (res.ok) {
-          successMsg.style.display = "block";
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => {
+        if (response.ok) {
           localStorage.setItem("feedbackSubmitted", "yes");
-
-          form.reset();
-          selectedRating = 0;
-          stars.forEach(s => s.classList.remove("active"));
-
+          successMsg.style.display = "block";
           setTimeout(() => {
             document.body.removeChild(overlay);
-          }, 2000);
+          }, 1000);
         } else {
-          alert("Submission failed. Please try again.");
+          alert("There was a problem submitting the form.");
         }
-      }).catch(() => alert("Network error. Please check your connection."));
+      })
+      .catch(() => alert("Something went wrong. Please try again later."));
     });
 
     modal.appendChild(form);
