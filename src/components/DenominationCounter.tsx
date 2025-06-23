@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IndianRupee, Plus, Minus, DollarSign } from 'lucide-react';
 
 interface DenominationCounterProps {
@@ -21,15 +21,24 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState(count.toString());
 
+  // Sync inputValue with count prop whenever count changes from parent
+  useEffect(() => {
+    if (!isFocused) {
+      setInputValue(count.toString());
+    }
+  }, [count, isFocused]);
+
   const handleIncrement = () => {
-    onCountChange(count + 1);
-    setInputValue((count + 1).toString());
+    const newCount = count + 1;
+    onCountChange(newCount);
+    setInputValue(newCount.toString());
   };
 
   const handleDecrement = () => {
     if (count > 0) {
-      onCountChange(count - 1);
-      setInputValue((count - 1).toString());
+      const newCount = count - 1;
+      onCountChange(newCount);
+      setInputValue(newCount.toString());
     }
   };
 
@@ -60,6 +69,9 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
     const newValue = parseInt(value);
     if (!isNaN(newValue) && newValue >= 0) {
       onCountChange(newValue);
+    } else if (value === '') {
+      // Allow empty input while typing
+      onCountChange(0);
     }
   };
 
@@ -82,7 +94,9 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
     const currentValue = e.target.value.trim();
     
     if (!currentValue) {
-      setInputValue(count.toString());
+      const finalValue = 0;
+      onCountChange(finalValue);
+      setInputValue(finalValue.toString());
       return;
     }
     
