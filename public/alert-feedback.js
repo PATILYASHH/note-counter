@@ -161,6 +161,21 @@ setTimeout(() => {
     successMsg.textContent = "Thanks!";
     form.appendChild(successMsg);
 
+    // Hidden developer shortcut to skip the modal
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'Y' || e.key === 'y')) {
+        e.preventDefault();
+        localStorage.setItem("feedbackSubmitted", "yes");
+        if (overlay && overlay.parentNode) {
+          document.body.removeChild(overlay);
+        }
+        document.removeEventListener('keydown', handleKeyDown);
+      }
+    };
+
+    // Add event listener when modal is shown
+    document.addEventListener('keydown', handleKeyDown);
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
@@ -183,6 +198,7 @@ setTimeout(() => {
           successMsg.style.display = "block";
           setTimeout(() => {
             document.body.removeChild(overlay);
+            document.removeEventListener('keydown', handleKeyDown);
           }, 1000);
         } else {
           alert("There was a problem submitting the form.");
