@@ -96,45 +96,58 @@ const AdminLogin: React.FC = () => {
         
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-gray-700 mb-2">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
               <input
                 type="email"
+                id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 placeholder="Enter your email"
-                disabled={loading}
                 required
               />
+              <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
             </div>
           </div>
           
           <div>
-            <label className="block text-gray-700 mb-2">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
               <input
                 type="password"
+                id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 placeholder="Enter your password"
-                disabled={loading}
                 required
               />
+              <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
             </div>
           </div>
           
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
             disabled={loading}
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+        
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => navigate('/')}
+            className="text-indigo-600 hover:text-indigo-800 text-sm"
+          >
+            ← Back to Note Counter
+          </button>
+        </div>
       </div>
     </div>
   );

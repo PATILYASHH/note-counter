@@ -123,3 +123,121 @@ money counter, cash counter, currency counter, note counter, coin counter, bill 
 ---
 
 **Note Counter** - Making money counting simple, fast, and accurate for everyone.
+
+# Note Counter - Free Online Money Counter & Cash Calculator
+
+A modern, user-friendly web application for counting currency notes and coins with support for multiple currencies (INR, USD, EUR).
+
+## Features
+
+- **Multi-Currency Support**: Count money in INR (₹), USD ($), and EUR (€)
+- **Real-time Calculation**: Instant total calculation as you count
+- **History Tracking**: Save and manage your counting sessions
+- **Built-in Calculator**: Additional calculator with history
+- **Privacy Mode**: Hide amounts for confidential counting
+- **Data Export/Import**: Backup and restore your data
+- **Mobile Responsive**: Works perfectly on all devices
+- **Offline Support**: Works without internet connection
+
+## Technologies Used
+
+- React 18 with TypeScript
+- Tailwind CSS for styling
+- Vite for build tooling
+- React Router for navigation
+- Lucide React for icons
+- Supabase for admin features (optional)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (version 16 or higher)
+- npm or yarn package manager
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/PATILYASHH/note-counter.git
+cd note-counter
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+### Linting
+
+```bash
+npm run lint
+```
+
+## Configuration
+
+### Supabase Setup (Optional)
+
+For admin features, you can set up Supabase:
+
+1. Create a `.env` file in the root directory
+2. Add your Supabase credentials:
+```
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+The app works perfectly without Supabase - it's only needed for admin features.
+
+## Usage
+
+1. **Select Currency**: Choose between INR, USD, or EUR from the dropdown
+2. **Count Money**: Enter the count for each denomination
+3. **View Total**: See real-time calculation of total amount and count
+4. **Save Session**: Save your counting session to history
+5. **Use Calculator**: Perform additional calculations
+6. **Export Data**: Backup your data as JSON file
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## Contact
+
+**Yash Patil**
+- Website: [yashpatil.tech](https://yashpatil.tech)
+- Email: patilyasshh@gmail.com
+- GitHub: [@PATILYASHH](https://github.com/PATILYASHH)
+
+## Support
+
+If you find this project helpful, please consider:
+- ⭐ Starring the repository
+- 🐛 Reporting bugs
+- 💡 Suggesting new features
+- 💝 [Sponsoring the project](https://github.com/sponsors/PATILYASHH)
+
+---
+
+Made with ❤️ by [Yash Patil](https://yashpatil.tech)

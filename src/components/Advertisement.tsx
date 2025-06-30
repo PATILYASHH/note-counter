@@ -121,14 +121,9 @@ const Advertisement: React.FC = () => {
       setCurrentAd(ads[nextIndex]);
     };
 
-    // Get duration for current ad (default to 30 seconds if not set)
-    const duration = ads[currentAdIndex]?.duration || 30;
-    
-    // Set up timer for rotating to next ad
-    const timer = setInterval(rotateAd, duration * 1000);
+    const interval = setInterval(rotateAd, 5000); // Change ad every 5 seconds
 
-    // Cleanup timer on component unmount or when ads change
-    return () => clearInterval(timer);
+    return () => clearInterval(interval);
   }, [currentAdIndex, ads]);
 
   // If no ads or ads haven't loaded yet, or Supabase not configured

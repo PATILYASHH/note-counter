@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro } from 'lucide-react';
-// import { supabase, isSupabaseConfigured } from './lib/supabase';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
-import Advertisement from './components/Advertisement';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
 
 // Update the type definition to include EUR
 type Currency = 'INR' | 'USD' | 'EUR';
@@ -69,6 +64,7 @@ function App() {
   const [hideAmounts, setHideAmounts] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showProModal, setShowProModal] = useState(false);
+  const [showCalculatorPad, setShowCalculatorPad] = useState(false);
 
   // Initialize counts based on selected currency
   const initializeCounts = (currency: Currency): CountState => {
@@ -573,12 +569,7 @@ function App() {
   );
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="*" element={
-          <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
             <header className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-4 shadow-lg">
               <div className="container mx-auto flex justify-between items-center">
                 <h1 className="text-xl sm:text-2xl font-bold flex items-center">
@@ -804,13 +795,29 @@ function App() {
                             Use total amount in calculator
                           </label>
                         </div>
+
+                        <div className="flex items-center mb-4">
+                          <input
+                            type="checkbox"
+                            id="showCalculatorPad"
+                            checked={showCalculatorPad}
+                            onChange={(e) => setShowCalculatorPad(e.target.checked)}
+                            className="mr-2"
+                          />
+                          <label htmlFor="showCalculatorPad" className="text-sm text-gray-600">
+                            Show calculator number buttons
+                          </label>
+                        </div>
                         
                         <div className="mt-4">
                           <div className="flex items-center mb-2">
                             <Calculator size={18} className="mr-2 text-indigo-600" />
                             <h3 className="text-lg font-medium text-gray-700">Calculator</h3>
                           </div>
-                          <SimpleCalculator initialValue={sendToCalculator ? totalAmount.toString() : ''} />
+                          <SimpleCalculator 
+                            initialValue={sendToCalculator ? totalAmount.toString() : ''} 
+                            showPad={showCalculatorPad}
+                          />
                         </div>
                       </div>
                     </div>
@@ -820,8 +827,6 @@ function App() {
                 <HistoryTab hideAmounts={hideAmounts} selectedCurrency={selectedCurrency} />
               )}
             </div>
-
-            <Advertisement />
 
             <footer className="bg-gray-800 text-white py-6">
               <div className="container mx-auto px-4">
@@ -858,9 +863,6 @@ function App() {
               </div>
             </footer>
           </div>
-        } />
-      </Routes>
-    </Router>
   );
 }
 
