@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload } from 'lucide-react';
-import { supabase, isSupabaseConfigured } from './lib/supabase';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
