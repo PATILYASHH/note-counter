@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro } from 'lucide-react';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, Keyboard } from 'lucide-react';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
@@ -97,14 +97,92 @@ function App() {
     localStorage.setItem('selectedCurrency', selectedCurrency);
   }, [selectedCurrency]);
 
-  // Add keyboard shortcut for suppressing alerts (Ctrl+Y)
+  // Add comprehensive keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Prevent shortcuts when typing in input fields
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      // Ctrl+Y - Toggle suppress alerts
       if (event.ctrlKey && event.key === 'y') {
         event.preventDefault();
         const newSuppressState = !suppressAlerts;
         setSuppressAlerts(newSuppressState);
         localStorage.setItem('suppressAlerts', newSuppressState.toString());
+        if (!newSuppressState) {
+          alert('Alerts enabled');
+        }
+        return;
+      }
+
+      // Ctrl+S - Save current counts
+      if (event.ctrlKey && event.key === 's') {
+        event.preventDefault();
+        handleSave();
+        return;
+      }
+
+      // Ctrl+R - Reset all counts (with confirmation)
+      if (event.ctrlKey && event.key === 'r') {
+        event.preventDefault();
+        handleReset();
+        return;
+      }
+
+      // Ctrl+H - Toggle hide amounts
+      if (event.ctrlKey && event.key === 'h') {
+        event.preventDefault();
+        setHideAmounts(prev => !prev);
+        return;
+      }
+
+      // Ctrl+C - Open calculator
+      if (event.ctrlKey && event.key === 'c') {
+        event.preventDefault();
+        setShowCalculatorPad(prev => !prev);
+        return;
+      }
+
+      // Ctrl+M - Toggle menu
+      if (event.ctrlKey && event.key === 'm') {
+        event.preventDefault();
+        setShowMenu(prev => !prev);
+        return;
+      }
+
+      // Ctrl+1, Ctrl+2, Ctrl+3 - Switch currencies
+      if (event.ctrlKey && ['1', '2', '3'].includes(event.key)) {
+        event.preventDefault();
+        const currencyMap = { '1': 'INR', '2': 'USD', '3': 'EUR' };
+        handleCurrencyChange(currencyMap[event.key as '1' | '2' | '3'] as Currency);
+        return;
+      }
+
+      // Tab switching (Ctrl+T for History Tab)
+      if (event.ctrlKey && event.key === 't') {
+        event.preventDefault();
+        setActiveTab(prev => prev === 'counter' ? 'history' : 'counter');
+        return;
+      }
+
+      // Escape - Close modals and menus
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setShowMenu(false);
+        setShowCalculatorPad(false);
+        setShowProModal(false);
+        setMobileMenuOpen(false);
+        return;
+      }
+
+      // F1 - Show help (Open menu and switch to help tab)
+      if (event.key === 'F1') {
+        event.preventDefault();
+        setShowMenu(true);
+        setActiveMenuTab('help');
+        return;
       }
     };
 
@@ -112,7 +190,7 @@ function App() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [suppressAlerts]);
+  }, [suppressAlerts, selectedCurrency, activeTab]);
 
   // Custom alert function that respects suppress setting
   const showAlert = (message: string) => {
@@ -760,9 +838,89 @@ function App() {
               {/* Help Tab */}
               {activeMenuTab === 'help' && (
                 <div className="space-y-6">
+                  {/* Keyboard Shortcuts Section */}
+                  <section>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">⌨️ Keyboard Shortcuts</h3>
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200 mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-semibold text-gray-800 mb-2">🔥 Essential Shortcuts</h4>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Save counts</span>
+                              <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + S</kbd>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Reset all counts</span>
+                              <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + R</kbd>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Toggle hide amounts</span>
+                              <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + H</kbd>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Open calculator</span>
+                              <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + C</kbd>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-semibold text-gray-800 mb-2">🚀 Navigation Shortcuts</h4>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Toggle menu</span>
+                              <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + M</kbd>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Switch tab</span>
+                              <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + T</kbd>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Show help</span>
+                              <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">F1</kbd>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Close modals</span>
+                              <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Escape</kbd>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="border-t border-blue-200 mt-4 pt-4">
+                        <h4 className="text-sm font-semibold text-gray-800 mb-2">💱 Currency Shortcuts</h4>
+                        <div className="flex flex-wrap gap-4 text-sm">
+                          <div className="flex items-center">
+                            <span className="text-gray-600 mr-2">Switch to INR:</span>
+                            <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + 1</kbd>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-gray-600 mr-2">Switch to USD:</span>
+                            <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + 2</kbd>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-gray-600 mr-2">Switch to EUR:</span>
+                            <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + 3</kbd>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="border-t border-blue-200 mt-4 pt-4">
+                        <h4 className="text-sm font-semibold text-gray-800 mb-2">⚙️ Advanced Shortcuts</h4>
+                        <div className="text-sm">
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600">Toggle alert notifications</span>
+                            <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + Y</kbd>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
                   {/* Documentation Section */}
                   <section>
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">How to Use</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">📚 How to Use</h3>
                     <div className="space-y-4">
                       <div className="bg-gray-50 p-3 rounded-lg">
                         <h4 className="text-base font-medium text-gray-700 mb-2">💱 Currency Support</h4>
@@ -770,6 +928,7 @@ function App() {
                           <li>Switch between INR (₹), USD ($), and EUR (€)</li>
                           <li>Each currency maintains separate data and history</li>
                           <li>Automatic formatting based on currency selection</li>
+                          <li>Use <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl + 1/2/3</kbd> for quick currency switching</li>
                         </ul>
                       </div>
 
@@ -779,17 +938,30 @@ function App() {
                           <li>Type <code className="bg-gray-200 px-1 rounded text-xs">+13</code> to add 13 to current count</li>
                           <li>Type <code className="bg-gray-200 px-1 rounded text-xs">-5</code> to subtract 5 from current count</li>
                           <li>Press Enter or click outside to calculate automatically</li>
+                          <li>Use <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl + C</kbd> to open the calculator quickly</li>
                         </ul>
                       </div>
 
                       <div className="bg-gray-50 p-3 rounded-lg">
                         <h4 className="text-base font-medium text-gray-700 mb-2">🔥 Key Features</h4>
                         <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 ml-2">
-                          <li>Hide amounts for privacy with eye icon</li>
-                          <li>Save counts to history for future reference</li>
+                          <li>Hide amounts for privacy with eye icon or <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl + H</kbd></li>
+                          <li>Save counts to history with <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl + S</kbd></li>
                           <li>Built-in calculator with number pad option</li>
                           <li>Send total amount directly to calculator</li>
                           <li>Export/Import data for backup and transfer</li>
+                          <li>Reset all counts with <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl + R</kbd></li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-r from-green-50 to-blue-50 p-3 rounded-lg border border-green-200">
+                        <h4 className="text-base font-medium text-gray-700 mb-2">💡 Pro Tips</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 ml-2">
+                          <li>Press <kbd className="bg-gray-200 px-1 rounded text-xs">F1</kbd> anytime to access this help section</li>
+                          <li>Use <kbd className="bg-gray-200 px-1 rounded text-xs">Escape</kbd> to quickly close any open dialogs</li>
+                          <li>Switch between Counter and History tabs with <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl + T</kbd></li>
+                          <li>All keyboard shortcuts work globally except when typing in input fields</li>
+                          <li>Disable notifications with <kbd className="bg-gray-200 px-1 rounded text-xs">Ctrl + Y</kbd> for silent operation</li>
                         </ul>
                       </div>
                     </div>
@@ -925,10 +1097,18 @@ function App() {
                   </button>
                   <button
                     onClick={() => setShowMenu(true)}
-                    className="ml-2 p-2 rounded-full hover:bg-indigo-700/50 transition-colors"
-                    title="Menu"
+                    className="ml-2 p-2 rounded-full hover:bg-indigo-700/50 transition-colors group relative"
+                    title="Menu (Ctrl+M) • Press F1 for all shortcuts"
                   >
                     <MenuIcon size={20} />
+                    <div className="absolute -top-1 -right-1 bg-yellow-400 text-indigo-700 rounded-full w-4 h-4 flex items-center justify-center">
+                      <Keyboard size={10} />
+                    </div>
+                    
+                    {/* Tooltip for keyboard shortcuts */}
+                    <div className="absolute top-12 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      Press F1 for all shortcuts
+                    </div>
                   </button>
                 </div>
               </div>
@@ -1164,6 +1344,21 @@ function App() {
                 </div>
               </div>
             </footer>
+            
+            {/* Floating Help Button */}
+            <button
+              onClick={() => {
+                setShowMenu(true);
+                setActiveMenuTab('help');
+              }}
+              className="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-40 group"
+              title="Keyboard Shortcuts & Help (F1)"
+            >
+              <Keyboard size={20} />
+              <span className="absolute -top-8 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                F1 - Help & Shortcuts
+              </span>
+            </button>
           </div>
   );
 }
