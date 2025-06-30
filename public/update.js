@@ -22,7 +22,7 @@ setTimeout(() => {
   bar.style.transition = "top 0.3s ease";
 
   bar.innerHTML = `
-    <div>🚀 <strong>New Update Available!</strong> This popup will notify you before and after of update</div>
+    <div>🚀 <strong>New Currency Request</strong> If you want to add a new currency in the notecounter, please feedback the currency name, it will be added soon</div>
     <button id="unsubscribeUpdate" style="
       background: transparent;
       border: 1px solid white;
