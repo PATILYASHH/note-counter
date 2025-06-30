@@ -1345,13 +1345,13 @@ function App() {
               </div>
             </footer>
             
-            {/* Floating Help Button */}
+            {/* Floating Help Button - Hidden on mobile */}
             <button
               onClick={() => {
                 setShowMenu(true);
                 setActiveMenuTab('help');
               }}
-              className="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-40 group"
+              className="hidden md:block fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-40 group"
               title="Keyboard Shortcuts & Help (F1)"
             >
               <Keyboard size={20} />
