@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IndianRupee, Plus, Minus, DollarSign } from 'lucide-react';
+import { IndianRupee, Plus, Minus, DollarSign, Euro } from 'lucide-react';
 
 interface DenominationCounterProps {
   value: number;
@@ -7,7 +7,7 @@ interface DenominationCounterProps {
   count: number;
   onCountChange: (count: number) => void;
   hideAmount: boolean;
-  currency: 'INR' | 'USD';
+  currency: 'INR' | 'USD' | 'EUR';
 }
 
 const DenominationCounter: React.FC<DenominationCounterProps> = ({
@@ -140,7 +140,7 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
     }).format(amount);
   };
 
-  const CurrencyIcon = currency === 'INR' ? IndianRupee : DollarSign;
+  const CurrencyIcon = currency === 'INR' ? IndianRupee : currency === 'USD' ? DollarSign : Euro;
 
   return (
     <div className={`${getBgColor()} rounded-lg p-3 shadow-sm`}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IndianRupee, Trash2, Save, Clock, Calculator, DollarSign } from 'lucide-react';
+import { IndianRupee, Trash2, Save, Clock, Calculator, DollarSign, Euro } from 'lucide-react';
 
 interface HistoryEntry {
   id: string;
@@ -8,7 +8,7 @@ interface HistoryEntry {
   totalCount: number;
   denominationCounts: Record<number, number>;
   note?: string;
-  currency: 'INR' | 'USD';
+  currency: 'INR' | 'USD' | 'EUR';
 }
 
 interface CalculatorHistory {
@@ -19,7 +19,7 @@ interface CalculatorHistory {
 
 interface HistoryTabProps {
   hideAmounts: boolean;
-  selectedCurrency: 'INR' | 'USD';
+  selectedCurrency: 'INR' | 'USD' | 'EUR';
 }
 
 type HistoryType = 'money' | 'calculator';
@@ -67,7 +67,7 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
     );
     
     const totalCount = Object.values(counts).reduce(
-      (sum, count) => sum + Number(count), 
+      (sum: number, count) => sum + Number(count), 
       0
     );
     
@@ -143,7 +143,7 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
   // Format denomination for display
   const formatDenomination = (value: number, count: number) => {
     const type = value <= 2 ? 'coin' : 'note';
-    const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : DollarSign;
+    const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : selectedCurrency === 'USD' ? DollarSign : Euro;
     return (
       <div key={value} className="flex justify-between py-1 border-b border-gray-200">
         <div className="flex items-center">
@@ -155,7 +155,7 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
     );
   };
 
-  const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : DollarSign;
+  const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : selectedCurrency === 'USD' ? DollarSign : Euro;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

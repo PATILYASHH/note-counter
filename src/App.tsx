@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload } from 'lucide-react';
-import { supabase, isSupabaseConfigured } from './lib/supabase';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro } from 'lucide-react';
+// import { supabase, isSupabaseConfigured } from './lib/supabase';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
 import Advertisement from './components/Advertisement';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+
+// Update the type definition to include EUR
+type Currency = 'INR' | 'USD' | 'EUR';
 
 const CURRENCY_DENOMINATIONS = {
   INR: [
@@ -32,6 +35,20 @@ const CURRENCY_DENOMINATIONS = {
     { value: 0.10, type: 'coin' },
     { value: 0.05, type: 'coin' },
     { value: 0.01, type: 'coin' },
+  ],
+  EUR: [
+    { value: 500, type: 'note' },
+    { value: 200, type: 'note' },
+    { value: 100, type: 'note' },
+    { value: 50, type: 'note' },
+    { value: 20, type: 'note' },
+    { value: 10, type: 'note' },
+    { value: 5, type: 'note' },
+    { value: 2, type: 'coin' },
+    { value: 1, type: 'coin' },
+    { value: 0.50, type: 'coin' },
+    { value: 0.20, type: 'coin' },
+    { value: 0.10, type: 'coin' },
   ]
 };
 
@@ -40,10 +57,10 @@ interface CountState {
 }
 
 function App() {
-  // Load saved currency preference or default to INR
-  const [selectedCurrency, setSelectedCurrency] = useState<'INR' | 'USD'>(() => {
+  // Update the state type to include EUR
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(() => {
     const savedCurrency = localStorage.getItem('selectedCurrency');
-    return (savedCurrency === 'INR' || savedCurrency === 'USD') ? savedCurrency : 'INR';
+    return (savedCurrency === 'INR' || savedCurrency === 'USD' || savedCurrency === 'EUR') ? savedCurrency as Currency : 'INR';
   });
 
   const [activeTab, setActiveTab] = useState<'counter' | 'history'>('counter');
@@ -54,7 +71,7 @@ function App() {
   const [showProModal, setShowProModal] = useState(false);
 
   // Initialize counts based on selected currency
-  const initializeCounts = (currency: 'INR' | 'USD'): CountState => {
+  const initializeCounts = (currency: Currency): CountState => {
     const initialCounts: CountState = {};
     CURRENCY_DENOMINATIONS[currency].forEach(denom => {
       initialCounts[denom.value] = 0;
@@ -177,7 +194,7 @@ function App() {
     }
   };
 
-  const handleCurrencyChange = (newCurrency: 'INR' | 'USD') => {
+  const handleCurrencyChange = (newCurrency: Currency) => {
     if (newCurrency !== selectedCurrency) {
       setSelectedCurrency(newCurrency);
     }
@@ -188,7 +205,7 @@ function App() {
       const exportData = {
         version: '1.0',
         exportDate: new Date().toISOString(),
-        currencies: ['INR', 'USD'].reduce((acc, currency) => {
+        currencies: ['INR', 'USD', 'EUR'].reduce((acc, currency) => {
           const counts = localStorage.getItem(`denominationCounts_${currency}`);
           const history = localStorage.getItem(`countNoteHistory_${currency}`);
           const calcHistory = localStorage.getItem('calculatorHistory');
@@ -298,7 +315,7 @@ function App() {
     }).format(amount);
   };
 
-  const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : DollarSign;
+  const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : selectedCurrency === 'USD' ? DollarSign : Euro;
 
   const ProModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -580,11 +597,12 @@ function App() {
                 <div className="hidden md:flex space-x-4 items-center">
                   <select
                     value={selectedCurrency}
-                    onChange={(e) => handleCurrencyChange(e.target.value as 'INR' | 'USD')}
+                    onChange={(e) => handleCurrencyChange(e.target.value as Currency)}
                     className="bg-white text-indigo-600 px-3 py-1 rounded-md font-medium"
                   >
                     <option value="INR">INR (₹)</option>
                     <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
                   </select>
                   <button
                     className={`py-2 px-4 rounded-md font-medium transition-all ${
@@ -629,13 +647,14 @@ function App() {
                   <select
                     value={selectedCurrency}
                     onChange={(e) => {
-                      handleCurrencyChange(e.target.value as 'INR' | 'USD');
+                      handleCurrencyChange(e.target.value as Currency);
                       setMobileMenuOpen(false);
                     }}
                     className="w-full mb-2 bg-white text-indigo-600 px-3 py-2 rounded-md font-medium"
                   >
                     <option value="INR">INR (₹)</option>
                     <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
                   </select>
                   <button
                     className={`w-full py-2 px-4 rounded-md font-medium mb-2 transition-all ${
@@ -708,7 +727,7 @@ function App() {
                           <DenominationCounter
                             key={denom.value}
                             value={denom.value}
-                            type={denom.type}
+                            type={denom.type as 'note' | 'coin'}
                             count={counts[denom.value] || 0}
                             onCountChange={(count) => handleCountChange(denom.value, count)}
                             hideAmount={hideAmounts}
@@ -727,7 +746,7 @@ function App() {
                           <DenominationCounter
                             key={denom.value}
                             value={denom.value}
-                            type={denom.type}
+                            type={denom.type as 'note' | 'coin'}
                             count={counts[denom.value] || 0}
                             onCountChange={(count) => handleCountChange(denom.value, count)}
                             hideAmount={hideAmounts}
