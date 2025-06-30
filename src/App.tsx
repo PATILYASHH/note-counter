@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
@@ -9,29 +9,39 @@ import Advertisement from './components/Advertisement';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 
-const CURRENCY_DENOMINATIONS = {
+type DenominationType = 'note' | 'coin';
+
+interface Denomination {
+  value: number;
+  type: DenominationType;
+}
+
+const CURRENCY_DENOMINATIONS: {
+  INR: Denomination[];
+  USD: Denomination[];
+} = {
   INR: [
-    { value: 500, type: 'note' },
-    { value: 200, type: 'note' },
-    { value: 100, type: 'note' },
-    { value: 50, type: 'note' },
-    { value: 20, type: 'note' },
-    { value: 10, type: 'note' },
-    { value: 5, type: 'note' },
-    { value: 2, type: 'coin' },
-    { value: 1, type: 'coin' },
+    { value: 500, type: 'note' as const },
+    { value: 200, type: 'note' as const },
+    { value: 100, type: 'note' as const },
+    { value: 50, type: 'note' as const },
+    { value: 20, type: 'note' as const },
+    { value: 10, type: 'note' as const },
+    { value: 5, type: 'note' as const },
+    { value: 2, type: 'coin' as const },
+    { value: 1, type: 'coin' as const },
   ],
   USD: [
-    { value: 100, type: 'note' },
-    { value: 50, type: 'note' },
-    { value: 20, type: 'note' },
-    { value: 10, type: 'note' },
-    { value: 5, type: 'note' },
-    { value: 1, type: 'note' },
-    { value: 0.25, type: 'coin' },
-    { value: 0.10, type: 'coin' },
-    { value: 0.05, type: 'coin' },
-    { value: 0.01, type: 'coin' },
+    { value: 100, type: 'note' as const },
+    { value: 50, type: 'note' as const },
+    { value: 20, type: 'note' as const },
+    { value: 10, type: 'note' as const },
+    { value: 5, type: 'note' as const },
+    { value: 1, type: 'note' as const },
+    { value: 0.25, type: 'coin' as const },
+    { value: 0.10, type: 'coin' as const },
+    { value: 0.05, type: 'coin' as const },
+    { value: 0.01, type: 'coin' as const },
   ]
 };
 

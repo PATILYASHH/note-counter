@@ -58,7 +58,7 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
     const currentCounts = localStorage.getItem(`denominationCounts_${selectedCurrency}`);
     if (!currentCounts) return;
     
-    const counts = JSON.parse(currentCounts);
+    const counts: Record<number, number> = JSON.parse(currentCounts);
     
     // Calculate totals
     const totalAmount = Object.entries(counts).reduce(
@@ -67,7 +67,7 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
     );
     
     const totalCount = Object.values(counts).reduce(
-      (sum, count) => sum + Number(count), 
+      (sum, count) => sum + count, 
       0
     );
     
