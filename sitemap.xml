@@ -11,6 +11,11 @@
   <loc>https://notecounter.vercel.app/</loc>
   <lastmod>2025-04-08T13:18:00+00:00</lastmod>
 </url>
-
+<url>
+  <loc>https://notecounter.shop/</loc>
+  <lastmod>2025-01-15</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>1.0</priority>
+</url>
 
 </urlset>

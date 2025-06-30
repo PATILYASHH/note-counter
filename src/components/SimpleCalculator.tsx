@@ -9,9 +9,10 @@ interface CalculationHistory {
 
 interface SimpleCalculatorProps {
   initialValue?: string;
+  showPad?: boolean;
 }
 
-const SimpleCalculator: React.FC<SimpleCalculatorProps> = ({ initialValue = '0' }) => {
+const SimpleCalculator: React.FC<SimpleCalculatorProps> = ({ initialValue = '0', showPad = false }) => {
   const [display, setDisplay] = useState(initialValue);
   const [expression, setExpression] = useState('');
   const [hasCalculated, setHasCalculated] = useState(false);
@@ -111,7 +112,7 @@ const SimpleCalculator: React.FC<SimpleCalculatorProps> = ({ initialValue = '0' 
   };
 
   return (
-    <div className="bg-gray-100 rounded-lg p-3">
+    <div className="bg-gray-100 rounded-lg p-2 sm:p-3">
       <div className="mb-2">
         <div className="flex justify-between items-center mb-1">
           <div className="text-gray-600 text-xs h-4 overflow-x-auto whitespace-nowrap">
@@ -122,7 +123,7 @@ const SimpleCalculator: React.FC<SimpleCalculatorProps> = ({ initialValue = '0' 
             className="text-indigo-600 hover:text-indigo-800 p-1 rounded-full hover:bg-indigo-100 transition-colors"
             title="Toggle History"
           >
-            <History size={16} />
+            <History size={14} />
           </button>
         </div>
         <input
@@ -130,7 +131,7 @@ const SimpleCalculator: React.FC<SimpleCalculatorProps> = ({ initialValue = '0' 
           value={display}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          className="w-full bg-white p-2 text-right text-lg font-bold rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full bg-white p-2 text-right text-sm sm:text-lg font-bold rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           placeholder="0"
         />
       </div>
@@ -162,59 +163,125 @@ const SimpleCalculator: React.FC<SimpleCalculatorProps> = ({ initialValue = '0' 
         </div>
       )}
 
-      <div className="grid grid-cols-4 gap-1">
-        <button 
-          onClick={handleClearClick}
-          className="bg-red-500 text-white p-2 rounded font-medium hover:bg-red-600 active:bg-red-700 transition-colors text-sm"
-        >
-          C
-        </button>
-        <button 
-          onClick={handleBackspaceClick}
-          className="bg-gray-200 p-2 rounded font-medium hover:bg-gray-300 active:bg-gray-400 transition-colors flex items-center justify-center text-sm"
-        >
-          <ArrowLeft size={16} />
-        </button>
-        <button 
-          onClick={() => handleOperatorClick('%')}
-          className="bg-gray-200 p-2 rounded font-medium hover:bg-gray-300 active:bg-gray-400 transition-colors text-sm"
-        >
-          %
-        </button>
-        <button 
-          onClick={() => handleOperatorClick('/')}
-          className="bg-indigo-500 text-white p-2 rounded font-medium hover:bg-indigo-600 active:bg-indigo-700 transition-colors text-sm"
-        >
-          ÷
-        </button>
-        <button 
-          onClick={() => handleOperatorClick('*')}
-          className="bg-indigo-500 text-white p-2 rounded font-medium hover:bg-indigo-600 active:bg-indigo-700 transition-colors text-sm"
-        >
-          ×
-        </button>
-        <button 
-          onClick={() => handleOperatorClick('-')}
-          className="bg-indigo-500 text-white p-2 rounded font-medium hover:bg-indigo-600 active:bg-indigo-700 transition-colors text-sm"
-        >
-          -
-        </button>
-        <button 
-          onClick={() => handleOperatorClick('+')}
-          className="bg-indigo-500 text-white p-2 rounded font-medium hover:bg-indigo-600 active:bg-indigo-700 transition-colors text-sm"
-        >
-          +
-        </button>
-        <button 
-          onClick={handleEqualsClick}
-          className="bg-indigo-600 text-white p-2 rounded font-medium hover:bg-indigo-700 active:bg-indigo-800 transition-colors text-sm"
-        >
-          =
-        </button>
+      {/* Operators in two attractive rows */}
+      <div className="space-y-1 sm:space-y-2 mb-2 sm:mb-3">
+        {/* First row of operators */}
+        <div className="flex gap-1 sm:gap-2">
+          <button 
+            onClick={handleClearClick}
+            className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg font-bold hover:from-red-600 hover:to-red-700 active:from-red-700 active:to-red-800 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base"
+          >
+            C
+          </button>
+          <button 
+            onClick={handleBackspaceClick}
+            className="flex-1 bg-gradient-to-r from-gray-400 to-gray-500 text-white p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg font-bold hover:from-gray-500 hover:to-gray-600 active:from-gray-600 active:to-gray-700 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 flex items-center justify-center"
+          >
+            <ArrowLeft size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />
+          </button>
+          <button 
+            onClick={() => handleOperatorClick('%')}
+            className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg font-bold hover:from-purple-600 hover:to-purple-700 active:from-purple-700 active:to-purple-800 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base"
+          >
+            %
+          </button>
+          <button 
+            onClick={() => handleOperatorClick('/')}
+            className="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg font-bold hover:from-orange-600 hover:to-orange-700 active:from-orange-700 active:to-orange-800 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base"
+          >
+            ÷
+          </button>
+        </div>
+        
+        {/* Second row of operators */}
+        <div className="flex gap-1 sm:gap-2">
+          <button 
+            onClick={() => handleOperatorClick('*')}
+            className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg font-bold hover:from-blue-600 hover:to-blue-700 active:from-blue-700 active:to-blue-800 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base"
+          >
+            ×
+          </button>
+          <button 
+            onClick={() => handleOperatorClick('-')}
+            className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg font-bold hover:from-green-600 hover:to-green-700 active:from-green-700 active:to-green-800 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base"
+          >
+            −
+          </button>
+          <button 
+            onClick={() => handleOperatorClick('+')}
+            className="flex-1 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg font-bold hover:from-indigo-600 hover:to-indigo-700 active:from-indigo-700 active:to-indigo-800 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base"
+          >
+            +
+          </button>
+          <button 
+            onClick={handleEqualsClick}
+            className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg font-bold hover:from-emerald-600 hover:to-emerald-700 active:from-emerald-700 active:to-emerald-800 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base"
+          >
+            =
+          </button>
+        </div>
       </div>
-      <div className="text-xs text-gray-500 mt-2 text-center">
-        Type your calculation or use the buttons
-      </div>
+
+      {/* Numbers in a 4x3 grid - conditionally rendered */}
+      {showPad && (
+        <div className="grid grid-cols-4 gap-1 sm:gap-2">
+          {/* Numbers row 1 */}
+          {[7, 8, 9].map(num => (
+            <button 
+              key={num}
+              onClick={() => setDisplay(display === '0' ? String(num) : display + num)}
+              className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 p-2 sm:p-3 md:p-4 rounded-md sm:rounded-lg font-bold hover:from-gray-200 hover:to-gray-300 active:from-gray-300 active:to-gray-400 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-sm sm:text-base md:text-lg"
+            >
+              {num}
+            </button>
+          ))}
+          {/* Empty space for alignment */}
+          <div></div>
+          
+          {/* Numbers row 2 */}
+          {[4, 5, 6].map(num => (
+            <button 
+              key={num}
+              onClick={() => setDisplay(display === '0' ? String(num) : display + num)}
+              className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 p-2 sm:p-3 md:p-4 rounded-md sm:rounded-lg font-bold hover:from-gray-200 hover:to-gray-300 active:from-gray-300 active:to-gray-400 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-sm sm:text-base md:text-lg"
+            >
+              {num}
+            </button>
+          ))}
+          {/* Empty space for alignment */}
+          <div></div>
+          
+          {/* Numbers row 3 */}
+          {[1, 2, 3].map(num => (
+            <button 
+              key={num}
+              onClick={() => setDisplay(display === '0' ? String(num) : display + num)}
+              className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 p-2 sm:p-3 md:p-4 rounded-md sm:rounded-lg font-bold hover:from-gray-200 hover:to-gray-300 active:from-gray-300 active:to-gray-400 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-sm sm:text-base md:text-lg"
+            >
+              {num}
+            </button>
+          ))}
+          {/* Empty space for alignment */}
+          <div></div>
+          
+          {/* Bottom row - 0 and decimal point */}
+          <button 
+            onClick={() => setDisplay(display === '0' ? '0' : display + '0')}
+            className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 p-2 sm:p-3 md:p-4 rounded-md sm:rounded-lg font-bold hover:from-gray-200 hover:to-gray-300 active:from-gray-300 active:to-gray-400 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-sm sm:text-base md:text-lg col-span-2"
+          >
+            0
+          </button>
+          <button 
+            onClick={() => setDisplay(display.includes('.') ? display : display + '.')}
+            className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 p-2 sm:p-3 md:p-4 rounded-md sm:rounded-lg font-bold hover:from-gray-200 hover:to-gray-300 active:from-gray-300 active:to-gray-400 transition-all shadow-sm sm:shadow-md transform hover:scale-105 active:scale-95 text-sm sm:text-base md:text-lg"
+          >
+            .
+          </button>
+          {/* Empty space for alignment */}
+          <div></div>
+        </div>
+      )}
+      
     </div>
   );
 };

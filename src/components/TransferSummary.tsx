@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, User, Phone, MapPin, Building2, IndianRupee, Send } from 'lucide-react';
+import { ArrowRight, User, IndianRupee, Send } from 'lucide-react';
 
 interface TransferSummaryProps {
   totalAmount: number;
@@ -193,59 +193,50 @@ const TransferSummary: React.FC<TransferSummaryProps> = ({ totalAmount }) => {
             </div>
           </div>
 
-          {/* Transfer Amount */}
+          {/* Amount Details */}
           <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg">
             <h3 className="text-lg font-semibold mb-4 text-gray-700 flex items-center">
-              <IndianRupee className="mr-2" /> Transfer Amount
+              <IndianRupee className="mr-2" /> Amount Details
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Amount
+                  Transfer Amount
                 </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-2 text-gray-500">₹</span>
-                  <input
-                    type="number"
-                    name="amount"
-                    value={transferDetails.amount}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full p-2 pl-8 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    placeholder="Enter amount"
-                  />
-                </div>
+                <input
+                  type="number"
+                  name="amount"
+                  value={transferDetails.amount}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="Enter amount"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Transfer Charges (2%)
                 </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-2 text-gray-500">₹</span>
-                  <input
-                    type="number"
-                    value={transferDetails.charges}
-                    readOnly
-                    className="w-full p-2 pl-8 bg-gray-100 border border-gray-300 rounded-md"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 p-3 bg-white rounded-lg border border-green-200">
-              <div className="flex justify-between items-center text-lg font-semibold">
-                <span>Total Amount:</span>
-                <span className="text-green-600">₹ {(transferDetails.amount + transferDetails.charges).toLocaleString('en-IN')}</span>
+                <input
+                  type="number"
+                  value={transferDetails.charges}
+                  readOnly
+                  className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                />
               </div>
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition-all shadow-md active:transform active:scale-95 flex items-center justify-center"
-          >
-            <Send className="mr-2" size={20} />
-            Initiate Transfer
-          </button>
+          {/* Submit Button */}
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 px-8 rounded-lg font-bold hover:from-indigo-600 hover:to-purple-700 transition-all shadow-lg"
+            >
+              <Send size={20} className="mr-2 inline" />
+              Initiate Transfer
+            </button>
+          </div>
         </form>
       </div>
     </div>
