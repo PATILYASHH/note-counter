@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /_vercel/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://notecounter.shop/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

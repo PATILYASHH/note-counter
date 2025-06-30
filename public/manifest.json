@@ -1,0 +1,35 @@
+{
+  "name": "Note Counter - Money Counter & Cash Calculator",
+  "short_name": "Note Counter",
+  "description": "Free online money counter and cash calculator for counting currency notes and coins",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007bff",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+}

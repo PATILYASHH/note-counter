@@ -2,9 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/main.tsx" as="script">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://plausible.io">
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="shortcut icon" href="https://yashpatil.tech/assets/images/projectimg/countnote.png" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" href="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Note Counter">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
     <title>Note Counter - Free Online Money Counter & Cash Calculator</title>
 
     <!-- Plausible Analytics -->
@@ -26,7 +48,7 @@
     <meta name="description" content="Note Counter - Free online money counter and cash calculator. Count currency notes and coins instantly with support for INR, USD, and multiple currencies. Track your cash counting history with our easy-to-use digital money counter tool.">
 
     <!-- Focused Keywords -->
-    <meta name="keywords" content="note counter, money counter, cash counter, currency counter, coin counter, digital money counter, online cash counter, cash calculator, currency calculator, INR counter, USD counter,by yash patil,PATILYASHH">
+    <meta name="keywords" content="note counter, money counter, cash counter, currency counter, coin counter, digital money counter, online cash counter, cash calculator, currency calculator, INR counter, USD counter, by yash patil">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Note Counter - Free Online Money Counter & Cash Calculator">
@@ -114,6 +136,21 @@
 
     <!-- Google Adsense -->
     <meta name="google-adsense-account" content="ca-pub-1486700320478884">
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
