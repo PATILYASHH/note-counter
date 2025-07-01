@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, Keyboard } from 'lucide-react';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, Keyboard, Copy } from 'lucide-react';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
@@ -64,7 +64,15 @@ function App() {
   const [hideAmounts, setHideAmounts] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showProModal, setShowProModal] = useState(false);
-  const [showCalculatorPad, setShowCalculatorPad] = useState(false);
+  const [showCalculatorPad, setShowCalculatorPad] = useState(() => {
+    return localStorage.getItem('showCalculatorPad') === 'true';
+  });
+  const [showCalculator, setShowCalculator] = useState(() => {
+    return localStorage.getItem('showCalculator') !== 'false'; // Default to true
+  });
+  const [showAmountInText, setShowAmountInText] = useState(() => {
+    return localStorage.getItem('showAmountInText') === 'true';
+  });
   const [activeMenuTab, setActiveMenuTab] = useState('about');
   const [suppressAlerts, setSuppressAlerts] = useState(() => {
     return localStorage.getItem('suppressAlerts') === 'true';
@@ -92,10 +100,22 @@ function App() {
     return initializeCounts(selectedCurrency);
   });
 
-  // Save currency preference whenever it changes
+  // Save preferences whenever they change
   useEffect(() => {
     localStorage.setItem('selectedCurrency', selectedCurrency);
   }, [selectedCurrency]);
+
+  useEffect(() => {
+    localStorage.setItem('showCalculatorPad', showCalculatorPad.toString());
+  }, [showCalculatorPad]);
+
+  useEffect(() => {
+    localStorage.setItem('showCalculator', showCalculator.toString());
+  }, [showCalculator]);
+
+  useEffect(() => {
+    localStorage.setItem('showAmountInText', showAmountInText.toString());
+  }, [showAmountInText]);
 
   // Add comprehensive keyboard shortcuts
   useEffect(() => {
@@ -141,7 +161,9 @@ function App() {
       // Ctrl+C - Open calculator
       if (event.ctrlKey && event.key === 'c') {
         event.preventDefault();
-        setShowCalculatorPad(prev => !prev);
+        if (showCalculator) {
+          setShowCalculatorPad(prev => !prev);
+        }
         return;
       }
 
@@ -190,7 +212,7 @@ function App() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [suppressAlerts, selectedCurrency, activeTab]);
+  }, [suppressAlerts, selectedCurrency, activeTab, showCalculator]);
 
   // Custom alert function that respects suppress setting
   const showAlert = (message: string) => {
@@ -417,6 +439,109 @@ function App() {
     }).format(amount);
   };
 
+  // Function to convert numbers to text format
+  const numberToText = (num: number): string => {
+    if (hideAmounts) return '••••••';
+    
+    // Handle decimal numbers by rounding to nearest whole number
+    const wholeNum = Math.round(num);
+    
+    const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+    const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+    
+    const convertHundreds = (n: number): string => {
+      let result = '';
+      if (n >= 100) {
+        result += ones[Math.floor(n / 100)] + ' Hundred';
+        n %= 100;
+        if (n > 0) result += ' ';
+      }
+      if (n >= 20) {
+        result += tens[Math.floor(n / 10)];
+        n %= 10;
+        if (n > 0) result += ' ';
+      } else if (n >= 10) {
+        result += teens[n - 10];
+        return result;
+      }
+      if (n > 0) {
+        result += ones[n];
+      }
+      return result;
+    };
+
+    if (wholeNum === 0) return 'Zero';
+    
+    let result = '';
+    
+    // Use Indian numbering system for INR
+    if (selectedCurrency === 'INR') {
+      const crore = Math.floor(wholeNum / 10000000); // 1 Crore = 10,000,000
+      const lakh = Math.floor((wholeNum % 10000000) / 100000); // 1 Lakh = 100,000
+      const thousand = Math.floor((wholeNum % 100000) / 1000);
+      const remainder = wholeNum % 1000;
+
+      if (crore > 0) {
+        result += convertHundreds(crore) + ' Crore';
+        if (lakh > 0 || thousand > 0 || remainder > 0) result += ' ';
+      }
+      if (lakh > 0) {
+        result += convertHundreds(lakh) + ' Lakh';
+        if (thousand > 0 || remainder > 0) result += ' ';
+      }
+      if (thousand > 0) {
+        result += convertHundreds(thousand) + ' Thousand';
+        if (remainder > 0) result += ' ';
+      }
+      if (remainder > 0) {
+        result += convertHundreds(remainder);
+      }
+    } else {
+      // Use Western numbering system for USD and EUR
+      const billion = Math.floor(wholeNum / 1000000000);
+      const million = Math.floor((wholeNum % 1000000000) / 1000000);
+      const thousand = Math.floor((wholeNum % 1000000) / 1000);
+      const remainder = wholeNum % 1000;
+
+      if (billion > 0) {
+        result += convertHundreds(billion) + ' Billion';
+        if (million > 0 || thousand > 0 || remainder > 0) result += ' ';
+      }
+      if (million > 0) {
+        result += convertHundreds(million) + ' Million';
+        if (thousand > 0 || remainder > 0) result += ' ';
+      }
+      if (thousand > 0) {
+        result += convertHundreds(thousand) + ' Thousand';
+        if (remainder > 0) result += ' ';
+      }
+      if (remainder > 0) {
+        result += convertHundreds(remainder);
+      }
+    }
+
+    // Add currency name based on original number (not rounded)
+    const currencyNames = {
+      INR: num === 1 ? 'Rupee' : 'Rupees',
+      USD: num === 1 ? 'Dollar' : 'Dollars',
+      EUR: num === 1 ? 'Euro' : 'Euros'
+    };
+
+    return result + ' ' + currencyNames[selectedCurrency];
+  };
+
+  // Function to copy text to clipboard
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      showAlert('Amount copied to clipboard!');
+    } catch (error) {
+      console.error('Failed to copy text:', error);
+      showAlert('Failed to copy to clipboard');
+    }
+  };
+
   const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : selectedCurrency === 'USD' ? DollarSign : Euro;
 
   const ProModal = () => (
@@ -575,6 +700,16 @@ function App() {
                 About
               </button>
               <button
+                onClick={() => setActiveMenuTab('customization')}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeMenuTab === 'customization'
+                    ? 'bg-white text-indigo-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                Settings
+              </button>
+              <button
                 onClick={() => setActiveMenuTab('data')}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeMenuTab === 'data'
@@ -681,6 +816,209 @@ function App() {
                       <p className="text-xs text-center text-gray-500 mt-1">
                         Explore my other projects and work
                       </p>
+                    </div>
+                  </section>
+                </div>
+              )}
+
+              {/* Customization Tab */}
+              {activeMenuTab === 'customization' && (
+                <div className="space-y-6">
+                  <section>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                      <Calculator className="mr-2" size={20} />
+                      Calculator Settings
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      {/* Show/Hide Calculator */}
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="text-base font-medium text-gray-700">Show Calculator</h4>
+                            <p className="text-sm text-gray-600">Display the calculator section in the summary panel</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="sr-only peer"
+                              checked={showCalculator}
+                              onChange={(e) => setShowCalculator(e.target.checked)}
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Show/Hide Calculator Keypad */}
+                      <div className={`bg-gray-50 p-4 rounded-lg border border-gray-200 transition-opacity ${
+                        !showCalculator ? 'opacity-50' : ''
+                      }`}>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="text-base font-medium text-gray-700">Show Calculator Keypad</h4>
+                            <p className="text-sm text-gray-600">Display number buttons below the calculator input</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="sr-only peer"
+                              checked={showCalculatorPad}
+                              onChange={(e) => setShowCalculatorPad(e.target.checked)}
+                              disabled={!showCalculator}
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 disabled:opacity-50"></div>
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Information Box */}
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0">
+                            <div className="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">ℹ</span>
+                            </div>
+                          </div>
+                          <div className="ml-3">
+                            <h4 className="text-sm font-semibold text-blue-800 mb-1">Calculator Features</h4>
+                            <ul className="text-sm text-blue-700 space-y-1">
+                              <li>• Basic arithmetic operations (+, -, ×, ÷)</li>
+                              <li>• Memory functions (M+, M-, MR, MC)</li>
+                              <li>• Quick access with Ctrl+C shortcut</li>
+                              <li>• Can use total amount as initial value</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                      <FileText className="mr-2" size={20} />
+                      Display Settings
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      {/* Show Amount in Text */}
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="text-base font-medium text-gray-700">Show Amount in Text Format</h4>
+                            <p className="text-sm text-gray-600">Display total amount in words (e.g., "One Thousand Dollars")</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="sr-only peer"
+                              checked={showAmountInText}
+                              onChange={(e) => setShowAmountInText(e.target.checked)}
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Information Box for Text Format */}
+                      <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0">
+                            <div className="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">💡</span>
+                            </div>
+                          </div>
+                          <div className="ml-3">
+                            <h4 className="text-sm font-semibold text-green-800 mb-1">Text Format Features</h4>
+                            <ul className="text-sm text-green-700 space-y-1">
+                              <li>• Converts numbers to written words</li>
+                              <li>• Includes currency name (Dollars, Rupees, Euros)</li>
+                              <li>• One-click copy to clipboard</li>
+                              <li>• Useful for writing checks or formal documents</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                      <Eye className="mr-2" size={20} />
+                      Privacy Settings
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      {/* Suppress Alerts */}
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="text-base font-medium text-gray-700">Suppress Alert Notifications</h4>
+                            <p className="text-sm text-gray-600">Disable popup notifications for saves and other actions</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="sr-only peer"
+                              checked={suppressAlerts}
+                              onChange={(e) => {
+                                setSuppressAlerts(e.target.checked);
+                                localStorage.setItem('suppressAlerts', e.target.checked.toString());
+                              }}
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                      <Keyboard className="mr-2" size={20} />
+                      Quick Actions
+                    </h3>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <button
+                        onClick={() => {
+                          setHideAmounts(!hideAmounts);
+                          setShowMenu(false);
+                        }}
+                        className="flex items-center justify-center px-4 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors shadow-md"
+                      >
+                        {hideAmounts ? <Eye size={18} className="mr-2" /> : <EyeOff size={18} className="mr-2" />}
+                        <span className="font-medium text-sm">
+                          {hideAmounts ? 'Show Amounts' : 'Hide Amounts'}
+                        </span>
+                      </button>
+                      
+                      <button
+                        onClick={() => {
+                          setShowCalculatorPad(!showCalculatorPad);
+                          setShowMenu(false);
+                        }}
+                        className={`flex items-center justify-center px-4 py-3 rounded-lg transition-colors shadow-md ${
+                          showCalculator 
+                            ? 'bg-indigo-500 text-white hover:bg-indigo-600' 
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        }`}
+                        disabled={!showCalculator}
+                      >
+                        <Calculator size={18} className="mr-2" />
+                        <span className="font-medium text-sm">Toggle Keypad</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setShowAmountInText(!showAmountInText);
+                          setShowMenu(false);
+                        }}
+                        className="flex items-center justify-center px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors shadow-md"
+                      >
+                        <FileText size={18} className="mr-2" />
+                        <span className="font-medium text-sm">Toggle Text Format</span>
+                      </button>
                     </div>
                   </section>
                 </div>
@@ -859,7 +1197,7 @@ function App() {
                               <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + H</kbd>
                             </div>
                             <div className="flex justify-between items-center">
-                              <span className="text-gray-600">Open calculator</span>
+                              <span className={`text-gray-600 ${!showCalculator ? 'line-through opacity-50' : ''}`}>Toggle calculator keypad</span>
                               <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + C</kbd>
                             </div>
                           </div>
@@ -1248,6 +1586,24 @@ function App() {
                             {formatAmount(totalAmount)}
                           </p>
                         </div>
+
+                        {showAmountInText && (
+                          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-100">
+                            <div className="flex items-center justify-between mb-2">
+                              <h3 className="text-lg font-medium text-gray-700">Amount in Words</h3>
+                              <button
+                                onClick={() => copyToClipboard(numberToText(totalAmount))}
+                                className="text-green-600 hover:text-green-700 transition-colors p-1 rounded-md hover:bg-green-100"
+                                title="Copy to clipboard"
+                              >
+                                <Copy size={18} />
+                              </button>
+                            </div>
+                            <p className="text-sm font-medium text-green-700 leading-relaxed">
+                              {numberToText(totalAmount)}
+                            </p>
+                          </div>
+                        )}
                         
                         <div className="flex space-x-2">
                           <button 
@@ -1262,45 +1618,35 @@ function App() {
                           >
                             <Save size={18} className="mr-2" />
                             Save
-                          </button>
-                        </div>
-
-                        <div className="flex items-center mb-2">
-                          <input
-                            type="checkbox"
-                            id="sendToCalculator"
-                            checked={sendToCalculator}
-                            onChange={(e) => setSendToCalculator(e.target.checked)}
-                            className="mr-2"
-                          />
-                          <label htmlFor="sendToCalculator" className="text-sm text-gray-600">
-                            Use total amount in calculator
-                          </label>
-                        </div>
-
-                        <div className="flex items-center mb-4">
-                          <input
-                            type="checkbox"
-                            id="showCalculatorPad"
-                            checked={showCalculatorPad}
-                            onChange={(e) => setShowCalculatorPad(e.target.checked)}
-                            className="mr-2"
-                          />
-                          <label htmlFor="showCalculatorPad" className="text-sm text-gray-600">
-                            Show calculator number buttons
-                          </label>
-                        </div>
+                          </button>                        </div>
                         
-                        <div className="mt-4">
-                          <div className="flex items-center mb-2">
-                            <Calculator size={18} className="mr-2 text-indigo-600" />
-                            <h3 className="text-lg font-medium text-gray-700">Calculator</h3>
-                          </div>
-                          <SimpleCalculator 
-                            initialValue={sendToCalculator ? totalAmount.toString() : ''} 
-                            showPad={showCalculatorPad}
-                          />
-                        </div>
+                        {showCalculator && (
+                          <>
+                            <div className="flex items-center mb-2">
+                              <input
+                                type="checkbox"
+                                id="sendToCalculator"
+                                checked={sendToCalculator}
+                                onChange={(e) => setSendToCalculator(e.target.checked)}
+                                className="mr-2"
+                              />
+                              <label htmlFor="sendToCalculator" className="text-sm text-gray-600">
+                                Use total amount in calculator
+                              </label>
+                            </div>
+
+                            <div className="mt-4">
+                              <div className="flex items-center mb-2">
+                                <Calculator size={18} className="mr-2 text-indigo-600" />
+                                <h3 className="text-lg font-medium text-gray-700">Calculator</h3>
+                              </div>
+                              <SimpleCalculator 
+                                initialValue={sendToCalculator ? totalAmount.toString() : ''} 
+                                showPad={showCalculatorPad}
+                              />
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1340,7 +1686,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">Version 10.3.3</span>
+                  <span className="text-gray-400 text-sm">Version 10.4.0</span>
                 </div>
               </div>
             </footer>
