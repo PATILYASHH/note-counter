@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IndianRupee, Plus, Minus, DollarSign, Euro, PoundSterling } from 'lucide-react';
+import { IndianRupee, Plus, Minus, DollarSign, Euro, PoundSterling, Coins } from 'lucide-react';
 
 interface DenominationCounterProps {
   value: number;
@@ -7,7 +7,7 @@ interface DenominationCounterProps {
   count: number;
   onCountChange: (count: number) => void;
   hideAmount: boolean;
-  currency: 'INR' | 'USD' | 'EUR' | 'GBP';
+  currency: 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
 }
 
 const DenominationCounter: React.FC<DenominationCounterProps> = ({
@@ -130,6 +130,9 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
     if (currency === 'GBP' && value < 1) {
       return `${value * 100}p`;
     }
+    if (currency === 'AED' && value < 1) {
+      return `${value * 100} fils`;
+    }
     return value.toString();
   };
 
@@ -139,17 +142,17 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currency,
-      minimumFractionDigits: currency === 'USD' || currency === 'GBP' ? 2 : 0,
+      minimumFractionDigits: currency === 'USD' || currency === 'GBP' || currency === 'AED' ? 2 : 0,
     }).format(amount);
   };
 
-  const CurrencyIcon = currency === 'INR' ? IndianRupee : currency === 'USD' ? DollarSign : currency === 'EUR' ? Euro : PoundSterling;
+  const CurrencyIcon = currency === 'INR' ? IndianRupee : currency === 'USD' ? DollarSign : currency === 'EUR' ? Euro : currency === 'GBP' ? PoundSterling : Coins;
 
   return (
     <div className={`${getBgColor()} rounded-lg p-3 shadow-sm`}>
       <div className="flex justify-between items-center">
         <div className="flex items-center">
-          {((currency === 'USD' || currency === 'GBP') ? value >= 1 : true) && <CurrencyIcon size={18} className="mr-1" />}
+          {((currency === 'USD' || currency === 'GBP' || currency === 'AED') ? value >= 1 : true) && <CurrencyIcon size={18} className="mr-1" />}
           <span className="font-bold text-lg">{formatValue(value)}</span>
           <span className="ml-2 text-sm text-gray-600 capitalize">{type}</span>
         </div>

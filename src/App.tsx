@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, PoundSterling, Keyboard, Copy } from 'lucide-react';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, PoundSterling, Coins, Keyboard, Copy } from 'lucide-react';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
 
-// Update the type definition to include GBP
-type Currency = 'INR' | 'USD' | 'EUR' | 'GBP';
+// Update the type definition to include GBP and AED
+type Currency = 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
 
 const CURRENCY_DENOMINATIONS = {
   INR: [
@@ -58,6 +58,19 @@ const CURRENCY_DENOMINATIONS = {
     { value: 0.05, type: 'coin' },
     { value: 0.02, type: 'coin' },
     { value: 0.01, type: 'coin' },
+  ],
+  AED: [
+    { value: 1000, type: 'note' },
+    { value: 500, type: 'note' },
+    { value: 200, type: 'note' },
+    { value: 100, type: 'note' },
+    { value: 50, type: 'note' },
+    { value: 20, type: 'note' },
+    { value: 10, type: 'note' },
+    { value: 5, type: 'note' },
+    { value: 1, type: 'coin' },
+    { value: 0.50, type: 'coin' },
+    { value: 0.25, type: 'coin' },
   ]
 };
 
@@ -69,7 +82,7 @@ function App() {
   // Update the state type to include EUR
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(() => {
     const savedCurrency = localStorage.getItem('selectedCurrency');
-    return (savedCurrency === 'INR' || savedCurrency === 'USD' || savedCurrency === 'EUR' || savedCurrency === 'GBP') ? savedCurrency as Currency : 'INR';
+    return (savedCurrency === 'INR' || savedCurrency === 'USD' || savedCurrency === 'EUR' || savedCurrency === 'GBP' || savedCurrency === 'AED') ? savedCurrency as Currency : 'INR';
   });
 
   const [activeTab, setActiveTab] = useState<'counter' | 'history'>('counter');
@@ -188,11 +201,11 @@ function App() {
         return;
       }
 
-      // Ctrl+1, Ctrl+2, Ctrl+3, Ctrl+4 - Switch currencies
-      if (event.ctrlKey && ['1', '2', '3', '4'].includes(event.key)) {
+      // Ctrl+1, Ctrl+2, Ctrl+3, Ctrl+4, Ctrl+5 - Switch currencies
+      if (event.ctrlKey && ['1', '2', '3', '4', '5'].includes(event.key)) {
         event.preventDefault();
-        const currencyMap = { '1': 'INR', '2': 'USD', '3': 'EUR', '4': 'GBP' };
-        handleCurrencyChange(currencyMap[event.key as '1' | '2' | '3' | '4'] as Currency);
+        const currencyMap = { '1': 'INR', '2': 'USD', '3': 'EUR', '4': 'GBP', '5': 'AED' };
+        handleCurrencyChange(currencyMap[event.key as '1' | '2' | '3' | '4' | '5'] as Currency);
         return;
       }
 
@@ -540,7 +553,8 @@ function App() {
       INR: num === 1 ? 'Rupee' : 'Rupees',
       USD: num === 1 ? 'Dollar' : 'Dollars',
       EUR: num === 1 ? 'Euro' : 'Euros',
-      GBP: num === 1 ? 'Pound' : 'Pounds'
+      GBP: num === 1 ? 'Pound' : 'Pounds',
+      AED: num === 1 ? 'Dirham' : 'Dirhams'
     };
 
     return result + ' ' + currencyNames[selectedCurrency];
@@ -557,7 +571,7 @@ function App() {
     }
   };
 
-  const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : selectedCurrency === 'USD' ? DollarSign : selectedCurrency === 'EUR' ? Euro : PoundSterling;
+  const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : selectedCurrency === 'USD' ? DollarSign : selectedCurrency === 'EUR' ? Euro : selectedCurrency === 'GBP' ? PoundSterling : Coins;
 
   const ProModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -1422,6 +1436,7 @@ function App() {
                     <option value="USD">USD ($)</option>
                     <option value="EUR">EUR (€)</option>
                     <option value="GBP">GBP (£)</option>
+                    <option value="AED">AED (د.إ)</option>
                   </select>
                   <button
                     className={`py-2 px-4 rounded-md font-medium transition-all ${
@@ -1483,6 +1498,7 @@ function App() {
                     <option value="USD">USD ($)</option>
                     <option value="EUR">EUR (€)</option>
                     <option value="GBP">GBP (£)</option>
+                    <option value="AED">AED (د.إ)</option>
                   </select>
                   <button
                     className={`w-full py-2 px-4 rounded-md font-medium mb-2 transition-all ${

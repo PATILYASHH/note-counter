@@ -8,7 +8,7 @@ interface HistoryEntry {
   totalCount: number;
   denominationCounts: Record<number, number>;
   note?: string;
-  currency: 'INR' | 'USD' | 'EUR' | 'GBP';
+  currency: 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
 }
 
 interface CalculatorHistory {
@@ -19,7 +19,7 @@ interface CalculatorHistory {
 
 interface HistoryTabProps {
   hideAmounts: boolean;
-  selectedCurrency: 'INR' | 'USD' | 'EUR' | 'GBP';
+  selectedCurrency: 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
 }
 
 type HistoryType = 'money' | 'calculator';
