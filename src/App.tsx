@@ -105,6 +105,63 @@ function App() {
     return localStorage.getItem('suppressAlerts') === 'true';
   });
 
+  // Currency management state
+  const [enabledCurrencies, setEnabledCurrencies] = useState<Record<Currency, boolean>>(() => {
+    const saved = localStorage.getItem('enabledCurrencies');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (error) {
+        console.error('Error parsing enabled currencies:', error);
+      }
+    }
+    // Default: all currencies enabled
+    return {
+      INR: true,
+      USD: true,
+      EUR: true,
+      GBP: true,
+      AED: true
+    };
+  });
+
+  // Get available currencies (only enabled ones)
+  const getAvailableCurrencies = (): Currency[] => {
+    return Object.entries(enabledCurrencies)
+      .filter(([_, enabled]) => enabled)
+      .map(([currency, _]) => currency as Currency);
+  };
+
+  // Handle currency toggle
+  const handleCurrencyToggle = (currency: Currency, enabled: boolean) => {
+    const availableCurrencies = getAvailableCurrencies();
+    
+    // Prevent disabling all currencies
+    if (!enabled && availableCurrencies.length === 1 && availableCurrencies[0] === currency) {
+      showAlert('At least one currency must be enabled');
+      return;
+    }
+
+    const newEnabledCurrencies = {
+      ...enabledCurrencies,
+      [currency]: enabled
+    };
+
+    setEnabledCurrencies(newEnabledCurrencies);
+    localStorage.setItem('enabledCurrencies', JSON.stringify(newEnabledCurrencies));
+
+    // If the currently selected currency is being disabled, switch to the first available currency
+    if (!enabled && selectedCurrency === currency) {
+      const remainingCurrencies = Object.entries(newEnabledCurrencies)
+        .filter(([_, isEnabled]) => isEnabled)
+        .map(([curr, _]) => curr as Currency);
+      
+      if (remainingCurrencies.length > 0) {
+        handleCurrencyChange(remainingCurrencies[0]);
+      }
+    }
+  };
+
   // Initialize counts based on selected currency
   const initializeCounts = (currency: Currency): CountState => {
     const initialCounts: CountState = {};
@@ -739,6 +796,16 @@ function App() {
                 Settings
               </button>
               <button
+                onClick={() => setActiveMenuTab('currencies')}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeMenuTab === 'currencies'
+                    ? 'bg-white text-indigo-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                Currencies
+              </button>
+              <button
                 onClick={() => setActiveMenuTab('data')}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeMenuTab === 'data'
@@ -1048,6 +1115,175 @@ function App() {
                         <FileText size={18} className="mr-2" />
                         <span className="font-medium text-sm">Toggle Text Format</span>
                       </button>
+                    </div>
+                  </section>
+                </div>
+              )}
+
+              {/* Currencies Tab */}
+              {activeMenuTab === 'currencies' && (
+                <div className="space-y-6">
+                  {/* Introduction Section */}
+                  <section className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                    <div className="flex items-center mb-3">
+                      <Globe className="mr-3 text-indigo-600" size={24} />
+                      <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Currency Management</h3>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Customize your currency experience by enabling only the currencies you need. This will simplify the interface and make currency selection faster.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Smart Interface</span>
+                      <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Data Preserved</span>
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Easy Toggle</span>
+                    </div>
+                  </section>
+
+                  {/* Current Selection */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                      Currently Selected Currency
+                    </h3>
+                    <div className="bg-white p-4 rounded-lg border-2 border-indigo-200 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <CurrencyIcon size={24} className="mr-3 text-indigo-600" />
+                          <div>
+                            <div className="font-semibold text-gray-800 text-lg">
+                              {selectedCurrency === 'INR' && 'Indian Rupee (₹)'}
+                              {selectedCurrency === 'USD' && 'US Dollar ($)'}
+                              {selectedCurrency === 'EUR' && 'Euro (€)'}
+                              {selectedCurrency === 'GBP' && 'British Pound (£)'}
+                              {selectedCurrency === 'AED' && 'UAE Dirham (د.إ)'}
+                            </div>
+                            <div className="text-sm text-gray-600">Active currency for counting</div>
+                          </div>
+                        </div>
+                        <div className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
+                          Active
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Available Currencies */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <Coins className="mr-2" size={20} />
+                      Available Currencies
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <p className="text-sm text-gray-600 mb-4">
+                          Enable or disable currencies to customize your interface. Disabled currencies won't appear in the currency selector dropdown.
+                        </p>
+                        <div className="grid grid-cols-1 gap-3">
+                          {Object.entries(enabledCurrencies).map(([currency, enabled]) => {
+                            const currencyInfo = {
+                              INR: { name: 'Indian Rupee', symbol: '₹', icon: IndianRupee, flag: '🇮🇳' },
+                              USD: { name: 'US Dollar', symbol: '$', icon: DollarSign, flag: '🇺🇸' },
+                              EUR: { name: 'Euro', symbol: '€', icon: Euro, flag: '🇪🇺' },
+                              GBP: { name: 'British Pound', symbol: '£', icon: PoundSterling, flag: '🇬🇧' },
+                              AED: { name: 'UAE Dirham', symbol: 'د.إ', icon: Coins, flag: '🇦🇪' }
+                            };
+                            const info = currencyInfo[currency as Currency];
+                            const IconComponent = info.icon;
+                            const isSelected = selectedCurrency === currency;
+                            
+                            return (
+                              <div 
+                                key={currency} 
+                                className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all ${
+                                  enabled 
+                                    ? isSelected 
+                                      ? 'bg-indigo-50 border-indigo-300' 
+                                      : 'bg-white border-gray-200 hover:border-gray-300'
+                                    : 'bg-gray-50 border-gray-200 opacity-60'
+                                }`}
+                              >
+                                <div className="flex items-center">
+                                  <div className="mr-3 text-2xl">{info.flag}</div>
+                                  <IconComponent size={20} className="mr-3 text-gray-600" />
+                                  <div>
+                                    <div className="flex items-center">
+                                      <span className="font-medium text-gray-800">{info.name}</span>
+                                      <span className="text-gray-500 ml-2 text-sm">({info.symbol})</span>
+                                      {isSelected && (
+                                        <span className="ml-2 px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium">
+                                          Current
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="text-sm text-gray-500">
+                                      {enabled ? 'Available in selector' : 'Hidden from selector'}
+                                    </div>
+                                  </div>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    className="sr-only peer"
+                                    checked={enabled}
+                                    onChange={(e) => handleCurrencyToggle(currency as Currency, e.target.checked)}
+                                  />
+                                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                                </label>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Statistics */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div className="bg-white p-3 rounded-lg border border-gray-200 text-center">
+                          <div className="text-2xl font-bold text-indigo-600">
+                            {getAvailableCurrencies().length}
+                          </div>
+                          <div className="text-xs text-gray-600">Enabled</div>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border border-gray-200 text-center">
+                          <div className="text-2xl font-bold text-gray-600">
+                            {Object.keys(enabledCurrencies).length - getAvailableCurrencies().length}
+                          </div>
+                          <div className="text-xs text-gray-600">Disabled</div>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border border-gray-200 text-center">
+                          <div className="text-2xl font-bold text-green-600">
+                            {Object.keys(enabledCurrencies).length}
+                          </div>
+                          <div className="text-xs text-gray-600">Total</div>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border border-gray-200 text-center">
+                          <div className="text-2xl font-bold text-blue-600">
+                            1
+                          </div>
+                          <div className="text-xs text-gray-600">Active</div>
+                        </div>
+                      </div>
+
+                      {/* Information Box */}
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0">
+                            <div className="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">💡</span>
+                            </div>
+                          </div>
+                          <div className="ml-3">
+                            <h4 className="text-sm font-semibold text-blue-800 mb-2">Important Notes</h4>
+                            <ul className="text-sm text-blue-700 space-y-1">
+                              <li>• <strong>Data Safety:</strong> Disabling a currency preserves all your counting data</li>
+                              <li>• <strong>Minimum Requirement:</strong> At least one currency must remain enabled</li>
+                              <li>• <strong>Interface Impact:</strong> Disabled currencies won't appear in dropdown selectors</li>
+                              <li>• <strong>Easy Recovery:</strong> Re-enabling a currency restores all previous functionality</li>
+                              <li>• <strong>Keyboard Shortcuts:</strong> Use Ctrl+1/2/3/4/5 to quickly switch between enabled currencies</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </section>
                 </div>
@@ -1432,11 +1668,20 @@ function App() {
                     onChange={(e) => handleCurrencyChange(e.target.value as Currency)}
                     className="bg-white text-indigo-600 px-3 py-1 rounded-md font-medium"
                   >
-                    <option value="INR">INR (₹)</option>
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
-                    <option value="AED">AED (د.إ)</option>
+                    {getAvailableCurrencies().map(currency => {
+                      const currencyLabels = {
+                        INR: 'INR (₹)',
+                        USD: 'USD ($)',
+                        EUR: 'EUR (€)',
+                        GBP: 'GBP (£)',
+                        AED: 'AED (د.إ)'
+                      };
+                      return (
+                        <option key={currency} value={currency}>
+                          {currencyLabels[currency]}
+                        </option>
+                      );
+                    })}
                   </select>
                   <button
                     className={`py-2 px-4 rounded-md font-medium transition-all ${
@@ -1494,11 +1739,20 @@ function App() {
                     }}
                     className="w-full mb-2 bg-white text-indigo-600 px-3 py-2 rounded-md font-medium"
                   >
-                    <option value="INR">INR (₹)</option>
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
-                    <option value="AED">AED (د.إ)</option>
+                    {getAvailableCurrencies().map(currency => {
+                      const currencyLabels = {
+                        INR: 'INR (₹)',
+                        USD: 'USD ($)',
+                        EUR: 'EUR (€)',
+                        GBP: 'GBP (£)',
+                        AED: 'AED (د.إ)'
+                      };
+                      return (
+                        <option key={currency} value={currency}>
+                          {currencyLabels[currency]}
+                        </option>
+                      );
+                    })}
                   </select>
                   <button
                     className={`w-full py-2 px-4 rounded-md font-medium mb-2 transition-all ${
