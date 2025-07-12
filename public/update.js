@@ -22,11 +22,11 @@ setTimeout(() => {
   bar.style.transition = "top 0.3s ease";
 
   bar.innerHTML = `
-    <div>🚀 <strong>Short Cuts</strong> View all short cuts in Help secation from menu</div>
+    <div>🚀 <strong>New Update</strong> New currencies are updating daily</div>
     <button id="unsubscribeUpdate" style="
       background: transparent;
       border: 1px solid white;
-      color: white;
+      color: red;
       padding: 4px 10px;
       border-radius: 5px;
       font-size: 13px;

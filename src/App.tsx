@@ -1973,7 +1973,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">Version 10.4.0</span>
+                  <span className="text-gray-400 text-sm">Version 10.4.5</span>
                 </div>
               </div>
             </footer>
