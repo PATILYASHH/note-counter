@@ -172,6 +172,49 @@
             text-decoration: underline;
         }
         
+        .latest-updates-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 3rem auto;
+            padding: 3rem;
+        }
+        
+        .update-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .update-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .update-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .update-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .update-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .update-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
         .faq-section {
             background: white;
             border-radius: 12px;
@@ -417,6 +460,30 @@
                         <span>1 week</span>
                     </div>
                 </div>
+            </div>
+        </div>
+        
+        <div class="latest-updates-section">
+            <h2 class="section-title">🚀 Latest Updates (v10.5.0)</h2>
+            <div class="update-grid">
+                <div class="update-card">
+                    <div class="update-icon">📄</div>
+                    <h3>PDF Export Feature</h3>
+                    <p>Generate professional PDF reports of any transaction with complete breakdowns, timestamps, and notecounter.shop watermark. Perfect for record-keeping and sharing!</p>
+                </div>
+                <div class="update-card">
+                    <div class="update-icon">📊</div>
+                    <h3>Smart Analytics</h3>
+                    <p>Automatic country detection for usage analytics helps us improve our service while maintaining full privacy compliance and transparency.</p>
+                </div>
+                <div class="update-card">
+                    <div class="update-icon">🔧</div>
+                    <h3>Enhanced Documentation</h3>
+                    <p>Updated privacy policy, terms of service, and all documentation to reflect our latest features and data practices.</p>
+                </div>
+            </div>
+            <div class="alert success" style="margin-top: 2rem;">
+                <strong>🎉 Try the new features now!</strong> Visit <a href="/">Note Counter</a> to experience PDF exports and improved analytics.
             </div>
         </div>
         
