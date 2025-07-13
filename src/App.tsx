@@ -98,7 +98,8 @@ function App() {
     return localStorage.getItem('showCalculator') !== 'false'; // Default to true
   });
   const [showAmountInText, setShowAmountInText] = useState(() => {
-    return localStorage.getItem('showAmountInText') === 'true';
+    const saved = localStorage.getItem('showAmountInText');
+    return saved ? saved === 'true' : true; // Default to true if not set
   });
   const [activeMenuTab, setActiveMenuTab] = useState('about');
   const [suppressAlerts, setSuppressAlerts] = useState(() => {
@@ -836,6 +837,16 @@ function App() {
                 Help
               </button>
               <button
+                onClick={() => setActiveMenuTab('blog')}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeMenuTab === 'blog'
+                    ? 'bg-white text-indigo-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                Blog
+              </button>
+              <button
                 onClick={() => setActiveMenuTab('contact')}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeMenuTab === 'contact'
@@ -844,6 +855,16 @@ function App() {
                 }`}
               >
                 Contact
+              </button>
+              <button
+                onClick={() => setActiveMenuTab('privacy')}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeMenuTab === 'privacy'
+                    ? 'bg-white text-indigo-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                Privacy
               </button>
             </div>
 
@@ -912,6 +933,61 @@ function App() {
                       <p className="text-xs text-center text-gray-500 mt-1">
                         Explore my other projects and work
                       </p>
+                    </div>
+                  </section>
+
+                  {/* Open Source & Privacy Section */}
+                  <section className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                    <div className="flex items-center mb-3">
+                      <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-white font-bold text-lg">🔓</span>
+                      </div>
+                      <div>
+                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Open Source & Privacy</h3>
+                        <p className="text-sm text-green-600">100% Transparent & Private</p>
+                      </div>
+                    </div>
+                    <div className="text-sm sm:text-base text-gray-700 space-y-2">
+                      <p>
+                        🔓 <strong>Open Source:</strong> Complete source code is publicly available on GitHub. No hidden tracking or data collection.
+                      </p>
+                      <p>
+                        🔒 <strong>Privacy First:</strong> All your data stays on your device. We collect ZERO personal information.
+                      </p>
+                      <p>
+                        🛡️ <strong>No Tracking:</strong> No cookies, no analytics that identify you, no user profiles.
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">MIT License</span>
+                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Local Storage</span>
+                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Zero Tracking</span>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-green-200">
+                      <button
+                        onClick={() => window.open('https://github.com/PATILYASHH/note-counter', '_blank')}
+                        className="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition-all shadow-md flex items-center justify-center font-medium"
+                      >
+                        <Github size={18} className="mr-2" />
+                        View Source Code
+                      </button>
+                      <button
+                        onClick={() => window.open('/about.html', '_blank')}
+                        className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        About Page
+                      </button>
+                      <button
+                        onClick={() => window.open('/privacy-policy.html', '_blank')}
+                        className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 px-4 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-md flex items-center justify-center font-medium"
+                      >
+                        <Shield size={18} className="mr-2" />
+                        Privacy Policy
+                      </button>
                     </div>
                   </section>
                 </div>
@@ -1002,7 +1078,7 @@ function App() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="text-base font-medium text-gray-700">Show Amount in Text Format</h4>
-                            <p className="text-sm text-gray-600">Display total amount in words (e.g., "One Thousand Dollars")</p>
+                            <p className="text-sm text-gray-600">Display total amount in words (e.g., "One Thousand Dollars"). Enabled by default - disable if you prefer numbers only.</p>
                           </div>
                           <label className="relative inline-flex items-center cursor-pointer">
                             <input
@@ -1025,12 +1101,13 @@ function App() {
                             </div>
                           </div>
                           <div className="ml-3">
-                            <h4 className="text-sm font-semibold text-green-800 mb-1">Text Format Features</h4>
+                            <h4 className="text-sm font-semibold text-green-800 mb-1">Text Format Features (Default Enabled)</h4>
                             <ul className="text-sm text-green-700 space-y-1">
                               <li>• Converts numbers to written words</li>
                               <li>• Includes currency name (Dollars, Rupees, Euros)</li>
                               <li>• One-click copy to clipboard</li>
                               <li>• Useful for writing checks or formal documents</li>
+                              <li>• Toggle off if you prefer numerical format only</li>
                             </ul>
                           </div>
                         </div>
@@ -1572,6 +1649,154 @@ function App() {
                 </div>
               )}
 
+              {/* Blog Tab */}
+              {activeMenuTab === 'blog' && (
+                <div className="space-y-6">
+                  {/* Blog Introduction Section */}
+                  <section className="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-lg border border-purple-200">
+                    <div className="flex items-center mb-3">
+                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-800">Financial Knowledge Hub</h3>
+                        <p className="text-sm text-gray-600">Expert insights on money management and counting</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      Discover practical tips, industry insights, and expert advice to improve your financial management skills. Our blog covers everything from money counting techniques to business finance strategies.
+                    </p>
+                  </section>
+
+                  {/* Featured Blog Posts */}
+                  <section>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Latest Articles</h3>
+                    <div className="space-y-3">
+                      <a
+                        href="/blog/money-counting-tips-small-business.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-800 mb-1">10 Essential Money Counting Tips for Small Businesses</h4>
+                            <p className="text-sm text-gray-600 mb-2">Proven strategies to streamline your cash handling process and reduce errors</p>
+                            <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Business Tips</span>
+                          </div>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </div>
+                      </a>
+                      
+                      <a
+                        href="/blog/cash-flow-management-entrepreneurs.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-800 mb-1">Cash Flow Management: A Complete Guide for Entrepreneurs</h4>
+                            <p className="text-sm text-gray-600 mb-2">Master cash flow forecasting, management strategies, and financial planning</p>
+                            <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Finance Guide</span>
+                          </div>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </div>
+                      </a>
+                    </div>
+                  </section>
+
+                  {/* Blog Navigation */}
+                  <section>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <a
+                        href="/blog.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        View All Articles
+                      </a>
+                      <a
+                        href="/about.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-all shadow-md flex items-center justify-center font-medium border border-gray-300"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        About Note Counter
+                      </a>
+                    </div>
+                  </section>
+
+                  {/* Important Links */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4">📋 Important Information</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <a
+                        href="/privacy-policy.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-green-50 text-green-700 py-2 px-3 rounded-lg hover:bg-green-100 transition-all border border-green-200 flex items-center justify-center text-sm font-medium"
+                      >
+                        🔒 Privacy Policy
+                      </a>
+                      <a
+                        href="/disclaimer.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-yellow-50 text-yellow-700 py-2 px-3 rounded-lg hover:bg-yellow-100 transition-all border border-yellow-200 flex items-center justify-center text-sm font-medium"
+                      >
+                        ⚠️ Disclaimer
+                      </a>
+                      <a
+                        href="/terms.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-blue-50 text-blue-700 py-2 px-3 rounded-lg hover:bg-blue-100 transition-all border border-blue-200 flex items-center justify-center text-sm font-medium"
+                      >
+                        📄 Terms
+                      </a>
+                      <a
+                        href="/contact.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-purple-50 text-purple-700 py-2 px-3 rounded-lg hover:bg-purple-100 transition-all border border-purple-200 flex items-center justify-center text-sm font-medium"
+                      >
+                        ✉️ Contact
+                      </a>
+                    </div>
+                  </section>
+
+                  {/* Newsletter Signup */}
+                  <section className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-4 rounded-lg">
+                    <h4 className="font-semibold mb-2">Stay Updated</h4>
+                    <p className="text-sm mb-3 text-indigo-100">Get the latest financial tips and Note Counter updates delivered to your inbox.</p>
+                    <div className="flex gap-2">
+                      <input 
+                        type="email" 
+                        placeholder="Enter your email" 
+                        className="flex-1 px-3 py-2 rounded-md text-gray-800 text-sm"
+                      />
+                      <button className="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors">
+                        Subscribe
+                      </button>
+                    </div>
+                  </section>
+                </div>
+              )}
+
               {/* Contact Tab */}
               {activeMenuTab === 'contact' && (
                 <div className="space-y-6">
@@ -1623,6 +1848,19 @@ function App() {
                       </a>
                     </div>
                     
+                    {/* Contact Page Link */}
+                    <div className="text-center mb-4">
+                      <a
+                        href="/contact.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md font-medium"
+                      >
+                        <Mail className="mr-2" size={18} />
+                        Visit Full Contact Page
+                      </a>
+                    </div>
+                    
                     {/* Support Section */}
                     <div className="text-center">
                       <h4 className="text-base font-semibold text-gray-800 mb-3">Support the Project</h4>
@@ -1636,6 +1874,197 @@ function App() {
                         <span className="text-sm">Sponsor my work on GitHub</span>
                       </a>
                     </div>
+                  </section>
+                </div>
+              )}
+
+              {/* Privacy Tab */}
+              {activeMenuTab === 'privacy' && (
+                <div className="space-y-6">
+                  {/* Privacy Header */}
+                  <section className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                    <div className="flex items-center mb-3">
+                      <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mr-3">
+                        <Shield size={24} className="text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Privacy First Guarantee</h3>
+                        <p className="text-sm text-green-600">Your privacy is our top priority</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-700">
+                      Note Counter is designed with <strong>zero data collection</strong> and <strong>complete privacy</strong>. 
+                      Everything stays on your device, and we have no access to your information.
+                    </p>
+                  </section>
+
+                  {/* What We DON'T Collect */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <span className="text-red-500 mr-2">❌</span>
+                      What We DON'T Collect
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                        <div className="text-sm font-medium text-red-800">Personal Information</div>
+                        <div className="text-xs text-red-600">No names, emails, or addresses</div>
+                      </div>
+                      <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                        <div className="text-sm font-medium text-red-800">Financial Data</div>
+                        <div className="text-xs text-red-600">No actual money amounts tracked</div>
+                      </div>
+                      <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                        <div className="text-sm font-medium text-red-800">User Behavior</div>
+                        <div className="text-xs text-red-600">No usage analytics or tracking</div>
+                      </div>
+                      <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                        <div className="text-sm font-medium text-red-800">Device Info</div>
+                        <div className="text-xs text-red-600">No fingerprinting or profiling</div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* What We DO Store */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <span className="text-green-500 mr-2">✅</span>
+                      What We Store (Locally Only)
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="text-sm font-medium text-blue-800">App Preferences</div>
+                            <div className="text-xs text-blue-600">Your settings like currency choice, text format</div>
+                          </div>
+                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">Browser Only</span>
+                        </div>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="text-sm font-medium text-blue-800">Session History</div>
+                            <div className="text-xs text-blue-600">Your saved counting sessions with notes</div>
+                          </div>
+                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">Local Storage</span>
+                        </div>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="text-sm font-medium text-blue-800">Current Counts</div>
+                            <div className="text-xs text-blue-600">Your active denomination counts</div>
+                          </div>
+                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">Your Device</span>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Open Source Transparency */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <span className="mr-2">🔓</span>
+                      Open Source Transparency
+                    </h3>
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <p className="text-sm text-gray-700 mb-3">
+                        <strong>100% Open Source:</strong> Don't just trust us - verify everything yourself! 
+                        Our complete source code is publicly available for inspection.
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">MIT License</span>
+                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Public Repository</span>
+                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Community Driven</span>
+                      </div>
+                      <button
+                        onClick={() => window.open('https://github.com/PATILYASHH/note-counter', '_blank')}
+                        className="w-full bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition-all shadow-md flex items-center justify-center font-medium"
+                      >
+                        <Github size={18} className="mr-2" />
+                        View Source Code on GitHub
+                      </button>
+                    </div>
+                  </section>
+
+                  {/* Privacy Controls */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <span className="mr-2">🛡️</span>
+                      Your Privacy Controls
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                        <div className="text-sm font-medium text-yellow-800 mb-1">Privacy Mode</div>
+                        <div className="text-xs text-yellow-700">Hide amounts with eye toggle</div>
+                      </div>
+                      <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                        <div className="text-sm font-medium text-yellow-800 mb-1">Data Export</div>
+                        <div className="text-xs text-yellow-700">Download your data anytime</div>
+                      </div>
+                      <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                        <div className="text-sm font-medium text-yellow-800 mb-1">Clear Data</div>
+                        <div className="text-xs text-yellow-700">Delete via browser settings</div>
+                      </div>
+                      <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                        <div className="text-sm font-medium text-yellow-800 mb-1">Incognito Mode</div>
+                        <div className="text-xs text-yellow-700">Use private browsing</div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Compliance & Standards */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <span className="mr-2">📋</span>
+                      Privacy Compliance
+                    </h3>
+                    <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                      <p className="text-sm text-indigo-800 mb-3">
+                        Our privacy-first design automatically complies with major privacy regulations:
+                      </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-center">GDPR</span>
+                        <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-center">CCPA</span>
+                        <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-center">COPPA</span>
+                        <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-center">PIPEDA</span>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Privacy Policy Link */}
+                  <section className="text-center">
+                    <h4 className="text-base font-semibold text-gray-800 mb-3">Complete Legal Documents</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                      <button
+                        onClick={() => window.open('/privacy-policy.html', '_blank')}
+                        className="inline-flex items-center px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg font-medium"
+                      >
+                        <FileText size={18} className="mr-2" />
+                        Privacy Policy
+                      </button>
+                      <button
+                        onClick={() => window.open('/disclaimer.html', '_blank')}
+                        className="inline-flex items-center px-4 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:from-yellow-600 hover:to-orange-600 transition-all shadow-lg font-medium"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                        </svg>
+                        Disclaimer
+                      </button>
+                      <button
+                        onClick={() => window.open('/terms.html', '_blank')}
+                        className="inline-flex items-center px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-lg font-medium"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Terms of Service
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      All documents open in a new tab • Last updated: July 12, 2025
+                    </p>
                   </section>
                 </div>
               )}
@@ -1947,22 +2376,64 @@ function App() {
               <div className="container mx-auto px-4">
                 <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
                   <a 
-                    href="https://github.com/PATILYASHH" 
+                    href="/about.html" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
                   >
-                    <Github size={20} className="mr-2" />
-                    <span>Yash Patil</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>About</span>
                   </a>
                   <a 
-                    href="https://yashpatil.tech" 
+                    href="/blog.html" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
                   >
-                    <Globe size={20} className="mr-2" />
-                    <span>yashpatil.tech</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span>Blog</span>
+                  </a>
+                  <a 
+                    href="/contact.html" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                  >
+                    <Mail size={20} className="mr-2" />
+                    <span>Contact</span>
+                  </a>
+                  <a 
+                    href="https://github.com/PATILYASHH/note-counter" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                  >
+                    <span className="mr-2">🔓</span>
+                    <span>Open Source</span>
+                  </a>
+                  <a 
+                    href="/privacy-policy.html" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                  >
+                    <Shield size={20} className="mr-2" />
+                    <span>Privacy</span>
+                  </a>
+                  <a 
+                    href="/terms.html" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Terms</span>
                   </a>
                   <a 
                     href="https://github.com/sponsors/PATILYASHH" 

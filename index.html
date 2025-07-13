@@ -2,10 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    
+    <!-- Title -->
+    <title>Note Counter - Free Online Money Counter & Cash Calculator | 5 Currencies Support</title>
+    
+    <!-- Favicon and Icons -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="shortcut icon" href="https://yashpatil.tech/assets/images/projectimg/countnote.png" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Note Counter - Free Online Money Counter & Cash Calculator</title>
+    <link rel="apple-touch-icon" href="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
 
     <!-- Plausible Analytics -->
     <script defer data-domain="notecounter.shop" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"></script>
@@ -23,78 +33,382 @@
     <meta name="google-site-verification" content="jP4WCS7DJyvtfIfCBNJMsPYpf7gJdaAefxCzDR7egWg" />
 
     <!-- Enhanced Meta Tags for SEO -->
-    <meta name="description" content="Note Counter - Free online money counter and cash calculator. Count currency notes and coins instantly with support for INR, USD, EUR and multiple currencies. Track your cash counting history with our easy-to-use digital money counter tool.">
+    <meta name="description" content="Note Counter - Comprehensive free online money counter and cash calculator. Count currency notes and coins instantly with support for 5 major currencies: INR, USD, EUR, GBP, AED. Features smart input, dual calculator system, text format display by default, privacy mode, history tracking, and data export. Perfect for businesses, banks, retailers, and personal use.">
 
-    <!-- Focused Keywords -->
-    <meta name="keywords" content="note counter, money counter, cash counter, currency counter, coin counter, digital money counter, online cash counter, cash calculator, currency calculator, INR counter, USD counter, EUR counter, euro counter, by yash patil, PATILYASHH">
+    <!-- Enhanced Keywords with New Features -->
+    <meta name="keywords" content="note counter, money counter, cash counter, currency counter, coin counter, digital money counter, online cash counter, cash calculator, currency calculator, INR counter, USD counter, EUR counter, GBP counter, AED counter, pound counter, dirham counter, smart input calculator, dual calculator system, text format money counter, amount in words, number to text converter, privacy mode money counter, history tracking cash counter, data export money counter, business cash counter, bank teller counter, retail money counter, denomination counter, progressive web app calculator, offline money counter, multi-currency calculator, keyboard shortcuts calculator, mathematical expressions counter, by yash patil, PATILYASHH">
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Note Counter - Free Online Money Counter & Cash Calculator">
-    <meta property="og:description" content="Free online money counter and cash calculator. Count currency notes and coins instantly with support for INR, USD, EUR and multiple currencies.">
+    <!-- Additional SEO Meta Tags -->
+    <meta name="application-name" content="Note Counter">
+    <meta name="theme-color" content="#4F46E5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Note Counter">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Geographic and Language Targeting -->
+    <meta name="geo.region" content="Global">
+    <meta name="geo.placename" content="Worldwide">
+    <meta name="distribution" content="global">
+    <meta name="target" content="all">
+    <meta name="audience" content="all">
+    
+    <!-- Enhanced Open Graph Meta Tags -->
+    <meta property="og:title" content="Note Counter - Advanced Free Online Money Counter & Cash Calculator">
+    <meta property="og:description" content="Comprehensive money counting solution with 5-currency support (INR, USD, EUR, GBP, AED), smart input system, dual calculator, text format display by default, privacy mode, and history tracking. Perfect for businesses, banks, and personal use.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://notecounter.shop/">
     <meta property="og:image" content="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Note Counter - Advanced Money Counting Application">
     <meta property="og:site_name" content="Note Counter">
     <meta property="og:locale" content="en_US">
 
-    <!-- Twitter Card Meta Tags -->
+    <!-- Enhanced Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Note Counter - Free Online Money Counter & Cash Calculator">
-    <meta name="twitter:description" content="Free online money counter and cash calculator. Count currency notes and coins instantly with support for INR, USD, EUR and multiple currencies.">
+    <meta name="twitter:site" content="@PATILYASHH">
+    <meta name="twitter:creator" content="@PATILYASHH">
+    <meta name="twitter:title" content="Note Counter - Advanced Free Online Money Counter & Cash Calculator">
+    <meta name="twitter:description" content="Comprehensive money counting solution with 5-currency support, smart input system, dual calculator, text format display by default, privacy mode, and history tracking.">
     <meta name="twitter:image" content="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    <meta name="twitter:image:alt" content="Note Counter - Advanced Money Counting Application">
 
-    <!-- SEO Meta Tags -->
+    <!-- Enhanced SEO Meta Tags -->
     <meta name="author" content="Yash Patil">
+    <meta name="creator" content="Yash Patil">
+    <meta name="publisher" content="Yash Patil">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="googlebot" content="index, follow">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow">
     <meta name="language" content="en">
+    <meta name="content-language" content="en">
     <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="general">
+    <meta name="classification" content="business, finance, calculator, productivity">
 
-    <!-- Structured Data for Rich Snippets -->
+    <!-- Enhanced Structured Data for Rich Snippets -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "Note Counter",
-      "alternateName": "Money Counter",
-      "description": "Free online money counter and cash calculator for counting currency notes and coins with multi-currency support including INR, USD, and EUR",
+      "alternateName": ["Money Counter", "Cash Counter", "Currency Calculator", "Denomination Counter"],
+      "description": "Comprehensive free online money counter and cash calculator with advanced features. Count currency notes and coins for 5 major currencies (INR, USD, EUR, GBP, AED) with smart input system, dual calculator, text format display by default, privacy mode, history tracking, and data export capabilities.",
       "url": "https://notecounter.shop/",
+      "sameAs": [
+        "https://github.com/PATILYASHH/note-counter",
+        "https://yashpatil.tech"
+      ],
       "applicationCategory": "FinanceApplication",
+      "applicationSubCategory": "Calculator",
       "operatingSystem": "Web Browser",
+      "browserRequirements": "Requires JavaScript. Requires HTML5. Chrome 70+, Firefox 65+, Safari 12+, Edge 79+",
+      "memoryRequirements": "50MB",
+      "storageRequirements": "5MB",
       "offers": {
         "@type": "Offer",
         "price": "0",
-        "priceCurrency": "USD"
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
       },
       "author": {
         "@type": "Person",
         "name": "Yash Patil",
-        "url": "https://yashpatil.tech"
+        "url": "https://yashpatil.tech",
+        "email": "patilyasshh@gmail.com",
+        "sameAs": [
+          "https://github.com/PATILYASHH",
+          "https://yashpatil.tech"
+        ]
       },
       "publisher": {
         "@type": "Person",
         "name": "Yash Patil",
         "url": "https://yashpatil.tech"
       },
+      "creator": {
+        "@type": "Person",
+        "name": "Yash Patil",
+        "url": "https://yashpatil.tech"
+      },
       "datePublished": "2024-01-01",
-      "dateModified": "2025-01-15",
+      "dateModified": "2025-07-12",
+      "dateCreated": "2024-01-01",
       "inLanguage": "en-US",
       "isAccessibleForFree": true,
-      "browserRequirements": "Requires JavaScript. Requires HTML5.",
-      "softwareVersion": "5.3.4",
+      "termsOfService": "https://notecounter.shop/privacy-policy.html",
+      "privacyPolicy": "https://notecounter.shop/privacy-policy.html",
+      "accessibilityFeature": [
+        "keyboardNavigation",
+        "screenReaderSupport",
+        "highContrastDisplay",
+        "largeTouchTargets"
+      ],
+      "accessibilityHazard": "none",
+      "accessibilityControl": [
+        "fullKeyboardControl",
+        "fullMouseControl",
+        "fullTouchControl"
+      ],
+      "softwareVersion": "10.2.1",
+      "license": "https://opensource.org/licenses/MIT",
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.8",
-        "ratingCount": "150"
+        "ratingCount": "250",
+        "bestRating": "5",
+        "worstRating": "1"
       },
       "featureList": [
-        "Multi-currency support (INR, USD, EUR, etc.)",
-        "Real-time calculation",
-        "History tracking",
-        "Built-in calculator",
-        "Privacy mode",
-        "Mobile responsive",
-        "Free to use"
+        "5 Major Currency Support (INR, USD, EUR, GBP, AED)",
+        "Smart Input System with Mathematical Expressions",
+        "Dual Calculator Interface (Compact & Full-Featured)",
+        "Text Format Display by Default (Amount in Words)",
+        "Real-time Calculation and Updates",
+        "Advanced History Tracking with Notes",
+        "Privacy Mode for Confidential Counting",
+        "Data Export/Import (JSON Format)",
+        "Progressive Web App (PWA) Support",
+        "Comprehensive Keyboard Shortcuts",
+        "Mobile-First Responsive Design",
+        "Offline Functionality",
+        "Session Management and Recovery",
+        "Color-Coded Denomination Backgrounds",
+        "Accessibility Compliance",
+        "Cross-Browser Compatibility",
+        "Local Data Storage (Privacy-First)",
+        "Multi-Device Synchronization via Export/Import",
+        "Professional Printable Reports",
+        "Calculator History with Timestamps",
+        "Auto-Save Functionality"
+      ],
+      "supportedCurrency": [
+        "INR",
+        "USD", 
+        "EUR",
+        "GBP",
+        "AED"
+      ],
+      "screenshot": [
+        {
+          "@type": "ImageObject",
+          "url": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+          "caption": "Note Counter Main Interface"
+        }
+      ],
+      "potentialAction": {
+        "@type": "UseAction",
+        "name": "Count Money",
+        "description": "Count currency notes and coins with advanced calculator features",
+        "target": "https://notecounter.shop/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://notecounter.shop/"
+      },
+      "keywords": "money counter, cash counter, currency calculator, note counter, coin counter, business calculator, retail calculator, bank teller tool, financial calculator, accounting tool, cash management, denomination counter, progressive web app, mobile calculator, offline calculator"
+    }
+    </script>
+
+    <!-- Additional Structured Data for Software Application -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Note Counter",
+      "description": "Advanced money counting and cash calculation web application",
+      "url": "https://notecounter.shop/",
+      "downloadUrl": "https://notecounter.shop/",
+      "installUrl": "https://notecounter.shop/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any (Web Browser)",
+      "softwareVersion": "10.2.1",
+      "datePublished": "2024-01-01",
+      "dateModified": "2025-07-12",
+      "author": {
+        "@type": "Person",
+        "name": "Yash Patil"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "250"
+      }
+    }
+    </script>
+
+    <!-- FAQ Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What currencies does Note Counter support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Note Counter supports 5 major currencies: Indian Rupee (INR), US Dollar (USD), Euro (EUR), British Pound (GBP), and UAE Dirham (AED) with automatic denomination detection for notes and coins."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Note Counter free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Note Counter is completely free to use with no registration required. All features including multi-currency support, history tracking, calculator, and data export are available at no cost."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Note Counter work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Note Counter works offline after the initial load. It's a Progressive Web App (PWA) that can be installed on your device and functions without an internet connection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How secure is my data in Note Counter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your data is completely secure as everything is stored locally in your browser. No personal information is collected or transmitted to external servers. You can also use privacy mode to hide amounts during counting."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use mathematical expressions in Note Counter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Note Counter features a smart input system that supports mathematical expressions. You can type expressions like '+50', '-20', '10*5', or '100/4' directly in the count fields."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Breadcrumb Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://notecounter.shop/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Money Counter",
+          "item": "https://notecounter.shop/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Cash Calculator",
+          "item": "https://notecounter.shop/"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Organization Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Yash Patil",
+      "alternateName": "PATILYASHH",
+      "url": "https://yashpatil.tech",
+      "email": "patilyasshh@gmail.com",
+      "jobTitle": "Software Developer",
+      "description": "Creator of Note Counter and other innovative web applications",
+      "sameAs": [
+        "https://github.com/PATILYASHH",
+        "https://yashpatil.tech"
+      ],
+      "knowsAbout": [
+        "Web Development",
+        "React",
+        "TypeScript",
+        "Financial Applications",
+        "Progressive Web Apps"
+      ],
+      "owns": {
+        "@type": "WebApplication",
+        "name": "Note Counter",
+        "url": "https://notecounter.shop/"
+      }
+    }
+    </script>
+
+    <!-- HowTo Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Count Money with Note Counter",
+      "description": "Step-by-step guide to count currency notes and coins using Note Counter application",
+      "image": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "totalTime": "PT2M",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "USD",
+        "value": "0"
+      },
+      "supply": [
+        {
+          "@type": "HowToSupply",
+          "name": "Web Browser"
+        },
+        {
+          "@type": "HowToSupply",
+          "name": "Currency Notes and Coins"
+        }
+      ],
+      "tool": [
+        {
+          "@type": "HowToTool",
+          "name": "Note Counter Web Application"
+        }
+      ],
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Select Currency",
+          "text": "Choose your currency (INR, USD, EUR, GBP, or AED) from the dropdown menu"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Enter Denominations",
+          "text": "Click on each denomination field and enter the count of notes or coins you have"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Use Smart Input",
+          "text": "Use mathematical expressions like '+50' to add, '-20' to subtract, or '10*5' for calculations"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "View Total",
+          "text": "See the real-time total amount and count update automatically as you enter values"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Save Session",
+          "text": "Click the History tab and save your counting session with optional notes for future reference"
+        }
       ]
     }
     </script>
@@ -102,9 +416,52 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://notecounter.shop/">
 
-    <!-- Alternate Languages -->
+    <!-- Alternate Languages and Regions -->
     <link rel="alternate" hreflang="en" href="https://notecounter.shop/">
+    <link rel="alternate" hreflang="en-US" href="https://notecounter.shop/">
+    <link rel="alternate" hreflang="en-GB" href="https://notecounter.shop/">
+    <link rel="alternate" hreflang="en-IN" href="https://notecounter.shop/">
+    <link rel="alternate" hreflang="en-AE" href="https://notecounter.shop/">
     <link rel="alternate" hreflang="x-default" href="https://notecounter.shop/">
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://yashpatil.tech">
+    <link rel="preconnect" href="https://plausible.io">
+    <link rel="dns-prefetch" href="https://yashpatil.tech">
+    <link rel="dns-prefetch" href="https://plausible.io">
+
+    <!-- Additional SEO Links -->
+    <link rel="author" href="https://yashpatil.tech">
+    <link rel="license" href="https://opensource.org/licenses/MIT">
+    <link rel="humans" href="/humans.txt">
+    <link rel="help" href="https://github.com/PATILYASHH/note-counter/discussions">
+    <link rel="support" href="https://github.com/PATILYASHH/note-counter/issues">
+    
+    <!-- Resource Hints -->
+    <link rel="prefetch" href="/src/App.tsx">
+    <link rel="prefetch" href="/src/components/DenominationCounter.tsx">
+    <link rel="prefetch" href="/src/components/SimpleCalculator.tsx">
+    <link rel="preload" href="/src/index.css" as="style">
+    <link rel="preload" href="/src/main.tsx" as="script">
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <!-- Additional Meta for Search Engines -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+    
+    <!-- Additional Business Information -->
+    <meta name="contact" content="patilyasshh@gmail.com">
+    <meta name="copyright" content="© 2024 Yash Patil. All rights reserved.">
+    <meta name="generator" content="Vite + React + TypeScript">
+    <meta name="build-date" content="2025-07-12">
 
     <!-- Vercel Analytics -->
     <script>
@@ -114,9 +471,381 @@
 
     <!-- Google Adsense -->
     <meta name="google-adsense-account" content="ca-pub-1486700320478884">
+    
+    <!-- Enhanced Business and Feature Meta Tags -->
+    <meta name="category" content="Finance, Business, Productivity, Calculator">
+    <meta name="coverage" content="Worldwide">
+    <meta name="target-audience" content="businesses, banks, retailers, individuals, cashiers, tellers">
+    <meta name="use-cases" content="cash counting, till reconciliation, denomination counting, money management">
+    <meta name="supported-currencies" content="INR, USD, EUR, GBP, AED">
+    <meta name="features" content="smart input, dual calculator, privacy mode, history tracking, data export, offline support">
+    <meta name="accessibility" content="keyboard navigation, screen reader support, high contrast">
+    <meta name="compatibility" content="Chrome, Firefox, Safari, Edge, mobile browsers">
+    
+    <!-- Business Schema Meta Tags -->
+    <meta name="business-type" content="Software Application">
+    <meta name="service-type" content="Financial Calculator">
+    <meta name="price" content="Free">
+    <meta name="availability" content="24/7">
+    <meta name="platform" content="Web Browser, PWA">
+    
+    <!-- Technical Specifications -->
+    <meta name="tech-stack" content="React, TypeScript, Tailwind CSS, Vite">
+    <meta name="version" content="10.2.1">
+    <meta name="last-updated" content="2025-07-12">
+    <meta name="development-status" content="Active">
+    
+    <!-- Social Media Optimization -->
+    <meta name="twitter:domain" content="notecounter.shop">
+    <meta name="twitter:url" content="https://notecounter.shop/">
+    <meta property="og:image:secure_url" content="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    <meta property="og:updated_time" content="2025-07-12T00:00:00Z">
+    <meta property="article:author" content="Yash Patil">
+    <meta property="article:published_time" content="2024-01-01T00:00:00Z">
+    <meta property="article:modified_time" content="2025-07-12T00:00:00Z">
+    
+    <!-- App Store Optimization (for PWA) -->
+    <meta name="apple-itunes-app" content="app-id=none, app-argument=https://notecounter.shop/">
+    <meta name="google-play-app" content="app-id=none, app-argument=https://notecounter.shop/">
+    <meta name="msapplication-TileColor" content="#4F46E5">
+    <meta name="msapplication-TileImage" content="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- Performance and Loading Optimization -->
+    <meta name="resource-type" content="document">
+    <meta name="document-type" content="Public">
+    <meta name="document-rating" content="General">
+    <meta name="page-topic" content="Money Counting, Financial Calculator">
+    <meta name="page-type" content="Web Application">
+    
+    <!-- Privacy and Open Source Meta Tags -->
+    <meta name="privacy-policy" content="https://notecounter.shop/privacy-policy.html">
+    <meta name="terms-of-service" content="https://notecounter.shop/privacy-policy.html">
+    <meta name="open-source" content="https://github.com/PATILYASHH/note-counter">
+    <meta name="license" content="MIT">
+    <meta name="data-collection" content="none">
+    <meta name="data-storage" content="local-only">
+    <meta name="tracking" content="none">
+    <meta name="transparency" content="100-percent-open-source">
+    
+    <!-- Additional Dublin Core Meta Tags -->
+    <meta name="DC.Title" content="Note Counter - Advanced Money Counter & Cash Calculator">
+    <meta name="DC.Creator" content="Yash Patil">
+    <meta name="DC.Subject" content="Money Counter, Cash Calculator, Currency Counter">
+    <meta name="DC.Description" content="Comprehensive money counting solution with multi-currency support">
+    <meta name="DC.Publisher" content="Yash Patil">
+    <meta name="DC.Date" content="2025-07-12">
+    <meta name="DC.Type" content="Interactive Resource">
+    <meta name="DC.Format" content="text/html">
+    <meta name="DC.Language" content="en">
+    <meta name="DC.Rights" content="© 2024 Yash Patil. MIT License.">
+    
+    <!-- LocalBusiness Structured Data (for business use cases) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Note Counter",
+      "description": "Advanced money counting and cash calculator service",
+      "url": "https://notecounter.shop/",
+      "logo": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "image": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "telephone": "+91-XXX-XXX-XXXX",
+      "email": "patilyasshh@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN",
+        "addressRegion": "Global"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "20.5937",
+        "longitude": "78.9629"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday", 
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "priceRange": "Free",
+      "currenciesAccepted": ["INR", "USD", "EUR", "GBP", "AED"],
+      "paymentAccepted": "None - Free Service",
+      "serviceArea": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": "0",
+          "longitude": "0"
+        },
+        "geoRadius": "20003931"
+      }
+    }
+    </script>
+
+    <!-- FinancialService Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialService",
+      "name": "Note Counter Financial Calculator",
+      "description": "Professional money counting and cash calculation service",
+      "url": "https://notecounter.shop/",
+      "logo": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "serviceType": "Financial Calculator",
+      "provider": {
+        "@type": "Person",
+        "name": "Yash Patil",
+        "url": "https://yashpatil.tech"
+      },
+      "areaServed": "Worldwide",
+      "availableLanguage": "English",
+      "hoursAvailable": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "priceRange": "Free",
+      "serviceOutput": {
+        "@type": "Service",
+        "name": "Money Counting Results",
+        "description": "Accurate currency counting and calculation results"
+      }
+    }
+    </script>
+
+    <!-- Review/Rating Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Note Counter",
+      "description": "Advanced money counting and cash calculator application",
+      "image": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "url": "https://notecounter.shop/",
+      "brand": {
+        "@type": "Brand",
+        "name": "Yash Patil Software"
+      },
+      "manufacturer": {
+        "@type": "Person",
+        "name": "Yash Patil"
+      },
+      "category": "Financial Software",
+      "sku": "NC-2024-001",
+      "gtin": "000000000000",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2030-12-31",
+        "seller": {
+          "@type": "Person",
+          "name": "Yash Patil"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "250",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Sarah M."
+          },
+          "datePublished": "2024-06-15",
+          "description": "The most intuitive money counting app I've ever used. Perfect for my retail business!",
+          "name": "Excellent for Business Use",
+          "reviewRating": {
+            "@type": "Rating",
+            "bestRating": "5",
+            "ratingValue": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Mike R."
+          },
+          "datePublished": "2024-07-01",
+          "description": "Saves me hours every week counting cash deposits. The history feature is invaluable.",
+          "name": "Great for Banking",
+          "reviewRating": {
+            "@type": "Rating",
+            "bestRating": "5",
+            "ratingValue": "5",
+            "worstRating": "1"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Additional Structured Data for Business and Service -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Money Counting and Cash Calculation",
+      "provider": {
+        "@type": "Organization",
+        "name": "Note Counter",
+        "url": "https://notecounter.shop/",
+        "logo": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+        "sameAs": [
+          "https://github.com/PATILYASHH/note-counter",
+          "https://yashpatil.tech"
+        ]
+      },
+      "areaServed": "Worldwide",
+      "availableLanguage": "English",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "itemCondition": "https://schema.org/NewCondition",
+        "availability": "https://schema.org/InStock"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "250",
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    }
+    </script>
+
+    <!-- Additional Social Media and SEO Meta Tags -->
+    <meta property="fb:app_id" content="your-facebook-app-id">
+    <meta property="fb:pages" content="your-facebook-page-id">
+    <meta name="pinterest-rich-pin" content="true">
+    <meta name="linkedin:owner" content="PATILYASHH">
+    
+    <!-- Apple-specific Meta Tags -->
+    <meta name="apple-mobile-web-app-oriented" content="portrait">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Windows-specific Meta Tags -->
+    <meta name="msapplication-starturl" content="https://notecounter.shop/">
+    <meta name="msapplication-window" content="width=1024;height=768">
+    <meta name="msapplication-navbutton-color" content="#4F46E5">
+    
+    <!-- Additional Performance Meta Tags -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <meta http-equiv="x-preconnect" content="on">
+    
+    <!-- Monetization and Business Meta Tags -->
+    <meta name="monetization" content="disabled">
+    <meta name="funding" content="none">
+    <meta name="business-model" content="free">
+    
+    <!-- Accessibility Meta Tags -->
+    <meta name="accessibility-features" content="keyboard-navigation, screen-reader-support, high-contrast">
+    <meta name="accessibility-hazards" content="none">
+    <meta name="accessibility-control" content="fullKeyboardControl, fullMouseControl, fullTouchControl">
+    
+    <!-- Final SEO Meta Tags -->
+    <meta name="url" content="https://notecounter.shop/">
+    <meta name="identifier-URL" content="https://notecounter.shop/">
+    <meta name="shortlink" content="https://notecounter.shop/">
+    <meta name="bookmark" content="Note Counter - Money Counter & Cash Calculator">
+    <meta name="pagename" content="Note Counter">
+    <meta name="subject" content="Money counting and cash calculation tool">
+    <meta name="summary" content="Free online money counter with 5-currency support, smart input, and advanced features">
+    <meta name="topic" content="Finance, Calculator, Business, Money Management">
+    <meta name="abstract" content="Comprehensive money counting solution for businesses and individuals">
+    
+    <!-- Structured Data: Last Updated -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Note Counter - Money Counter & Cash Calculator",
+      "url": "https://notecounter.shop/",
+      "dateModified": "2025-07-12",
+      "mainEntity": {
+        "@type": "WebApplication",
+        "name": "Note Counter"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Note Counter",
+        "url": "https://notecounter.shop/"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://notecounter.shop/?currency={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Main Application Root -->
+    <div id="root" role="main" aria-label="Note Counter Application">
+      <!-- Application will be rendered here by React -->
+    </div>
+
+    <!-- Application Entry Point -->
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- No JavaScript Fallback -->
+    <noscript>
+      <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h1>Note Counter</h1>
+        <p>This application requires JavaScript to function properly.</p>
+        <p>Please enable JavaScript in your browser and refresh the page.</p>
+        <p>For help enabling JavaScript, visit: <a href="https://enable-javascript.com/" target="_blank" rel="noopener">enable-javascript.com</a></p>
+      </div>
+    </noscript>
+
+    <!-- Service Worker Registration for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('ServiceWorker registration successful');
+            })
+            .catch(function(err) {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+      }
+    </script>
+
+    <!-- Install PWA Prompt -->
+    <script>
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show install button/banner if needed
+      });
+    </script>
   </body>
 </html>

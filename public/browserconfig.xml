@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="https://yashpatil.tech/assets/images/projectimg/countnote.png"/>
+      <square150x150logo src="https://yashpatil.tech/assets/images/projectimg/countnote.png"/>
+      <square310x310logo src="https://yashpatil.tech/assets/images/projectimg/countnote.png"/>
+      <wide310x150logo src="https://yashpatil.tech/assets/images/projectimg/countnote.png"/>
+      <TileColor>#4F46E5</TileColor>
+    </tile>
+    <badge>
+      <polling-uri src="https://notecounter.shop/api/badge" cycle="1"/>
+    </badge>
+  </msapplication>
+</browserconfig>

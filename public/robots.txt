@@ -1,0 +1,88 @@
+# Robots.txt for Note Counter
+# https://notecounter.shop/robots.txt
+
+User-agent: *
+Allow: /
+
+# Allow all major search engine bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Important pages for crawlers
+Allow: /about.html
+Allow: /blog.html
+Allow: /blog/
+Allow: /contact.html
+Allow: /privacy-policy.html
+Allow: /terms.html
+
+# Allow all static assets
+Allow: /assets/
+Allow: /public/
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.gif
+Allow: *.svg
+Allow: *.ico
+Allow: *.webp
+
+# Disallow crawling of specific files
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /*.tsx$
+Disallow: /*.ts$
+Disallow: /*.json$
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /vite.config.ts
+Disallow: /tsconfig.json
+Disallow: /tailwind.config.js
+Disallow: /postcss.config.js
+Disallow: /eslint.config.js
+
+# Allow important files
+Allow: /manifest.json
+
+# Sitemap location
+Sitemap: https://notecounter.shop/sitemap.xml
+
+# Crawl delay (be respectful)
+Crawl-delay: 1
+Allow: /sw.js
+Allow: /sitemap.xml
+
+# Sitemap location
+Sitemap: https://notecounter.shop/sitemap.xml
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Cache directive
+# Cache-delay: 86400
