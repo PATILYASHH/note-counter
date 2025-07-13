@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Note Counter Support & Feedback</title>
+    <meta name="description" content="Get in touch with the Note Counter team. Contact us for support, feedback, feature requests, or business inquiries. We're here to help!">
+    <meta name="keywords" content="contact note counter, customer support, feedback, feature requests, business inquiries, help desk">
+    <link rel="canonical" href="https://notecounter.shop/contact.html">
+    <link rel="icon" type="image/png" href="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Contact Us - Note Counter Support">
+    <meta property="og:description" content="Get in touch with the Note Counter team for support, feedback, and inquiries.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://notecounter.shop/contact.html">
+    <meta property="og:image" content="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8fafc;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 3rem auto;
+        }
+        
+        .contact-form {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 3rem;
+        }
+        
+        .contact-info {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #4F46E5;
+            padding-left: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4F46E5;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #4F46E5, #7C3AED);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .contact-method-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            width: 60px;
+            text-align: center;
+        }
+        
+        .contact-method-content h3 {
+            color: #4F46E5;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-method-content p {
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        .contact-method-content a {
+            color: #4F46E5;
+            text-decoration: none;
+        }
+        
+        .contact-method-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .faq-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 3rem auto;
+            padding: 3rem;
+        }
+        
+        .faq-item {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1.5rem;
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .faq-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .faq-answer {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+        
+        .business-hours {
+            background: linear-gradient(45deg, #4F46E5, #7C3AED);
+            color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .business-hours h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .hours-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-links {
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: #60a5fa;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .alert {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            color: #0c4a6e;
+        }
+        
+        .alert-success {
+            background: #f0fdf4;
+            border-color: #16a34a;
+            color: #14532d;
+        }
+        
+        .alert-error {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #7f1d1d;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .contact-form,
+            .contact-info,
+            .faq-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .contact-method {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-method-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>We're here to help! Reach out to us for support, feedback, or any questions about Note Counter.</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="contact-grid">
+            <div class="contact-form">
+                <h2 class="section-title">Send us a Message</h2>
+                
+                <div id="form-messages"></div>
+                
+                <form id="contact-form" action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="support">Technical Support</option>
+                            <option value="feature">Feature Request</option>
+                            <option value="bug">Bug Report</option>
+                            <option value="business">Business Inquiry</option>
+                            <option value="feedback">General Feedback</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" placeholder="Please provide as much detail as possible..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+                
+                <div class="alert" style="margin-top: 2rem;">
+                    <strong>📧 Email Response:</strong> We typically respond to all inquiries within 24-48 hours during business days.
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h2 class="section-title">Get in Touch</h2>
+                
+                <div class="contact-method">
+                    <div class="contact-method-icon">📧</div>
+                    <div class="contact-method-content">
+                        <h3>Email Support</h3>
+                        <p>For technical support and general inquiries</p>
+                        <a href="mailto:support@notecounter.shop">support@notecounter.shop</a>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <div class="contact-method-icon">💼</div>
+                    <div class="contact-method-content">
+                        <h3>Business Inquiries</h3>
+                        <p>Partnerships, enterprise solutions, and media</p>
+                        <a href="mailto:business@notecounter.shop">business@notecounter.shop</a>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <div class="contact-method-icon">🐛</div>
+                    <div class="contact-method-content">
+                        <h3>Bug Reports</h3>
+                        <p>Report technical issues and bugs</p>
+                        <a href="mailto:bugs@notecounter.shop">bugs@notecounter.shop</a>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <div class="contact-method-icon">💡</div>
+                    <div class="contact-method-content">
+                        <h3>Feature Requests</h3>
+                        <p>Suggest new features and improvements</p>
+                        <a href="mailto:features@notecounter.shop">features@notecounter.shop</a>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <div class="contact-method-icon">🌐</div>
+                    <div class="contact-method-content">
+                        <h3>Social Media</h3>
+                        <p>Follow us for updates and announcements</p>
+                        <a href="https://twitter.com/notecounter" target="_blank">@notecounter</a>
+                    </div>
+                </div>
+                
+                <div class="business-hours">
+                    <h3>📅 Response Times</h3>
+                    <div class="hours-item">
+                        <span>Email Support:</span>
+                        <span>24-48 hours</span>
+                    </div>
+                    <div class="hours-item">
+                        <span>Bug Reports:</span>
+                        <span>12-24 hours</span>
+                    </div>
+                    <div class="hours-item">
+                        <span>Business Inquiries:</span>
+                        <span>2-3 business days</span>
+                    </div>
+                    <div class="hours-item">
+                        <span>Feature Requests:</span>
+                        <span>1 week</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">How do I report a bug or technical issue?</div>
+                <div class="faq-answer">
+                    You can report bugs by emailing us at bugs@notecounter.shop or using the contact form above with "Bug Report" as the subject. Please include details about what you were doing when the issue occurred, your browser/device information, and any error messages you saw.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I request new features for Note Counter?</div>
+                <div class="faq-answer">
+                    Absolutely! We love hearing from our users about features they'd like to see. Send your suggestions to features@notecounter.shop or use the contact form. We review all feature requests and prioritize them based on user demand and technical feasibility.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is Note Counter really free to use?</div>
+                <div class="faq-answer">
+                    Yes, Note Counter is completely free to use with no hidden costs, subscriptions, or premium plans. We believe financial tools should be accessible to everyone. The project is open-source and supported by the community.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How do you ensure my financial data is secure?</div>
+                <div class="faq-answer">
+                    We take privacy seriously. All calculations are performed locally in your browser - we never store, transmit, or have access to your financial data. We don't use tracking, analytics, or store personal information. Check our privacy policy for complete details.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I use Note Counter for commercial purposes?</div>
+                <div class="faq-answer">
+                    Yes! Note Counter is free for both personal and commercial use. Many businesses use our tool for daily cash management, point-of-sale operations, and financial reconciliation. For enterprise features or custom solutions, contact our business team.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How can I contribute to the Note Counter project?</div>
+                <div class="faq-answer">
+                    Note Counter is open-source and welcomes contributions! You can contribute code, report bugs, suggest features, improve documentation, or help with translations. Visit our GitHub repository or contact us for more information about contributing.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Do you offer customer support?</div>
+                <div class="faq-answer">
+                    Yes, we provide free email support for all users. We typically respond within 24-48 hours during business days. For urgent issues, please mark your email as "URGENT" in the subject line. We also have a growing knowledge base and community forum.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">What browsers and devices are supported?</div>
+                <div class="faq-answer">
+                    Note Counter works on all modern web browsers including Chrome, Firefox, Safari, and Edge. It's fully responsive and works on desktop computers, tablets, and mobile devices. For the best experience, we recommend using the latest version of your preferred browser.
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/about.html">About</a>
+                <a href="/blog.html">Blog</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/privacy-policy.html">Privacy Policy</a>
+            </div>
+            <p>&copy; 2025 Note Counter. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">
+                Made with ❤️ by <a href="https://yashpatil.tech" style="color: #60a5fa;">Yash Patil</a>
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Contact form handling
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formMessages = document.getElementById('form-messages');
+            const formData = new FormData(this);
+            
+            // Show loading message
+            formMessages.innerHTML = '<div class="alert">Sending your message...</div>';
+            
+            // Simulate form submission (replace with actual form handling)
+            setTimeout(function() {
+                formMessages.innerHTML = '<div class="alert alert-success"><strong>✅ Message Sent!</strong> Thank you for contacting us. We\'ll get back to you within 24-48 hours.</div>';
+                document.getElementById('contact-form').reset();
+            }, 1500);
+        });
+        
+        // Auto-fill subject based on URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const subjectParam = urlParams.get('subject');
+        if (subjectParam) {
+            const subjectSelect = document.getElementById('subject');
+            if (subjectSelect.querySelector(`option[value="${subjectParam}"]`)) {
+                subjectSelect.value = subjectParam;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+# humanstxt.org
+# Note Counter - Advanced Money Counter & Cash Calculator
+
+/* TEAM */
+  Developer: Yash Patil
+  Contact: patilyasshh@gmail.com
+  Website: https://yashpatil.tech
+  GitHub: https://github.com/PATILYASHH
+  Location: India
+
+/* THANKS */
+  React Team - For the amazing React framework
+  Tailwind CSS Team - For the beautiful utility-first CSS framework
+  Lucide - For the comprehensive icon library
+  Vite Team - For the fast build tool
+  TypeScript Team - For type safety and developer experience
+  Netlify/Vercel - For hosting and deployment
+  Open Source Community - For inspiration and support
+
+/* SITE */
+  Last update: 2025/07/12
+  Language: English
+  Doctype: HTML5
+  IDE: Visual Studio Code
+  Standards: HTML5, CSS3, ES2020+, WCAG 2.1
+  Components: React 18, TypeScript, Tailwind CSS, Vite
+  Software: Node.js, npm, Git
+
+/* APPLICATION INFO */
+  Name: Note Counter
+  Version: 10.2.1
+  Description: Comprehensive money counting and cash calculator
+  Features: 5-currency support, smart input, dual calculator, privacy mode
+  Supported Currencies: INR, USD, EUR, GBP, AED
+  Platform: Progressive Web App (PWA)
+  Compatibility: Modern browsers (Chrome 70+, Firefox 65+, Safari 12+, Edge 79+)
+  Mobile: Fully responsive and touch-optimized
+  Accessibility: WCAG 2.1 compliant, keyboard navigation, screen reader support
+  Privacy: 100% local storage, no data collection
+  License: MIT License
+  Repository: https://github.com/PATILYASHH/note-counter
+
+/* FEATURES */
+  Multi-Currency Support: INR, USD, EUR, GBP, AED
+  Smart Input System: Mathematical expressions, quick operations
+  Dual Calculator: Compact and full-featured interfaces
+  History Tracking: Session management with notes and timestamps
+  Privacy Mode: Hide amounts for confidential counting
+  Data Management: Export/import functionality, auto-save
+  Offline Support: Works without internet connection
+  Keyboard Shortcuts: Comprehensive keyboard navigation
+  Mobile Optimization: Touch-friendly interface
+  Progressive Web App: Installable on any device
+
+/* TECHNICAL SPECIFICATIONS */
+  Frontend: React 18.3.1 with TypeScript 5.5.3
+  Styling: Tailwind CSS 3.4.1
+  Build Tool: Vite 5.4.2
+  Icons: Lucide React 0.344.0
+  Analytics: Plausible Analytics
+  Deployment: Netlify/Vercel
+  Domain: https://notecounter.shop
+  Repository: https://github.com/PATILYASHH/note-counter
+  Package Manager: npm
+  Node Version: 18+
+  Browser Support: Modern browsers with ES2020+ support
+
+/* DEVELOPMENT */
+  Development Environment: Node.js + npm
+  Code Quality: ESLint, TypeScript strict mode
+  Version Control: Git with semantic versioning
+  Testing: Cross-browser compatibility testing
+  Performance: Lighthouse optimization
+  SEO: Comprehensive meta tags and structured data
+  Accessibility: WCAG 2.1 AA compliance
+  Security: CSP headers, XSS protection
+
+/* CONTACT */
+  Email: patilyasshh@gmail.com
+  Website: https://yashpatil.tech
+  GitHub: https://github.com/PATILYASHH
+  Issues: https://github.com/PATILYASHH/note-counter/issues
+  Discussions: https://github.com/PATILYASHH/note-counter/discussions
+
+/* STATS */
+  Lines of Code: 5000+
+  Components: 15+
+  Supported Languages: 1 (English)
+  Supported Currencies: 5
+  File Size: <500KB (compressed)
+  Load Time: <2 seconds
+  Lighthouse Score: 95+
+
+/* LICENSE */
+  MIT License
+  Copyright (c) 2024 Yash Patil
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.

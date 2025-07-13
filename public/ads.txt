@@ -1,0 +1,13 @@
+# ads.txt for Note Counter
+# https://notecounter.shop/ads.txt
+# This file declares authorized digital advertising sellers
+
+# Google AdSense
+google.com, pub-1486700320478884, DIRECT, f08c47fec0942fa0
+
+# Note: This application currently focuses on providing free service
+# Any advertising is minimal and non-intrusive
+# We prioritize user experience over advertising revenue
+
+# Contact for advertising inquiries: patilyasshh@gmail.com
+# Last updated: 2025-07-12

@@ -1,0 +1,121 @@
+{
+  "name": "Note Counter - Advanced Money Counter & Cash Calculator",
+  "short_name": "Note Counter",
+  "description": "Comprehensive money counting solution with 5-currency support, smart input system, dual calculator, privacy mode, and history tracking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["finance", "productivity", "business", "utilities"],
+  "icons": [
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Note Counter Desktop View"
+    },
+    {
+      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Note Counter Mobile View"
+    }
+  ],
+  "features": [
+    "5 Major Currency Support (INR, USD, EUR, GBP, AED)",
+    "Smart Input System with Mathematical Expressions",
+    "Dual Calculator Interface",
+    "Real-time Calculation",
+    "Advanced History Tracking",
+    "Privacy Mode",
+    "Data Export/Import",
+    "Offline Functionality",
+    "Keyboard Shortcuts",
+    "Mobile-First Design"
+  ],
+  "shortcuts": [
+    {
+      "name": "Count Money",
+      "short_name": "Count",
+      "description": "Start counting currency notes and coins",
+      "url": "/",
+      "icons": [
+        {
+          "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Calculator",
+      "short_name": "Calculator",
+      "description": "Use the advanced calculator",
+      "url": "/?tab=calculator",
+      "icons": [
+        {
+          "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "short_name": "History",
+      "description": "View counting history and saved sessions",
+      "url": "/?tab=history",
+      "icons": [
+        {
+          "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
+}

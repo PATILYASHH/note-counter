@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found (404) - Note Counter</title>
+    <meta name="description" content="The page you're looking for cannot be found. Return to Note Counter homepage or explore our other pages.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="https://yashpatil.tech/assets/images/projectimg/countnote.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #4F46E5;
+            border-color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #f8fafc;
+            transform: translateY(-2px);
+        }
+        
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .quick-link {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .quick-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .quick-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1>Page Not Found</h1>
+        <p>Sorry, the page you're looking for doesn't exist or has been moved.</p>
+        
+        <div class="actions">
+            <a href="/" class="btn btn-primary">
+                🏠 Go to Homepage
+            </a>
+            <a href="/blog.html" class="btn">
+                📝 Visit Blog
+            </a>
+            <a href="/about.html" class="btn">
+                ℹ️ About Us
+            </a>
+            <a href="/contact.html" class="btn">
+                📧 Contact Support
+            </a>
+        </div>
+        
+        <div class="quick-links">
+            <div class="quick-link">
+                <div class="icon">💰</div>
+                <a href="/">
+                    <strong>Money Counter</strong><br>
+                    <small>Count cash in multiple currencies</small>
+                </a>
+            </div>
+            <div class="quick-link">
+                <div class="icon">📊</div>
+                <a href="/blog.html">
+                    <strong>Financial Tips</strong><br>
+                    <small>Expert money management advice</small>
+                </a>
+            </div>
+            <div class="quick-link">
+                <div class="icon">🔒</div>
+                <a href="/privacy-policy.html">
+                    <strong>Privacy Policy</strong><br>
+                    <small>Your data protection information</small>
+                </a>
+            </div>
+            <div class="quick-link">
+                <div class="icon">🛠️</div>
+                <a href="/about.html">
+                    <strong>About Note Counter</strong><br>
+                    <small>Learn about our mission</small>
+                </a>
+            </div>
+        </div>
+        
+        <p style="margin-top: 3rem; font-size: 0.9rem; opacity: 0.7;">
+            If you believe this is an error, please <a href="/contact.html" style="color: white; text-decoration: underline;">contact us</a>
+        </p>
+    </div>
+</body>
+</html>

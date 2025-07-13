@@ -1,0 +1,89 @@
+# Security Policy for Note Counter
+# https://notecounter.shop/.well-known/security.txt
+
+Contact: patilyasshh@gmail.com
+Contact: https://github.com/PATILYASHH/note-counter/security/advisories/new
+Expires: 2026-07-12T00:00:00.000Z
+Encryption: https://yashpatil.tech/pgp-key.txt
+Acknowledgments: https://github.com/PATILYASHH/note-counter/security/advisories
+Preferred-Languages: en
+Canonical: https://notecounter.shop/.well-known/security.txt
+Policy: https://github.com/PATILYASHH/note-counter/blob/main/SECURITY.md
+
+# Security Information for Note Counter Application
+
+## Scope
+This security policy applies to:
+- Main application: https://notecounter.shop
+- Repository: https://github.com/PATILYASHH/note-counter
+- All related subdomains and services
+
+## What to Report
+We welcome reports of security vulnerabilities including but not limited to:
+- Cross-Site Scripting (XSS)
+- Cross-Site Request Forgery (CSRF)
+- Authentication bypass
+- Data exposure vulnerabilities
+- Code injection
+- Any security misconfigurations
+
+## What NOT to Report
+The following are out of scope:
+- Social engineering attacks
+- Physical security issues
+- Denial of Service (DoS) attacks
+- Reports affecting non-supported browsers
+- Issues in third-party dependencies (report to the respective maintainers)
+
+## How to Report
+1. Email: patilyasshh@gmail.com with subject "Security Vulnerability Report"
+2. GitHub Security Advisory: https://github.com/PATILYASHH/note-counter/security/advisories/new
+3. Include detailed steps to reproduce the vulnerability
+4. Provide proof-of-concept if possible
+5. Specify the potential impact
+
+## Response Timeline
+- Initial response: Within 48 hours
+- Vulnerability assessment: Within 7 days
+- Fix deployment: Within 30 days (depending on severity)
+- Public disclosure: After fix is deployed and tested
+
+## Security Measures
+- All data stored locally in browser
+- No server-side data processing
+- HTTPS encryption for all connections
+- Content Security Policy (CSP) headers
+- X-Frame-Options and X-XSS-Protection headers
+- Regular dependency updates
+- Code review process
+- Security-focused development practices
+
+## Privacy Protection
+- No personal data collection
+- No tracking or analytics cookies
+- No third-party data sharing
+- Local storage only
+- Privacy mode for sensitive operations
+
+## Recognition
+Security researchers who responsibly disclose vulnerabilities will be:
+- Credited in our security acknowledgments (with permission)
+- Listed in our GitHub security advisories
+- Thanked publicly (unless anonymity is requested)
+
+## Contact Information
+Primary Contact: Yash Patil
+Email: patilyasshh@gmail.com
+Website: https://yashpatil.tech
+GitHub: @PATILYASHH
+
+## Additional Information
+- This application is open source under MIT License
+- Code is publicly auditable at: https://github.com/PATILYASHH/note-counter
+- We follow responsible disclosure practices
+- Security updates are released promptly
+
+## Legal
+This security policy does not create any legal obligations.
+We reserve the right to modify this policy at any time.
+Last updated: 2025-07-12
