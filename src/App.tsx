@@ -965,29 +965,35 @@ function App() {
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-green-200">
-                      <button
-                        onClick={() => window.open('https://github.com/PATILYASHH/note-counter', '_blank')}
+                      <a
+                        href="https://github.com/PATILYASHH/note-counter"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition-all shadow-md flex items-center justify-center font-medium"
                       >
                         <Github size={18} className="mr-2" />
                         View Source Code
-                      </button>
-                      <button
-                        onClick={() => window.open('/about.html', '_blank')}
+                      </a>
+                      <a
+                        href="/about.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         About Page
-                      </button>
-                      <button
-                        onClick={() => window.open('/privacy-policy.html', '_blank')}
+                      </a>
+                      <a
+                        href="/privacy-policy.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 px-4 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-md flex items-center justify-center font-medium"
                       >
                         <Shield size={18} className="mr-2" />
                         Privacy Policy
-                      </button>
+                      </a>
                     </div>
                   </section>
                 </div>
@@ -1678,7 +1684,7 @@ function App() {
                         href="/blog/money-counting-tips-small-business.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all"
+                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all cursor-pointer"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
@@ -1696,7 +1702,7 @@ function App() {
                         href="/blog/cash-flow-management-entrepreneurs.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all"
+                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all cursor-pointer"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
@@ -1705,7 +1711,7 @@ function App() {
                             <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Finance Guide</span>
                           </div>
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </div>
                       </a>
@@ -1719,7 +1725,7 @@ function App() {
                         href="/blog.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium"
+                        className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium cursor-pointer"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -1730,7 +1736,7 @@ function App() {
                         href="/about.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-all shadow-md flex items-center justify-center font-medium border border-gray-300"
+                        className="bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-all shadow-md flex items-center justify-center font-medium border border-gray-300 cursor-pointer"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1748,7 +1754,7 @@ function App() {
                         href="/privacy-policy.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-green-50 text-green-700 py-2 px-3 rounded-lg hover:bg-green-100 transition-all border border-green-200 flex items-center justify-center text-sm font-medium"
+                        className="bg-green-50 text-green-700 py-2 px-3 rounded-lg hover:bg-green-100 transition-all border border-green-200 flex items-center justify-center text-sm font-medium cursor-pointer"
                       >
                         🔒 Privacy Policy
                       </a>
@@ -1756,7 +1762,7 @@ function App() {
                         href="/disclaimer.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-yellow-50 text-yellow-700 py-2 px-3 rounded-lg hover:bg-yellow-100 transition-all border border-yellow-200 flex items-center justify-center text-sm font-medium"
+                        className="bg-yellow-50 text-yellow-700 py-2 px-3 rounded-lg hover:bg-yellow-100 transition-all border border-yellow-200 flex items-center justify-center text-sm font-medium cursor-pointer"
                       >
                         ⚠️ Disclaimer
                       </a>
@@ -1764,7 +1770,7 @@ function App() {
                         href="/terms.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-blue-50 text-blue-700 py-2 px-3 rounded-lg hover:bg-blue-100 transition-all border border-blue-200 flex items-center justify-center text-sm font-medium"
+                        className="bg-blue-50 text-blue-700 py-2 px-3 rounded-lg hover:bg-blue-100 transition-all border border-blue-200 flex items-center justify-center text-sm font-medium cursor-pointer"
                       >
                         📄 Terms
                       </a>
@@ -1772,7 +1778,7 @@ function App() {
                         href="/contact.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-purple-50 text-purple-700 py-2 px-3 rounded-lg hover:bg-purple-100 transition-all border border-purple-200 flex items-center justify-center text-sm font-medium"
+                        className="bg-purple-50 text-purple-700 py-2 px-3 rounded-lg hover:bg-purple-100 transition-all border border-purple-200 flex items-center justify-center text-sm font-medium cursor-pointer"
                       >
                         ✉️ Contact
                       </a>
@@ -2377,9 +2383,9 @@ function App() {
                 <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
                   <a 
                     href="/about.html" 
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -2388,9 +2394,9 @@ function App() {
                   </a>
                   <a 
                     href="/blog.html" 
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -2399,36 +2405,36 @@ function App() {
                   </a>
                   <a 
                     href="/contact.html" 
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
                   >
                     <Mail size={20} className="mr-2" />
                     <span>Contact</span>
                   </a>
                   <a 
                     href="https://github.com/PATILYASHH/note-counter" 
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
                   >
                     <span className="mr-2">🔓</span>
                     <span>Open Source</span>
                   </a>
                   <a 
                     href="/privacy-policy.html" 
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
                   >
                     <Shield size={20} className="mr-2" />
                     <span>Privacy</span>
                   </a>
                   <a 
                     href="/terms.html" 
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -2437,9 +2443,9 @@ function App() {
                   </a>
                   <a 
                     href="https://github.com/sponsors/PATILYASHH" 
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
                   >
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
