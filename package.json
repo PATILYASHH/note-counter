@@ -1,7 +1,8 @@
 {
   "name": "note-counter",
   "private": true,
-  "version": "10.2.1",
+  "version": "10.5.0",
+  "description": "Comprehensive free online money counter and cash calculator with PDF export and smart analytics. Count currency notes and coins for 5 major currencies with professional reporting features.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +13,8 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.39.7",
     "@vercel/analytics": "^1.5.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

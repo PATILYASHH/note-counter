@@ -87,6 +87,7 @@
 - **Detailed History Tracking**: Save counting sessions with custom notes
 - **Money Count History**: Track all your counting sessions
 - **Calculator History**: Separate history for all calculations
+- **PDF Export**: Export any transaction as professional PDF report with watermark
 - **Data Export/Import**: Backup and restore your data as JSON files
 - **Session Management**: Load previous counts back to counter
 - **History Search**: Easy navigation through past sessions
@@ -166,6 +167,7 @@
 ### 📚 **History Management**
 - **Session Saving**: Save counting sessions with custom notes and timestamps
 - **Detailed Breakdowns**: View complete denomination breakdown for each session
+- **PDF Export**: Generate professional PDF reports with watermark for any transaction
 - **Data Persistence**: All data stored locally in your browser
 - **Quick Loading**: Load previous counts back to the counter instantly
 - **Export/Import**: Backup your data as JSON files for safety

@@ -108,9 +108,29 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
         
+        .blog-card.featured {
+            border: 2px solid #4F46E5;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.15);
+        }
+        
         .blog-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .new-badge {
+            background: linear-gradient(45deg, #10B981, #059669);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
         
         .blog-image {
@@ -257,6 +277,23 @@
     
     <main class="container">
         <div class="blog-grid">
+            <!-- Latest Update Blog Post -->
+            <article class="blog-card featured">
+                <div class="blog-image">🚀</div>
+                <div class="blog-content">
+                    <span class="blog-category">Latest Update</span>
+                    <h2 class="blog-title">New PDF Export & Smart Analytics Features Now Live!</h2>
+                    <p class="blog-excerpt">
+                        Note Counter v10.5.0 introduces professional PDF report generation and intelligent analytics. Export transaction reports with watermarks and experience seamless usage analytics.
+                    </p>
+                    <div class="blog-meta">
+                        <span>3 min read</span>
+                        <span class="new-badge">NEW</span>
+                        <a href="/" class="read-more">Try Features</a>
+                    </div>
+                </div>
+            </article>
+            
             <!-- Blog Post 1 -->
             <article class="blog-card">
                 <div class="blog-image">💰</div>
