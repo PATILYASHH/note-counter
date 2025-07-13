@@ -128,9 +128,30 @@
             animation: pulse 2s infinite;
         }
         
+        .upcoming-badge {
+            background: linear-gradient(45deg, #F59E0B, #D97706);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            animation: glow 2s infinite;
+        }
+        
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
+        }
+        
+        @keyframes glow {
+            0%, 100% { 
+                opacity: 1; 
+                box-shadow: 0 0 5px rgba(245, 158, 11, 0.5);
+            }
+            50% { 
+                opacity: 0.8; 
+                box-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
+            }
         }
         
         .blog-image {
@@ -223,6 +244,259 @@
             text-decoration: underline;
         }
         
+        /* Custom Currency Feature Styles */
+        .custom-currency-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin: 4rem 0;
+            padding: 3rem;
+        }
+        
+        .feature-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-header h2 {
+            font-size: 2.5rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-subtitle {
+            font-size: 1.2rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .feature-card p {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .feature-list {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            opacity: 0.9;
+        }
+        
+        /* Currency Request Form */
+        .currency-request-form {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .currency-request-form h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .currency-request-form > p {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        
+        .request-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4F46E5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #4F46E5, #7C3AED);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+        }
+        
+        .form-note {
+            text-align: center;
+            margin-top: 1rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        /* Feature Timeline */
+        .feature-timeline {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .feature-timeline h3 {
+            text-align: center;
+            color: #1f2937;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 80px;
+        }
+        
+        .timeline-badge {
+            position: absolute;
+            left: 10px;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: #4F46E5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+        
+        .timeline-content h4 {
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-content p {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-date {
+            background: #f3f4f6;
+            color: #4b5563;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-header h2 {
+                font-size: 2rem;
+            }
+            
+            .custom-currency-section,
+            .currency-request-form,
+            .feature-timeline {
+                padding: 1.5rem;
+            }
+        }
+        
         .footer {
             background: #1f2937;
             color: white;
@@ -290,6 +564,23 @@
                         <span>3 min read</span>
                         <span class="new-badge">NEW</span>
                         <a href="/" class="read-more">Try Features</a>
+                    </div>
+                </div>
+            </article>
+            
+            <!-- Upcoming Features Blog Post -->
+            <article class="blog-card featured">
+                <div class="blog-image">🌟</div>
+                <div class="blog-content">
+                    <span class="blog-category">Upcoming Features</span>
+                    <h2 class="blog-title">Revolutionary Custom Currency Feature Coming Soon!</h2>
+                    <p class="blog-excerpt">
+                        Create your own currencies with custom names, symbols, and denominations. Add any currency not currently supported and request official additions from our development team.
+                    </p>
+                    <div class="blog-meta">
+                        <span>4 min read</span>
+                        <span class="upcoming-badge">COMING SOON</span>
+                        <a href="#custom-currency-info" class="read-more">Learn More</a>
                     </div>
                 </div>
             </article>
@@ -423,12 +714,164 @@
             </article>
         </div>
         
+        <!-- Custom Currency Feature Section -->
+        <section id="custom-currency-info" class="custom-currency-section">
+            <div class="feature-header">
+                <h2>🌟 Revolutionary Custom Currency Feature</h2>
+                <p class="feature-subtitle">Take full control of your money counting experience with personalized currencies</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💱</div>
+                    <h3>Create Custom Currencies</h3>
+                    <p>Design your own currency with custom name, symbol, and denomination values. Perfect for businesses with unique counting needs or unsupported regional currencies.</p>
+                    <ul class="feature-list">
+                        <li>✅ Custom currency name (e.g., "Business Token")</li>
+                        <li>✅ Custom symbol (e.g., "🪙", "BT", "$")</li>
+                        <li>✅ Custom denomination values</li>
+                        <li>✅ Country/region association</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Add Custom Notes & Coins</h3>
+                    <p>Define your own note and coin denominations with any values you need. Ideal for gaming currencies, tokens, or specialized business applications.</p>
+                    <ul class="feature-list">
+                        <li>✅ Unlimited denomination values</li>
+                        <li>✅ Note and coin categorization</li>
+                        <li>✅ Custom color schemes</li>
+                        <li>✅ Flexible value formatting</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Request Official Addition</h3>
+                    <p>Found a real-world currency we don't support? Request it officially and we'll add it to Note Counter within 2 weeks for all users!</p>
+                    <ul class="feature-list">
+                        <li>✅ Quick 2-week implementation</li>
+                        <li>✅ Professional currency data</li>
+                        <li>✅ Proper formatting & symbols</li>
+                        <li>✅ Available for all users</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Currency Request Form -->
+            <div class="currency-request-form">
+                <h3>📧 Request a New Currency Addition</h3>
+                <p>Help us expand our currency support! Submit your request and we'll add it within 2 weeks.</p>
+                
+                <form action="https://formspree.io/f/xovwngyk" method="POST" class="request-form">
+                    <input type="hidden" name="subject" value="Currency Addition Request">
+                    <input type="hidden" name="form_type" value="currency_request">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currency_name">Currency Name *</label>
+                            <input type="text" id="currency_name" name="currency_name" placeholder="e.g., Japanese Yen" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="currency_code">Currency Code *</label>
+                            <input type="text" id="currency_code" name="currency_code" placeholder="e.g., JPY" maxlength="3" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currency_symbol">Currency Symbol *</label>
+                            <input type="text" id="currency_symbol" name="currency_symbol" placeholder="e.g., ¥" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country/Region *</label>
+                            <input type="text" id="country" name="country" placeholder="e.g., Japan" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="denominations">Common Denominations</label>
+                        <textarea id="denominations" name="denominations" placeholder="e.g., Notes: 10000, 5000, 2000, 1000 | Coins: 500, 100, 50, 10, 5, 1" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="requester_email">Your Email *</label>
+                            <input type="email" id="requester_email" name="requester_email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="priority">Priority Level</label>
+                            <select id="priority" name="priority">
+                                <option value="normal">Normal (2 weeks)</option>
+                                <option value="high">High (1 week)</option>
+                                <option value="urgent">Urgent (3-5 days)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="additional_notes">Additional Notes</label>
+                        <textarea id="additional_notes" name="additional_notes" placeholder="Any special requirements, formatting preferences, or additional information..." rows="4"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        📤 Submit Currency Request
+                    </button>
+                    
+                    <p class="form-note">
+                        <strong>⚡ Quick Response:</strong> We'll acknowledge your request within 24 hours and have the currency ready within 2 weeks!
+                    </p>
+                </form>
+            </div>
+            
+            <!-- Feature Timeline -->
+            <div class="feature-timeline">
+                <h3>🗓️ Development Timeline</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-badge">📋</div>
+                        <div class="timeline-content">
+                            <h4>Phase 1: Planning & Design</h4>
+                            <p>UI/UX design for custom currency interface</p>
+                            <span class="timeline-date">July 2025</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge">⚙️</div>
+                        <div class="timeline-content">
+                            <h4>Phase 2: Core Development</h4>
+                            <p>Backend logic for custom currency creation and management</p>
+                            <span class="timeline-date">August 2025</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge">🧪</div>
+                        <div class="timeline-content">
+                            <h4>Phase 3: Testing & Refinement</h4>
+                            <p>Comprehensive testing and user feedback integration</p>
+                            <span class="timeline-date">September 2025</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-badge">🚀</div>
+                        <div class="timeline-content">
+                            <h4>Phase 4: Public Release</h4>
+                            <p>Full release with custom currency creation tools</p>
+                            <span class="timeline-date">October 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <!-- Sidebar -->
         <aside class="sidebar">
             <h3>Popular Categories</h3>
             <ul>
                 <li><a href="#tips">💡 Money Counting Tips</a></li>
                 <li><a href="#business">🏢 Business Finance</a></li>
+                <li><a href="#custom-currency-info">🌟 Custom Currency (Coming Soon)</a></li>
                 <li><a href="#guides">📖 How-to Guides</a></li>
                 <li><a href="#currency">💱 Currency Information</a></li>
                 <li><a href="#tools">🔧 Financial Tools</a></li>

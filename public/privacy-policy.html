@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - Note Counter | Open Source Money Counter</title>
-    <meta name="description" content="Privacy Policy for Note Counter - Learn how we automatically collect country-level location data to improve currency support and identify our biggest consumer markets. Open source transparency guaranteed.">
+    <meta name="description" content="Privacy Policy for Note Counter - Learn how we automatically collect country-level location data using enhanced IP-based device tracking with SHA-256 hashing to improve currency support and identify our biggest consumer markets. Full transparency guaranteed.">
     <meta name="keywords" content="privacy policy, note counter, open source, data protection, privacy, money counter privacy">
     <link rel="canonical" href="https://notecounter.shop/privacy-policy.html">
     <link rel="icon" type="image/png" href="https://yashpatil.tech/assets/images/projectimg/countnote.png">
@@ -234,8 +234,12 @@
                 <h3>What We Collect (Automatically, One-time only):</h3>
                 <ul>
                     <li>✅ <strong>Country/Region</strong> - Automatically detected and submitted via IP geolocation</li>
+                    <li>✅ <strong>IP Address Hash</strong> - Privacy-friendly hashed identifier to prevent duplicate submissions</li>
+                    <li>✅ <strong>Regional Data</strong> - City and region information for better service localization</li>
                     <li>✅ <strong>Detection timestamp</strong> - When the country data was collected</li>
-                    <li>✅ <strong>Detection method</strong> - IP geolocation service used</li>
+                    <li>✅ <strong>Detection method</strong> - Enhanced IP geolocation service used</li>
+                    <li>✅ <strong>Browser Information</strong> - User agent for compatibility analysis</li>
+                    <li>✅ <strong>Timezone</strong> - User's timezone for better service timing</li>
                 </ul>
                 
                 <h3>Purpose of Automatic Location Data Collection:</h3>
@@ -248,10 +252,12 @@
                 
                 <h3>How We Collect Location Data:</h3>
                 <ul>
-                    <li>🤖 <strong>Automatic Collection</strong> - Uses IP geolocation service (ipapi.co) automatically on first visit</li>
-                    <li>🔒 <strong>One-time Per Device</strong> - Data is collected only once per browser/device using localStorage</li>
+                    <li>🤖 <strong>Automatic Collection</strong> - Uses enhanced IP geolocation service (ipapi.co) automatically on first visit</li>
+                    <li>🔒 <strong>One-time Per IP Address</strong> - Data is collected only once per IP address using hashed device tracking</li>
+                    <li>🛡️ <strong>Privacy-Safe Tracking</strong> - IP addresses are hashed using SHA-256 for anonymous device identification</li>
                     <li>🚫 <strong>No User Interaction Required</strong> - Happens silently in the background</li>
-                    <li>🚫 <strong>No Precise Location</strong> - Only country-level data, no city/address/coordinates</li>
+                    <li>📱 <strong>Cross-Browser Protection</strong> - Prevents duplicate submissions across different browsers on same device</li>
+                    <li>🚫 <strong>No Precise Location</strong> - Only country and regional data, no exact coordinates</li>
                     <li>⚡ <strong>No UI Disruption</strong> - Collection happens without showing any popup or form</li>
                 </ul>
                 
@@ -307,7 +313,39 @@
             </div>
             
             <div class="section">
-                <h2>3. Automatic Location Data Details</h2>
+                <h2>3. Enhanced Device Tracking Technology</h2>
+                
+                <h3>🔐 Privacy-Safe IP Tracking:</h3>
+                <ul>
+                    <li>🏠 <strong>Purpose</strong> - Ensure one-time data collection per device/location regardless of browser</li>
+                    <li>🔒 <strong>Method</strong> - IP addresses are immediately hashed using SHA-256 cryptographic algorithm</li>
+                    <li>📱 <strong>Cross-Browser</strong> - Prevents duplicate submissions across Chrome, Firefox, Safari, Edge, etc.</li>
+                    <li>🔑 <strong>Device ID</strong> - Creates anonymous device identifier using first 12 characters of IP hash</li>
+                    <li>🗂️ <strong>Storage</strong> - Hashed device IDs stored locally and submitted with country data</li>
+                </ul>
+                
+                <h3>🛡️ Privacy Protection Measures:</h3>
+                <ul>
+                    <li>❌ <strong>No Plain IP Storage</strong> - Raw IP addresses are never stored or transmitted</li>
+                    <li>🔄 <strong>Irreversible Hashing</strong> - SHA-256 hashes cannot be reversed to original IP</li>
+                    <li>📊 <strong>Anonymous Analytics</strong> - Device tracking is purely for preventing duplicates</li>
+                    <li>⏳ <strong>Temporary Processing</strong> - IP addresses are used only momentarily for hashing</li>
+                    <li>🔍 <strong>No User Profiling</strong> - Device IDs are not linked to user behavior or preferences</li>
+                </ul>
+                
+                <h3>🔄 How Duplicate Prevention Works:</h3>
+                <ol>
+                    <li>🌍 <strong>IP Detection</strong> - Service detects your current IP address via ipapi.co</li>
+                    <li>🔐 <strong>Instant Hashing</strong> - IP is immediately converted to SHA-256 hash</li>
+                    <li>🆔 <strong>Device ID Creation</strong> - First 12 characters form anonymous device identifier</li>
+                    <li>✅ <strong>Duplicate Check</strong> - System checks if this device ID has submitted data before</li>
+                    <li>📤 <strong>Data Submission</strong> - If new device, country data is submitted with device ID</li>
+                    <li>💾 <strong>Local Storage</strong> - Device ID stored in browser to prevent future attempts</li>
+                </ol>
+            </div>
+            
+            <div class="section">
+                <h2>4. Automatic Location Data Details</h2>
                 
                 <h3>Data Retention:</h3>
                 <ul>
@@ -319,8 +357,9 @@
                 
                 <h3>Third-Party Services:</h3>
                 <ul>
-                    <li>🌐 <strong>IP Geolocation</strong> - ipapi.co is used for automatic country detection</li>
+                    <li>🌐 <strong>IP Geolocation</strong> - ipapi.co is used for enhanced country and regional detection</li>
                     <li>📝 <strong>Form Processing</strong> - Formspree.io handles the automatic country data submission</li>
+                    <li>🔒 <strong>Encryption Service</strong> - Browser's built-in Web Crypto API for SHA-256 hashing of IP addresses</li>
                     <li>📊 <strong>Analytics</strong> - Plausible.io provides privacy-friendly website analytics</li>
                 </ul>
                 
@@ -343,7 +382,7 @@
             </div>
             
             <div class="section">
-                <h2>4. How Your Data Stays Private</h2>
+                <h2>5. How Your Data Stays Private</h2>
                 
                 <div class="highlight-box">
                     <h3>🔐 Local Storage Only</h3>
@@ -367,7 +406,7 @@
             </div>
             
             <div class="section">
-                <h2>5. Third-Party Services</h2>
+                <h2>6. Third-Party Services</h2>
                 
                 <h3>Analytics (Plausible.io)</h3>
                 <p>We use Plausible Analytics, a privacy-focused analytics service that:</p>
@@ -393,7 +432,7 @@
             </div>
             
             <div class="section">
-                <h2>6. Your Rights & Control</h2>
+                <h2>7. Your Rights & Control</h2>
                 
                 <h3>Complete Data Control</h3>
                 <p>Since all data is stored locally on your device, you have complete control:</p>
@@ -415,7 +454,7 @@
             </div>
             
             <div class="section">
-                <h2>7. Security Measures</h2>
+                <h2>8. Security Measures</h2>
                 <ul>
                     <li><strong>HTTPS Encryption</strong>: All communications are encrypted</li>
                     <li><strong>No Server-Side Storage</strong>: No database with your information</li>
@@ -426,7 +465,7 @@
             </div>
             
             <div class="section">
-                <h2>8. International Privacy Compliance</h2>
+                <h2>9. International Privacy Compliance</h2>
                 <p>Note Counter is designed to comply with major privacy regulations:</p>
                 <ul>
                     <li><strong>GDPR (European Union)</strong>: No personal data processing</li>
@@ -437,7 +476,7 @@
             </div>
             
             <div class="section">
-                <h2>9. Children's Privacy</h2>
+                <h2>10. Children's Privacy</h2>
                 <p>Note Counter is safe for all ages:</p>
                 <ul>
                     <li>No personal information is collected from anyone, including children under 13</li>
@@ -448,7 +487,7 @@
             </div>
             
             <div class="section">
-                <h2>10. Open Source Transparency</h2>
+                <h2>11. Open Source Transparency</h2>
                 <p>As an open source project, Note Counter provides unprecedented transparency:</p>
                 
                 <div class="highlight-box">
@@ -472,7 +511,7 @@
             </div>
             
             <div class="section">
-                <h2>11. Contact & Questions</h2>
+                <h2>12. Contact & Questions</h2>
                 <p>For any privacy questions or concerns:</p>
                 
                 <div class="contact-info">
@@ -485,7 +524,7 @@
             </div>
             
             <div class="section">
-                <h2>12. Changes to Privacy Policy</h2>
+                <h2>13. Changes to Privacy Policy</h2>
                 <p>Any changes to this privacy policy will be:</p>
                 <ul>
                     <li>Clearly communicated on this page</li>

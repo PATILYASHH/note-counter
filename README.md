@@ -75,6 +75,14 @@
 - **Expression Support**: Enter mathematical expressions directly in count fields
 - **Auto-Save**: Automatic saving of current counts
 
+### #️⃣ **Hash Reference System (NEW in v10.6.0)**
+- **Simple Hash Generation**: Each saved counting gets an easy-to-remember hash (#1, #2, #3)
+- **Clickable Note References**: Type hash numbers in notes to create interactive links
+- **One-Click Access**: Click any hash reference to view counting details, load data, or download
+- **History Integration**: All transaction history displays hash references
+- **Cross-Reference Support**: Reference previous countings in new session notes
+- **Export/Import Compatible**: Hash references preserved in all data operations
+
 ### 📱 **Enhanced User Interface**
 - **Mobile-First Design**: Optimized for smartphones and tablets
 - **Privacy Mode**: Hide amounts with eye toggle for confidential counting
@@ -84,13 +92,16 @@
 - **Visual Feedback**: Color-coded denomination backgrounds
 
 ### 📈 **Advanced History & Data Management**
+- **Hash Reference System**: Each saved counting gets a unique hash (#1, #2, #3) for easy reference
+- **Smart Note References**: Type hash numbers in notes to create clickable links
 - **Detailed History Tracking**: Save counting sessions with custom notes
-- **Money Count History**: Track all your counting sessions
+- **Money Count History**: Track all your counting sessions with hash references
 - **Calculator History**: Separate history for all calculations
 - **PDF Export**: Export any transaction as professional PDF report with watermark
-- **Data Export/Import**: Backup and restore your data as JSON files
-- **Session Management**: Load previous counts back to counter
+- **Data Export/Import**: Backup and restore your data as JSON files including hash references
+- **Session Management**: Load previous counts back to counter using hash references
 - **History Search**: Easy navigation through past sessions
+- **One-Click Actions**: Click hash references to view details, load data, or download
 
 ## 💰 Supported Currencies
 
@@ -165,12 +176,14 @@
 - **Error Handling**: Smart error recovery for invalid inputs
 
 ### 📚 **History Management**
+- **Hash Reference System**: Each saved counting gets a simple hash (#1, #2, #3) for easy identification
+- **Interactive Note References**: Type hash numbers in notes to create clickable reference links
 - **Session Saving**: Save counting sessions with custom notes and timestamps
 - **Detailed Breakdowns**: View complete denomination breakdown for each session
 - **PDF Export**: Generate professional PDF reports with watermark for any transaction
 - **Data Persistence**: All data stored locally in your browser
-- **Quick Loading**: Load previous counts back to the counter instantly
-- **Export/Import**: Backup your data as JSON files for safety
+- **Quick Loading**: Load previous counts back to the counter instantly using hash references
+- **Export/Import**: Backup your data as JSON files for safety with hash preservation
 - **Multiple Histories**: Separate tracking for money counts and calculator operations
 
 ### 🧮 **Dual Calculator System**

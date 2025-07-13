@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, PoundSterling, Coins, Keyboard, Copy } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, PoundSterling, Coins, Keyboard, Copy, NotebookPen, Plus, Edit, Trash2, Zap, Hash } from 'lucide-react';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
@@ -78,6 +78,17 @@ interface CountState {
   [key: number]: number;
 }
 
+interface SavedCounting {
+  id: string;
+  hash: string;
+  date: string;
+  totalAmount: number;
+  totalCount: number;
+  denominationCounts: Record<number, number>;
+  currency: Currency;
+  note?: string;
+}
+
 function App() {
   // Update the state type to include EUR
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(() => {
@@ -110,6 +121,49 @@ function App() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
+
+  // Notepad state
+  interface Note {
+    id: string;
+    title: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  const [showNotepad, setShowNotepad] = useState(false);
+  const [notes, setNotes] = useState<Note[]>(() => {
+    const savedNotes = localStorage.getItem('quickNotes');
+    if (savedNotes) {
+      try {
+        return JSON.parse(savedNotes);
+      } catch (error) {
+        console.error('Error parsing saved notes:', error);
+        return [];
+      }
+    }
+    return [];
+  });
+  const [currentNote, setCurrentNote] = useState<Note | null>(null);
+  const [isEditingNote, setIsEditingNote] = useState(false);
+  const [noteTitle, setNoteTitle] = useState('');
+  const [noteContent, setNoteContent] = useState('');
+
+  // Hash popup state
+  const [showHashPopup, setShowHashPopup] = useState(false);
+  const [selectedCountingHash, setSelectedCountingHash] = useState<string | null>(null);
+  const [savedCountings, setSavedCountings] = useState<SavedCounting[]>(() => {
+    const saved = localStorage.getItem('savedCountings');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (error) {
+        console.error('Error parsing saved countings:', error);
+        return [];
+      }
+    }
+    return [];
+  });
 
   // Currency management state
   const [enabledCurrencies, setEnabledCurrencies] = useState<Record<Currency, boolean>>(() => {
@@ -309,6 +363,13 @@ function App() {
         return;
       }
 
+      // Shift+N - Toggle Notepad
+      if (event.shiftKey && event.key === 'N') {
+        event.preventDefault();
+        toggleNotepad();
+        return;
+      }
+
       // Escape - Close modals and menus
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -316,6 +377,7 @@ function App() {
         setShowCalculatorPad(false);
         setShowProModal(false);
         setMobileMenuOpen(false);
+        setShowNotepad(false);
         return;
       }
 
@@ -332,13 +394,93 @@ function App() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [suppressAlerts, selectedCurrency, activeTab, showCalculator]);
+  }, [suppressAlerts, selectedCurrency, activeTab, showCalculator, showNotepad]);
 
   // Custom alert function that respects suppress setting
   const showAlert = (message: string) => {
     if (!suppressAlerts) {
       alert(message);
     }
+  };
+
+  // Hash utility functions
+  const generateHash = (): string => {
+    // Simple incremental hash generation
+    const nextNumber = savedCountings.length + 1;
+    return `#${nextNumber}`;
+  };
+
+  const saveCounting = (countingData: Omit<SavedCounting, 'hash'>) => {
+    const hash = generateHash();
+    const savedCounting: SavedCounting = {
+      ...countingData,
+      hash
+    };
+    
+    const updatedCountings = [savedCounting, ...savedCountings];
+    setSavedCountings(updatedCountings);
+    localStorage.setItem('savedCountings', JSON.stringify(updatedCountings));
+    
+    return hash;
+  };
+
+  const findCountingByHash = (hash: string): SavedCounting | undefined => {
+    return savedCountings.find(counting => counting.hash === hash);
+  };
+
+  const loadCountingFromHash = (hash: string) => {
+    const counting = findCountingByHash(hash);
+    if (counting) {
+      // Switch to the correct currency if needed
+      if (counting.currency !== selectedCurrency) {
+        handleCurrencyChange(counting.currency);
+      }
+      
+      // Load the counts
+      setCounts(counting.denominationCounts);
+      showAlert(`Counting loaded from ${hash}`);
+    } else {
+      showAlert('Counting not found for the provided hash.');
+    }
+  };
+
+  const downloadCountingData = (hash: string) => {
+    const counting = findCountingByHash(hash);
+    if (counting) {
+      const dataStr = JSON.stringify(counting, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `counting-${hash}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const renderNoteWithHashes = (content: string) => {
+    // Replace hash mentions with clickable elements - now matches #1, #2, etc.
+    const hashRegex = /#\d+/g;
+    const parts = content.split(hashRegex);
+    const hashes = content.match(hashRegex) || [];
+    
+    return parts.map((part, index) => (
+      <React.Fragment key={index}>
+        {part}
+        {hashes[index] && (
+          <span
+            onClick={() => {
+              setSelectedCountingHash(hashes[index]);
+              setShowHashPopup(true);
+            }}
+            className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded-md cursor-pointer hover:bg-blue-200 transition-colors text-sm font-mono mx-1"
+            title={`Click to view counting details for ${hashes[index]}`}
+          >
+            {hashes[index]}
+          </span>
+        )}
+      </React.Fragment>
+    ));
   };
 
   // Load counts when currency changes
@@ -439,22 +581,32 @@ function App() {
     }
     
     try {
-      const savedHistory = localStorage.getItem(`countNoteHistory_${selectedCurrency}`) || '[]';
-      const history = JSON.parse(savedHistory);
-      
-      const newEntry = {
+      // Create counting data for hash storage
+      const countingData = {
         id: Date.now().toString(),
         date: new Date().toLocaleString(),
         totalAmount,
         totalCount,
-        denominationCounts: { ...counts }, // Create a copy
+        denominationCounts: { ...counts },
         currency: selectedCurrency
+      };
+
+      // Generate hash and save to hash storage
+      const hash = saveCounting(countingData);
+      
+      // Also save to history for backward compatibility
+      const savedHistory = localStorage.getItem(`countNoteHistory_${selectedCurrency}`) || '[]';
+      const history = JSON.parse(savedHistory);
+      
+      const newEntry = {
+        ...countingData,
+        hash // Include hash in history entry
       };
       
       const updatedHistory = [newEntry, ...history];
       localStorage.setItem(`countNoteHistory_${selectedCurrency}`, JSON.stringify(updatedHistory));
       
-      showAlert('Summary saved successfully!');
+      showAlert(`Summary saved successfully! Hash: ${hash}\n\nYou can reference this counting in notes using ${hash}`);
     } catch (error) {
       console.error('Error saving to history:', error);
       showAlert('Error saving summary. Please try again.');
@@ -470,27 +622,30 @@ function App() {
   const handleExportData = () => {
     try {
       const exportData = {
-        version: '1.0',
+        version: '2.0',
         exportDate: new Date().toISOString(),
-        currencies: ['INR', 'USD', 'EUR'].reduce((acc, currency) => {
+        currencies: ['INR', 'USD', 'EUR', 'GBP', 'AED'].reduce((acc, currency) => {
           const counts = localStorage.getItem(`denominationCounts_${currency}`);
           const history = localStorage.getItem(`countNoteHistory_${currency}`);
-          const calcHistory = localStorage.getItem('calculatorHistory');
           
           acc[currency] = {
             currentCounts: counts ? JSON.parse(counts) : {},
             history: history ? JSON.parse(history) : []
           };
           
-          if (currency === selectedCurrency && calcHistory) {
-            acc[currency].calculatorHistory = JSON.parse(calcHistory);
-          }
-          
           return acc;
         }, {} as any),
         settings: {
-          selectedCurrency: localStorage.getItem('selectedCurrency') || 'INR'
-        }
+          selectedCurrency: localStorage.getItem('selectedCurrency') || 'INR',
+          enabledCurrencies: localStorage.getItem('enabledCurrencies') ? JSON.parse(localStorage.getItem('enabledCurrencies')!) : null,
+          showCalculatorPad: localStorage.getItem('showCalculatorPad'),
+          showCalculator: localStorage.getItem('showCalculator'),
+          showAmountInText: localStorage.getItem('showAmountInText'),
+          suppressAlerts: localStorage.getItem('suppressAlerts')
+        },
+        savedCountings: localStorage.getItem('savedCountings') ? JSON.parse(localStorage.getItem('savedCountings')!) : [],
+        quickNotes: localStorage.getItem('quickNotes') ? JSON.parse(localStorage.getItem('quickNotes')!) : [],
+        calculatorHistory: localStorage.getItem('calculatorHistory') ? JSON.parse(localStorage.getItem('calculatorHistory')!) : []
       };
 
       const dataStr = JSON.stringify(exportData, null, 2);
@@ -539,15 +694,43 @@ function App() {
               if (data.history) {
                 localStorage.setItem(`countNoteHistory_${currency}`, JSON.stringify(data.history));
               }
-              if (data.calculatorHistory) {
-                localStorage.setItem('calculatorHistory', JSON.stringify(data.calculatorHistory));
-              }
             });
             
+            // Import calculator history
+            if (importData.calculatorHistory) {
+              localStorage.setItem('calculatorHistory', JSON.stringify(importData.calculatorHistory));
+            }
+            
+            // Import saved countings
+            if (importData.savedCountings) {
+              localStorage.setItem('savedCountings', JSON.stringify(importData.savedCountings));
+            }
+            
+            // Import quick notes
+            if (importData.quickNotes) {
+              localStorage.setItem('quickNotes', JSON.stringify(importData.quickNotes));
+            }
+            
             // Import settings
-            if (importData.settings?.selectedCurrency) {
-              localStorage.setItem('selectedCurrency', importData.settings.selectedCurrency);
-              setSelectedCurrency(importData.settings.selectedCurrency);
+            if (importData.settings) {
+              if (importData.settings.selectedCurrency) {
+                localStorage.setItem('selectedCurrency', importData.settings.selectedCurrency);
+              }
+              if (importData.settings.enabledCurrencies) {
+                localStorage.setItem('enabledCurrencies', JSON.stringify(importData.settings.enabledCurrencies));
+              }
+              if (importData.settings.showCalculatorPad !== undefined) {
+                localStorage.setItem('showCalculatorPad', importData.settings.showCalculatorPad);
+              }
+              if (importData.settings.showCalculator !== undefined) {
+                localStorage.setItem('showCalculator', importData.settings.showCalculator);
+              }
+              if (importData.settings.showAmountInText !== undefined) {
+                localStorage.setItem('showAmountInText', importData.settings.showAmountInText);
+              }
+              if (importData.settings.suppressAlerts !== undefined) {
+                localStorage.setItem('suppressAlerts', importData.settings.suppressAlerts);
+              }
             }
             
             // Reload the page to reflect changes
@@ -568,6 +751,79 @@ function App() {
     // For now, just show an alert. In a real app, this would redirect to payment
     showAlert('Pro features coming soon! This would redirect to the upgrade page.');
     setShowProModal(false);
+  };
+
+  // Notepad functions
+  const saveNotesToLocalStorage = (updatedNotes: Note[]) => {
+    localStorage.setItem('quickNotes', JSON.stringify(updatedNotes));
+    setNotes(updatedNotes);
+  };
+
+  const createNewNote = () => {
+    const newNote: Note = {
+      id: Date.now().toString(),
+      title: 'New Note',
+      content: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    setCurrentNote(newNote);
+    setNoteTitle(newNote.title);
+    setNoteContent(newNote.content);
+    setIsEditingNote(true);
+  };
+
+  const saveCurrentNote = () => {
+    if (!currentNote) return;
+
+    const updatedNote: Note = {
+      ...currentNote,
+      title: noteTitle.trim() || 'Untitled Note',
+      content: noteContent,
+      updatedAt: new Date().toISOString()
+    };
+
+    const existingIndex = notes.findIndex(note => note.id === currentNote.id);
+    let updatedNotes: Note[];
+
+    if (existingIndex >= 0) {
+      updatedNotes = [...notes];
+      updatedNotes[existingIndex] = updatedNote;
+    } else {
+      updatedNotes = [updatedNote, ...notes];
+    }
+
+    saveNotesToLocalStorage(updatedNotes);
+    setCurrentNote(updatedNote);
+    setIsEditingNote(false);
+    showAlert('Note saved successfully!');
+  };
+
+  const selectNote = (note: Note) => {
+    setCurrentNote(note);
+    setNoteTitle(note.title);
+    setNoteContent(note.content);
+    setIsEditingNote(false);
+  };
+
+  const deleteNote = (noteId: string) => {
+    if (window.confirm('Are you sure you want to delete this note?')) {
+      const updatedNotes = notes.filter(note => note.id !== noteId);
+      saveNotesToLocalStorage(updatedNotes);
+      
+      if (currentNote?.id === noteId) {
+        setCurrentNote(null);
+        setNoteTitle('');
+        setNoteContent('');
+        setIsEditingNote(false);
+      }
+      
+      showAlert('Note deleted successfully!');
+    }
+  };
+
+  const toggleNotepad = () => {
+    setShowNotepad(!showNotepad);
   };
 
   const leftColumnDenominations = CURRENCY_DENOMINATIONS[selectedCurrency].slice(0, Math.ceil(CURRENCY_DENOMINATIONS[selectedCurrency].length / 2));
@@ -818,6 +1074,153 @@ function App() {
     </div>
   );
 
+  const HashPopup = () => {
+    if (!selectedCountingHash) return null;
+    
+    const counting = findCountingByHash(selectedCountingHash);
+    
+    if (!counting) {
+      return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Counting Not Found</h3>
+              <p className="text-gray-600 mb-4">
+                The counting data for hash {selectedCountingHash} could not be found.
+              </p>
+              <button
+                onClick={() => {
+                  setShowHashPopup(false);
+                  setSelectedCountingHash(null);
+                }}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const currencySymbols = {
+      INR: '₹',
+      USD: '$',
+      EUR: '€',
+      GBP: '£',
+      AED: 'د.إ'
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h3 className="text-xl font-bold text-gray-800 flex items-center">
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md font-mono text-sm mr-3">
+                    {counting.hash}
+                  </span>
+                  Counting Details
+                </h3>
+                <p className="text-gray-600 text-sm mt-1">
+                  Created: {counting.date}
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowHashPopup(false);
+                  setSelectedCountingHash(null);
+                }}
+                className="text-gray-500 hover:text-gray-700 p-1"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Summary */}
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg border border-green-200 mb-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">
+                    {currencySymbols[counting.currency]}{counting.totalAmount.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">Total Amount</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {counting.totalCount.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">Total Count</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Denomination Breakdown */}
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-3">Denomination Breakdown</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {Object.entries(counting.denominationCounts)
+                  .filter(([_, count]) => count > 0)
+                  .sort(([a], [b]) => Number(b) - Number(a))
+                  .map(([denomination, count]) => (
+                    <div key={denomination} className="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                      <span className="font-medium">
+                        {currencySymbols[counting.currency]}{Number(denomination).toLocaleString()}
+                      </span>
+                      <span className="text-gray-600">
+                        {count} × = {currencySymbols[counting.currency]}{(Number(denomination) * count).toLocaleString()}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                onClick={() => {
+                  loadCountingFromHash(counting.hash);
+                  setShowHashPopup(false);
+                  setSelectedCountingHash(null);
+                }}
+                className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-3 rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium"
+              >
+                <Upload className="mr-2" size={18} />
+                Load into Counter
+              </button>
+              <button
+                onClick={() => {
+                  downloadCountingData(counting.hash);
+                }}
+                className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-3 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-md flex items-center justify-center font-medium"
+              >
+                <Download className="mr-2" size={18} />
+                Download Data
+              </button>
+            </div>
+
+            {/* Copy Hash Button */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="text-center">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(counting.hash);
+                    showAlert('Hash copied to clipboard!');
+                  }}
+                  className="text-gray-600 hover:text-gray-800 text-sm flex items-center justify-center mx-auto"
+                >
+                  <Copy className="mr-1" size={14} />
+                  Copy hash to clipboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const MenuModal = () => (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -991,6 +1394,64 @@ function App() {
                       <p className="text-xs text-center text-gray-500 mt-1">
                         Explore my other projects and work
                       </p>
+                    </div>
+                  </section>
+
+                  {/* Key Features Section */}
+                  <section className="bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg border border-green-200">
+                    <div className="flex items-start mb-4">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-400 rounded-full flex items-center justify-center mr-3">
+                        <Zap className="text-white" size={20} />
+                      </div>
+                      <div>
+                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Key Features</h3>
+                        <p className="text-sm text-green-600">What makes Note Counter special</p>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="bg-white p-3 rounded-lg border border-gray-200">
+                        <div className="flex items-center mb-2">
+                          <Hash className="text-indigo-500 mr-2" size={16} />
+                          <h4 className="font-semibold text-gray-800 text-sm">Hash References</h4>
+                        </div>
+                        <p className="text-xs text-gray-600 mb-2">
+                          Save countings and reference them with simple hashes like #1, #2, #3
+                        </p>
+                        <div className="text-xs text-gray-500">
+                          ✨ <strong>NEW in v10.6.0:</strong> Click hash references in notes for instant access
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white p-3 rounded-lg border border-gray-200">
+                        <div className="flex items-center mb-2">
+                          <Calculator className="text-blue-500 mr-2" size={16} />
+                          <h4 className="font-semibold text-gray-800 text-sm">Built-in Calculator</h4>
+                        </div>
+                        <p className="text-xs text-gray-600">
+                          Advanced calculator with memory functions and quick access shortcuts
+                        </p>
+                      </div>
+                      
+                      <div className="bg-white p-3 rounded-lg border border-gray-200">
+                        <div className="flex items-center mb-2">
+                          <History className="text-purple-500 mr-2" size={16} />
+                          <h4 className="font-semibold text-gray-800 text-sm">Transaction History</h4>
+                        </div>
+                        <p className="text-xs text-gray-600">
+                          Track all your counting sessions with detailed history and notes
+                        </p>
+                      </div>
+                      
+                      <div className="bg-white p-3 rounded-lg border border-gray-200">
+                        <div className="flex items-center mb-2">
+                          <Download className="text-orange-500 mr-2" size={16} />
+                          <h4 className="font-semibold text-gray-800 text-sm">Export & Import</h4>
+                        </div>
+                        <p className="text-xs text-gray-600">
+                          Backup your data or share countings with CSV/JSON export options
+                        </p>
+                      </div>
                     </div>
                   </section>
 
@@ -1479,6 +1940,81 @@ function App() {
                       </div>
                     </div>
                   </section>
+
+                  {/* Upcoming Custom Currency Feature */}
+                  <section className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border-2 border-purple-200 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 text-xs font-bold transform rotate-12 translate-x-1 -translate-y-1">
+                      COMING SOON
+                    </div>
+                    <div className="flex items-center mb-4">
+                      <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-white text-lg">🚀</span>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-purple-800">Revolutionary Custom Currency Feature</h3>
+                        <p className="text-purple-600 text-sm">Create and use your own custom currencies!</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-white p-4 rounded-lg border border-purple-200">
+                          <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
+                            <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            Create Custom Currencies
+                          </h4>
+                          <ul className="text-sm text-gray-600 space-y-1">
+                            <li>• Design your own currency with custom symbols</li>
+                            <li>• Set custom denominations and values</li>
+                            <li>• Add country/region associations</li>
+                            <li>• Support for multiple counting formats</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="bg-white p-4 rounded-lg border border-purple-200">
+                          <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
+                            <span className="w-2 h-2 bg-pink-500 rounded-full mr-2"></span>
+                            Smart Integration
+                          </h4>
+                          <ul className="text-sm text-gray-600 space-y-1">
+                            <li>• Seamlessly integrates with existing features</li>
+                            <li>• Full history and export support</li>
+                            <li>• Import/export custom currency definitions</li>
+                            <li>• Share currencies with the community</li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-purple-100 p-4 rounded-lg border border-purple-300">
+                        <div className="flex items-center justify-between flex-wrap gap-4">
+                          <div>
+                            <h4 className="font-semibold text-purple-800 mb-1">Expected Launch: Q3 2025</h4>
+                            <p className="text-sm text-purple-600">
+                              Want to be notified when this feature launches? Request your custom currency below!
+                            </p>
+                          </div>
+                          <a 
+                            href="/blog.html#custom-currency-request" 
+                            target="_blank"
+                            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 text-sm"
+                          >
+                            <span>🎯</span>
+                            Request Currency
+                          </a>
+                        </div>
+                      </div>
+                      
+                      <div className="text-center">
+                        <a 
+                          href="/blog.html" 
+                          target="_blank"
+                          className="text-purple-600 hover:text-purple-800 font-medium text-sm underline"
+                        >
+                          Read more about upcoming features →
+                        </a>
+                      </div>
+                    </div>
+                  </section>
                 </div>
               )}
 
@@ -1513,6 +2049,77 @@ function App() {
                     </div>
                   </section>
 
+                  {/* Saved Countings with Hashes */}
+                  <section>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                      <span className="mr-2">#️⃣</span>
+                      Saved Countings
+                    </h3>
+                    {savedCountings.length === 0 ? (
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
+                        <p className="text-gray-600 mb-2">No saved countings yet</p>
+                        <p className="text-sm text-gray-500">
+                          Save a counting from the main counter to generate a hash that you can reference in notes
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3 max-h-64 overflow-y-auto">
+                        {savedCountings.slice(0, 10).map((counting) => (
+                          <div key={counting.id} className="bg-white p-3 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <div className="flex items-center mb-2">
+                                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md font-mono text-xs mr-2">
+                                    {counting.hash}
+                                  </span>
+                                  <span className="text-sm text-gray-600">{counting.currency}</span>
+                                </div>
+                                <div className="text-sm text-gray-800">
+                                  <span className="font-medium">
+                                    {counting.currency === 'INR' ? '₹' : counting.currency === 'USD' ? '$' : counting.currency === 'EUR' ? '€' : counting.currency === 'GBP' ? '£' : 'د.إ'}
+                                    {counting.totalAmount.toLocaleString()}
+                                  </span>
+                                  <span className="text-gray-500 ml-2">({counting.totalCount} items)</span>
+                                </div>
+                                <div className="text-xs text-gray-500">{counting.date}</div>
+                              </div>
+                              <div className="flex space-x-1">
+                                <button
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(counting.hash);
+                                    showAlert('Hash copied to clipboard!');
+                                  }}
+                                  className="p-1 text-blue-500 hover:bg-blue-100 rounded transition-colors"
+                                  title="Copy hash"
+                                >
+                                  <Copy size={14} />
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setSelectedCountingHash(counting.hash);
+                                    setShowHashPopup(true);
+                                    setShowMenu(false);
+                                  }}
+                                  className="p-1 text-green-500 hover:bg-green-100 rounded transition-colors"
+                                  title="View details"
+                                >
+                                  <Eye size={14} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        {savedCountings.length > 10 && (
+                          <div className="text-center py-2">
+                            <span className="text-sm text-gray-500">
+                              Showing 10 of {savedCountings.length} saved countings
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </section>
+
                   {/* Data Management Section */}
                   <section>
                     <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4 flex items-center">
@@ -1544,12 +2151,15 @@ function App() {
                         onClick={() => {
                           if (window.confirm('This will clear ALL data including counts and history for ALL currencies. Are you absolutely sure?')) {
                             // Clear all currency data
-                            ['INR', 'USD', 'EUR'].forEach(currency => {
+                            ['INR', 'USD', 'EUR', 'GBP', 'AED'].forEach(currency => {
                               localStorage.removeItem(`denominationCounts_${currency}`);
                               localStorage.removeItem(`countNoteHistory_${currency}`);
                             });
                             localStorage.removeItem('calculatorHistory');
                             localStorage.removeItem('selectedCurrency');
+                            localStorage.removeItem('savedCountings');
+                            localStorage.removeItem('quickNotes');
+                            localStorage.removeItem('enabledCurrencies');
                             window.location.reload();
                           }
                           setShowMenu(false);
@@ -1563,8 +2173,10 @@ function App() {
                     <div className="bg-gray-50 p-3 rounded-lg">
                       <h4 className="font-medium text-gray-700 mb-2">What's included in Export/Import:</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>✅ All currency counting data (INR, USD, EUR)</li>
+                        <li>✅ All currency counting data (INR, USD, EUR, GBP, AED)</li>
                         <li>✅ Complete counting history for all currencies</li>
+                        <li>✅ Saved countings with hashes</li>
+                        <li>✅ Quick notes and notepad content</li>
                         <li>✅ Calculator history</li>
                         <li>✅ App settings and preferences</li>
                         <li>✅ Timestamp information</li>
@@ -1673,6 +2285,10 @@ function App() {
                               <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">Ctrl + T</kbd>
                             </div>
                             <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Quick notepad</span>
+                              <kbd className="px-2 py-1 bg-purple-200 rounded text-xs font-mono">Shift + N</kbd>
+                            </div>
+                            <div className="flex justify-between items-center">
                               <span className="text-gray-600">Show help</span>
                               <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">F1</kbd>
                             </div>
@@ -1738,6 +2354,17 @@ function App() {
                         </ul>
                       </div>
 
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-3 rounded-lg border border-blue-200">
+                        <h4 className="text-base font-medium text-gray-700 mb-2">#️⃣ Hash References (New!)</h4>
+                        <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 ml-2">
+                          <li>Every saved counting gets a simple hash (e.g., <code className="bg-blue-100 text-blue-800 px-1 rounded text-xs">#1</code>, <code className="bg-blue-100 text-blue-800 px-1 rounded text-xs">#2</code>, <code className="bg-blue-100 text-blue-800 px-1 rounded text-xs">#3</code>)</li>
+                          <li>Reference saved countings in notes by typing their hash</li>
+                          <li>Click on hash references in notes to view counting details</li>
+                          <li>Copy hash to clipboard and load counting data with one click</li>
+                          <li>Find all your saved hashes in the Data tab and History</li>
+                        </ul>
+                      </div>
+
                       <div className="bg-gray-50 p-3 rounded-lg">
                         <h4 className="text-base font-medium text-gray-700 mb-2">🔥 Key Features</h4>
                         <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 ml-2">
@@ -1768,6 +2395,36 @@ function App() {
               {/* Blog Tab */}
               {activeMenuTab === 'blog' && (
                 <div className="space-y-6">
+                  {/* Latest Update Banner */}
+                  <section className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border-2 border-green-300">
+                    <div className="flex items-center mb-3">
+                      <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-white font-bold text-sm">NEW</span>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-green-800">Version 10.6.0 - Hash References Released!</h3>
+                        <p className="text-sm text-green-600">July 13, 2025 • Major Feature Update</p>
+                      </div>
+                    </div>
+                    <div className="ml-13">
+                      <h4 className="font-semibold text-green-800 mb-2">🎉 What's New:</h4>
+                      <ul className="text-sm text-green-700 space-y-1 mb-3">
+                        <li>• <strong>Simple Hash System:</strong> Every saved counting now gets a memorable hash like #1, #2, #3</li>
+                        <li>• <strong>Smart Note References:</strong> Type hash numbers in notes to create clickable links</li>
+                        <li>• <strong>History Integration:</strong> All transaction history now displays hash references</li>
+                        <li>• <strong>One-Click Actions:</strong> Click any hash to view details, load data, or download</li>
+                        <li>• <strong>Export/Import Support:</strong> Hashes included in all data backup operations</li>
+                      </ul>
+                      <div className="bg-green-100 p-3 rounded-lg border border-green-200">
+                        <p className="text-sm text-green-800">
+                          <strong>How to use:</strong> Save any counting to get a hash (e.g., #1). Then type "#1" in your notes 
+                          to create a clickable reference! Perfect for keeping track of daily cash counts, till reconciliations, 
+                          and financial documentation.
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+
                   {/* Blog Introduction Section */}
                   <section className="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-lg border border-purple-200">
                     <div className="flex items-center mb-3">
@@ -2255,6 +2912,22 @@ function App() {
                     </div>
                   </button>
                   <button
+                    onClick={toggleNotepad}
+                    className="py-2 px-4 rounded-md font-medium text-white hover:bg-indigo-700/50 transition-all group relative"
+                    title="Quick Notepad (Shift+N)"
+                  >
+                    <div className="flex items-center">
+                      <NotebookPen className="mr-2" size={18} />
+                      <span className="hidden lg:inline">Notepad</span>
+                      <span className="lg:hidden">Notes</span>
+                    </div>
+                    {notes.length > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                        {notes.length}
+                      </span>
+                    )}
+                  </button>
+                  <button
                     onClick={() => setShowMenu(true)}
                     className="ml-2 p-2 rounded-full hover:bg-indigo-700/50 transition-colors group relative"
                     title="Menu (Ctrl+M) • Press F1 for all shortcuts"
@@ -2333,6 +3006,23 @@ function App() {
                   </button>
                   <button
                     onClick={() => {
+                      toggleNotepad();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full py-2 px-4 rounded-md font-medium mb-2 text-white hover:bg-indigo-700/50 transition-all relative"
+                  >
+                    <div className="flex items-center justify-center">
+                      <NotebookPen className="mr-2" size={18} />
+                      Notepad
+                      {notes.length > 0 && (
+                        <span className="ml-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                          {notes.length}
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
                       setShowMenu(true);
                       setMobileMenuOpen(false);
                     }}
@@ -2349,6 +3039,183 @@ function App() {
 
             {showMenu && <MenuModal />}
             {showProModal && <ProModal />}
+            {showHashPopup && <HashPopup />}
+            {showNotepad && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-lg w-full max-w-4xl h-[80vh] flex flex-col shadow-2xl">
+                  {/* Header */}
+                  <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-indigo-50">
+                    <div className="flex items-center">
+                      <NotebookPen className="mr-3 text-purple-600" size={24} />
+                      <h2 className="text-xl font-bold text-gray-800">Quick Notepad</h2>
+                      <span className="ml-2 text-sm text-gray-500">({notes.length} notes)</span>
+                    </div>
+                    <button
+                      onClick={() => setShowNotepad(false)}
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  {/* Main Content */}
+                  <div className="flex flex-1 overflow-hidden">
+                    {/* Notes List Sidebar */}
+                    <div className="w-1/3 border-r border-gray-200 bg-gray-50 flex flex-col">
+                      <div className="p-3 border-b border-gray-200">
+                        <button
+                          onClick={createNewNote}
+                          className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center"
+                        >
+                          <Plus className="mr-2" size={16} />
+                          New Note
+                        </button>
+                      </div>
+                      <div className="flex-1 overflow-y-auto">
+                        {notes.length === 0 ? (
+                          <div className="p-4 text-center text-gray-500">
+                            <NotebookPen size={48} className="mx-auto mb-2 text-gray-300" />
+                            <p>No notes yet</p>
+                            <p className="text-sm">Create your first note!</p>
+                          </div>
+                        ) : (
+                          <div className="p-2 space-y-2">
+                            {notes.map((note) => (
+                              <div
+                                key={note.id}
+                                className={`p-3 rounded-lg cursor-pointer transition-all border-2 ${
+                                  currentNote?.id === note.id
+                                    ? 'bg-purple-100 border-purple-300'
+                                    : 'bg-white border-transparent hover:bg-gray-100'
+                                }`}
+                                onClick={() => selectNote(note)}
+                              >
+                                <div className="flex items-center justify-between mb-1">
+                                  <h3 className="font-medium text-gray-800 truncate flex-1">{note.title}</h3>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      deleteNote(note.id);
+                                    }}
+                                    className="p-1 text-red-500 hover:bg-red-100 rounded"
+                                    title="Delete note"
+                                  >
+                                    <Trash2 size={12} />
+                                  </button>
+                                </div>
+                                <p className="text-xs text-gray-500 truncate">
+                                  {renderNoteWithHashes(note.content || 'No content')}
+                                </p>
+                                <p className="text-xs text-gray-400 mt-1">
+                                  {new Date(note.updatedAt).toLocaleDateString()}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Note Editor */}
+                    <div className="flex-1 flex flex-col">
+                      {currentNote ? (
+                        <>
+                          {/* Note Header */}
+                          <div className="p-4 border-b border-gray-200 bg-white">
+                            <div className="flex items-center justify-between mb-3">
+                              <input
+                                type="text"
+                                value={noteTitle}
+                                onChange={(e) => setNoteTitle(e.target.value)}
+                                className="text-lg font-semibold text-gray-800 border-none outline-none bg-transparent flex-1"
+                                placeholder="Note title..."
+                                disabled={!isEditingNote}
+                              />
+                              <div className="flex items-center space-x-2 ml-4">
+                                {isEditingNote ? (
+                                  <>
+                                    <button
+                                      onClick={saveCurrentNote}
+                                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors flex items-center"
+                                    >
+                                      <Save className="mr-1" size={14} />
+                                      Save
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        setIsEditingNote(false);
+                                        setNoteTitle(currentNote.title);
+                                        setNoteContent(currentNote.content);
+                                      }}
+                                      className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm font-medium transition-colors"
+                                    >
+                                      Cancel
+                                    </button>
+                                  </>
+                                ) : (
+                                  <button
+                                    onClick={() => setIsEditingNote(true)}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors flex items-center"
+                                  >
+                                    <Edit className="mr-1" size={14} />
+                                    Edit
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                            <p className="text-xs text-gray-500">
+                              Created: {new Date(currentNote.createdAt).toLocaleString()} | 
+                              Updated: {new Date(currentNote.updatedAt).toLocaleString()}
+                            </p>
+                          </div>
+
+                          {/* Note Content */}
+                          <div className="flex-1 p-4">
+                            {isEditingNote ? (
+                              <textarea
+                                value={noteContent}
+                                onChange={(e) => setNoteContent(e.target.value)}
+                                className="w-full h-full resize-none border border-gray-300 rounded-lg p-3 text-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
+                                placeholder="Start writing your note... (Reference saved countings using their hash, e.g., #1, #2, #3)"
+                                disabled={!isEditingNote}
+                              />
+                            ) : (
+                              <div className="w-full h-full border border-gray-300 rounded-lg p-3 text-gray-700 bg-gray-50 overflow-y-auto whitespace-pre-wrap">
+                                {noteContent ? renderNoteWithHashes(noteContent) : (
+                                  <span className="text-gray-500 italic">No content</span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="flex-1 flex items-center justify-center bg-gray-50">
+                          <div className="text-center text-gray-500">
+                            <NotebookPen size={64} className="mx-auto mb-4 text-gray-300" />
+                            <h3 className="text-lg font-medium mb-2">Select a note to view</h3>
+                            <p className="text-sm">Choose a note from the sidebar or create a new one</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="p-4 border-t border-gray-200 bg-gray-50">
+                    <div className="flex items-center justify-between text-sm text-gray-600">
+                      <div className="flex items-center space-x-4">
+                        <span>💡 Tip: Use <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">Shift + N</kbd> to quickly open/close</span>
+                        <span>� Reference saved countings using their hash (e.g., #1, #2, #3)</span>
+                        <span>�📱 All notes saved locally on your device</span>
+                      </div>
+                      <div className="text-xs">
+                        Note Counter • Quick Notepad
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="container mx-auto p-4">
               {activeTab === 'counter' ? (
@@ -2560,7 +3427,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">Version 10.5.0</span>
+                  <span className="text-gray-400 text-sm">Version 10.6.0</span>
                 </div>
               </div>
             </footer>
