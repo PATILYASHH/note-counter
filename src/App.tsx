@@ -106,6 +106,11 @@ function App() {
     return localStorage.getItem('suppressAlerts') === 'true';
   });
 
+  // PWA Install state
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
+
   // Currency management state
   const [enabledCurrencies, setEnabledCurrencies] = useState<Record<Currency, boolean>>(() => {
     const saved = localStorage.getItem('enabledCurrencies');
@@ -201,6 +206,36 @@ function App() {
   useEffect(() => {
     localStorage.setItem('showAmountInText', showAmountInText.toString());
   }, [showAmountInText]);
+
+  // PWA Install functionality
+  useEffect(() => {
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true);
+    }
+
+    // Listen for beforeinstallprompt event
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallPrompt(true);
+    };
+
+    // Listen for app installed event
+    const handleAppInstalled = () => {
+      setIsInstalled(true);
+      setShowInstallPrompt(false);
+      setDeferredPrompt(null);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
 
   // Add comprehensive keyboard shortcuts
   useEffect(() => {
@@ -359,6 +394,29 @@ function App() {
       } catch (error) {
         console.error('Error clearing localStorage:', error);
       }
+    }
+  };
+
+  // PWA Install handler
+  const handleInstallPWA = async () => {
+    if (!deferredPrompt) {
+      showAlert('Installation not available at this time. Try adding this page to your home screen manually.');
+      return;
+    }
+
+    try {
+      const result = await deferredPrompt.prompt();
+      console.log('Install prompt result:', result);
+      
+      if (result.outcome === 'accepted') {
+        showAlert('App installation started! Check your home screen.');
+      }
+      
+      setDeferredPrompt(null);
+      setShowInstallPrompt(false);
+    } catch (error) {
+      console.error('Error installing PWA:', error);
+      showAlert('Installation failed. Please try again.');
     }
   };
 
@@ -996,6 +1054,58 @@ function App() {
                       </a>
                     </div>
                   </section>
+
+                  {/* PWA Install Section */}
+                  {!isInstalled && (
+                    <section className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
+                      <div className="flex items-center mb-3">
+                        <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mr-3">
+                          <Smartphone size={20} className="text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Install as App</h3>
+                          <p className="text-sm text-purple-600">Get the full app experience</p>
+                        </div>
+                      </div>
+                      <div className="text-sm sm:text-base text-gray-700 space-y-2">
+                        <p>
+                          📱 <strong>Install as App:</strong> Add Note Counter to your home screen for quick access and offline use.
+                        </p>
+                        <p>
+                          ⚡ <strong>Faster Performance:</strong> App loads instantly and works without internet connection.
+                        </p>
+                        <p>
+                          🔔 <strong>Native Experience:</strong> Full-screen app without browser bars for better focus.
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Offline Ready</span>
+                          <span className="px-2 py-1 bg-pink-100 text-pink-700 rounded-full text-xs">Fast Loading</span>
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Native Feel</span>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4 pt-3 border-t border-purple-200">
+                        {showInstallPrompt ? (
+                          <button
+                            onClick={handleInstallPWA}
+                            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-md flex items-center justify-center font-medium"
+                          >
+                            <Download size={18} className="mr-2" />
+                            Install App Now
+                          </button>
+                        ) : (
+                          <div className="text-center">
+                            <p className="text-sm text-gray-600 mb-2">
+                              To install, use your browser's "Add to Home Screen" option or look for the install icon in the address bar.
+                            </p>
+                            <div className="text-xs text-gray-500">
+                              Available on Chrome, Edge, Firefox, and Safari
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </section>
+                  )}
                 </div>
               )}
 
