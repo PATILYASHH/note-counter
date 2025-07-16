@@ -90,6 +90,64 @@ interface SavedCounting {
 }
 
 function App() {
+  // Refs for denomination input fields
+  const denominationRefs = React.useRef<Record<number, HTMLInputElement | null>>({});
+
+  // Handle keyboard navigation between denomination fields
+  const handleDenominationKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    denomValue: number,
+    column: 'left' | 'right',
+    index: number
+  ) => {
+    // Ctrl+Up/Down: increment/decrement value
+    if (e.ctrlKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+      e.preventDefault();
+      if (e.key === 'ArrowUp') {
+        handleCountChange(denomValue, (counts[denomValue] || 0) + 1);
+      } else if (e.key === 'ArrowDown') {
+        handleCountChange(denomValue, Math.max(0, (counts[denomValue] || 0) - 1));
+      }
+      return;
+    }
+    // Shift+Arrow: navigation
+    if (!e.shiftKey) return;
+    const leftDenoms = leftColumnDenominations.map((d: { value: number }) => d.value);
+    const rightDenoms = rightColumnDenominations.map((d: { value: number }) => d.value);
+    let targetValue: number | null = null;
+    if (e.key === 'ArrowDown') {
+      // Move to next denomination in the same column
+      const colDenoms = column === 'left' ? leftDenoms : rightDenoms;
+      const nextIdx = index + 1;
+      if (nextIdx < colDenoms.length) {
+        targetValue = colDenoms[nextIdx];
+      }
+    } else if (e.key === 'ArrowUp') {
+      // Move to previous denomination in the same column
+      const colDenoms = column === 'left' ? leftDenoms : rightDenoms;
+      const prevIdx = index - 1;
+      if (prevIdx >= 0) {
+        targetValue = colDenoms[prevIdx];
+      }
+    } else if (e.key === 'ArrowRight') {
+      // Move to same index in right column
+      if (column === 'left' && rightDenoms[index] !== undefined) {
+        targetValue = rightDenoms[index];
+      }
+    } else if (e.key === 'ArrowLeft') {
+      // Move to same index in left column
+      if (column === 'right' && leftDenoms[index] !== undefined) {
+        targetValue = leftDenoms[index];
+      }
+    }
+    if (targetValue !== null) {
+      e.preventDefault();
+      setTimeout(() => {
+        denominationRefs.current[targetValue]?.focus();
+        denominationRefs.current[targetValue]?.select();
+      }, 0);
+    }
+  };
   // Update the state type to include EUR
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(() => {
     const savedCurrency = localStorage.getItem('selectedCurrency');
@@ -3233,7 +3291,7 @@ function App() {
                         </button>
                       </div>
                       <div className="space-y-3">
-                        {leftColumnDenominations.map((denom) => (
+                        {leftColumnDenominations.map((denom, idx) => (
                           <DenominationCounter
                             key={denom.value}
                             value={denom.value}
@@ -3242,6 +3300,8 @@ function App() {
                             onCountChange={(count) => handleCountChange(denom.value, count)}
                             hideAmount={hideAmounts}
                             currency={selectedCurrency}
+                            inputRef={el => denominationRefs.current[denom.value] = el}
+                            onInputKeyDown={e => handleDenominationKeyDown(e, denom.value, 'left', idx)}
                           />
                         ))}
                       </div>
@@ -3252,7 +3312,7 @@ function App() {
                     <div className="bg-white rounded-lg shadow-lg p-4 h-full border border-gray-200">
                       <h2 className="text-xl font-semibold mb-4 text-gray-800">&nbsp;</h2>
                       <div className="space-y-3">
-                        {rightColumnDenominations.map((denom) => (
+                        {rightColumnDenominations.map((denom, idx) => (
                           <DenominationCounter
                             key={denom.value}
                             value={denom.value}
@@ -3261,6 +3321,8 @@ function App() {
                             onCountChange={(count) => handleCountChange(denom.value, count)}
                             hideAmount={hideAmounts}
                             currency={selectedCurrency}
+                            inputRef={el => denominationRefs.current[denom.value] = el}
+                            onInputKeyDown={e => handleDenominationKeyDown(e, denom.value, 'right', idx)}
                           />
                         ))}
                       </div>
@@ -3427,7 +3489,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">Version 10.6.0</span>
+                  <span className="text-gray-400 text-sm">Version 10.6.3</span>
                 </div>
               </div>
             </footer>
