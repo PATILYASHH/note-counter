@@ -8,6 +8,8 @@ interface DenominationCounterProps {
   onCountChange: (count: number) => void;
   hideAmount: boolean;
   currency: 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
+  inputRef?: (el: HTMLInputElement | null) => void;
+  onInputKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const DenominationCounter: React.FC<DenominationCounterProps> = ({
@@ -16,7 +18,9 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
   count,
   onCountChange,
   hideAmount,
-  currency
+  currency,
+  inputRef,
+  onInputKeyDown
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState(count.toString());
@@ -177,10 +181,31 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
           onChange={handleInputChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
+          onKeyDown={e => {
+            // If parent handles Ctrl+Up/Down, update local inputValue as well
+            if (onInputKeyDown) {
+              const prev = e.currentTarget.value;
+              onInputKeyDown(e);
+              // If Ctrl+Up/Down, update local inputValue to match new count
+              if (e.ctrlKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+                // Use setTimeout to wait for parent state update
+                setTimeout(() => {
+                  if (typeof count === 'number') {
+                    setInputValue((e.key === 'ArrowUp')
+                      ? (Number(prev) + 1).toString()
+                      : Math.max(0, Number(prev) - 1).toString()
+                    );
+                  }
+                }, 0);
+                return;
+              }
+            }
+            handleKeyDown(e);
+          }}
           className="w-full text-center py-2 border-t border-b border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           aria-label={`${value} ${type} count`}
           placeholder="Enter count"
+          ref={inputRef}
         />
         
         <button

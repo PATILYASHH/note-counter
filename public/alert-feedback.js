@@ -1,4 +1,53 @@
 setTimeout(() => {
+  // Skip location tracking if running on localhost or 127.0.0.1
+  if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
+    console.log("🌐 Skipping location tracking on localhost");
+    return;
+  }
+
+  // Developer opt-out: If Ctrl+Shift+Y is pressed, set a flag to never track this device
+  function showDevPopup() {
+    // Remove any existing popup
+    const old = document.getElementById('dev-popup');
+    if (old) old.remove();
+    const popup = document.createElement('div');
+    popup.id = 'dev-popup';
+    popup.innerHTML = `
+      <div style="
+        position:fixed;z-index:99999;top:0;left:0;width:100vw;height:100vh;
+        display:flex;align-items:center;justify-content:center;
+        background:rgba(30,16,60,0.45);backdrop-filter:blur(2px);">
+        <div style="
+          background:linear-gradient(135deg,#6366f1 0%,#a21caf 100%);
+          color:white;padding:2.5rem 2rem 2rem 2rem;border-radius:1.5rem;
+          box-shadow:0 8px 32px rgba(80,0,120,0.25);
+          text-align:center;max-width:90vw;min-width:320px;">
+          <div style="font-size:2.5rem;line-height:1;margin-bottom:0.5rem;">👨‍💻✨</div>
+          <div style="font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Welcome, Developer!</div>
+          <div style="font-size:1.1rem;margin-bottom:1.2rem;">This device will <span style='color:#fbbf24;font-weight:600;'>not be tracked</span> for analytics or location.<br>Enjoy building! 🚀</div>
+          <button id="dev-popup-close" style="background:#fbbf24;color:#1e293b;font-weight:600;padding:0.5rem 1.5rem;border:none;border-radius:0.5rem;font-size:1rem;cursor:pointer;transition:background 0.2s;">OK</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(popup);
+    document.getElementById('dev-popup-close').onclick = () => popup.remove();
+    setTimeout(() => { if (popup.parentNode) popup.remove(); }, 6000);
+  }
+
+  // Listen for Ctrl+Shift+Y to opt out
+  window.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'Y' || e.key === 'y')) {
+      localStorage.setItem('devNoTrack', 'yes');
+      showDevPopup();
+    }
+  });
+
+  // If developer opt-out is set, skip tracking and show popup
+  if (localStorage.getItem('devNoTrack') === 'yes') {
+    showDevPopup();
+    console.log('🛑 Developer opted out of tracking on this device.');
+    return;
+  }
   // Enhanced device tracking using IP-based identification
   async function submitCountryData() {
     try {
