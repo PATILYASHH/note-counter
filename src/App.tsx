@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, PoundSterling, Coins, Keyboard, Copy, NotebookPen, Plus, Edit, Trash2, Zap, Hash } from 'lucide-react';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, PoundSterling, Coins, Keyboard, Copy, NotebookPen, Plus, Edit, Trash2, Zap } from 'lucide-react';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
+
+// Declare global window property for Web Lock
+declare global {
+  interface Window {
+    showWebLockSettings?: () => void;
+  }
+}
 
 // Update the type definition to include GBP and AED
 type Currency = 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
@@ -1470,14 +1477,14 @@ function App() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="bg-white p-3 rounded-lg border border-gray-200">
                         <div className="flex items-center mb-2">
-                          <Hash className="text-indigo-500 mr-2" size={16} />
-                          <h4 className="font-semibold text-gray-800 text-sm">Hash References</h4>
+                          <Shield className="text-indigo-500 mr-2" size={16} />
+                          <h4 className="font-semibold text-gray-800 text-sm">Web Lock Security</h4>
                         </div>
                         <p className="text-xs text-gray-600 mb-2">
-                          Save countings and reference them with simple hashes like #1, #2, #3
+                          Protect your financial data with PIN/password authentication and session management
                         </p>
                         <div className="text-xs text-gray-500">
-                          ✨ <strong>NEW in v10.6.0:</strong> Click hash references in notes for instant access
+                          ✨ <strong>NEW in v10.7.0:</strong> Enhanced Web Lock security for complete data protection
                         </div>
                       </div>
                       
@@ -1776,6 +1783,45 @@ function App() {
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
                           </label>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                      <Shield className="mr-2" size={20} />
+                      Web Lock Settings
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      {/* Web Lock Controls */}
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div className="flex items-center justify-between mb-3">
+                          <div>
+                            <h4 className="text-base font-medium text-gray-700">Web Lock Protection</h4>
+                            <p className="text-sm text-gray-600">Secure your Note Counter with PIN or Password protection</p>
+                          </div>
+                        </div>
+                        
+                        <button
+                          onClick={() => {
+                            if (typeof window.showWebLockSettings === 'function') {
+                              window.showWebLockSettings();
+                            } else {
+                              alert('Web Lock system is loading. Please try again in a moment.');
+                            }
+                          }}
+                          className="w-full flex items-center justify-center px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+                        >
+                          <Shield size={18} className="mr-2" />
+                          <span className="font-medium text-sm">Configure Web Lock</span>
+                        </button>
+                        
+                        <div className="mt-3 text-xs text-gray-500">
+                          <p>• Set up PIN (4 digits) or Password protection</p>
+                          <p>• Lock is active until browser session ends</p>
+                          <p>• All data remains private and local</p>
                         </div>
                       </div>
                     </div>
@@ -2347,6 +2393,10 @@ function App() {
                               <kbd className="px-2 py-1 bg-purple-200 rounded text-xs font-mono">Shift + N</kbd>
                             </div>
                             <div className="flex justify-between items-center">
+                              <span className="text-orange-600 font-medium">🔐 Instant lock app</span>
+                              <kbd className="px-2 py-1 bg-orange-200 rounded text-xs font-mono font-bold">Shift + L</kbd>
+                            </div>
+                            <div className="flex justify-between items-center">
                               <span className="text-gray-600">Show help</span>
                               <kbd className="px-2 py-1 bg-gray-200 rounded text-xs font-mono">F1</kbd>
                             </div>
@@ -2460,24 +2510,24 @@ function App() {
                         <span className="text-white font-bold text-sm">NEW</span>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-green-800">Version 10.6.0 - Hash References Released!</h3>
-                        <p className="text-sm text-green-600">July 13, 2025 • Major Feature Update</p>
+                        <h3 className="text-lg font-bold text-green-800">Version 10.7.0 - Web Lock Security Released!</h3>
+                        <p className="text-sm text-green-600">July 30, 2025 • Major Security Update</p>
                       </div>
                     </div>
                     <div className="ml-13">
-                      <h4 className="font-semibold text-green-800 mb-2">🎉 What's New:</h4>
+                      <h4 className="font-semibold text-green-800 mb-2">🔐 What's New:</h4>
                       <ul className="text-sm text-green-700 space-y-1 mb-3">
-                        <li>• <strong>Simple Hash System:</strong> Every saved counting now gets a memorable hash like #1, #2, #3</li>
-                        <li>• <strong>Smart Note References:</strong> Type hash numbers in notes to create clickable links</li>
-                        <li>• <strong>History Integration:</strong> All transaction history now displays hash references</li>
-                        <li>• <strong>One-Click Actions:</strong> Click any hash to view details, load data, or download</li>
-                        <li>• <strong>Export/Import Support:</strong> Hashes included in all data backup operations</li>
+                        <li>• <strong>PIN Protection:</strong> Secure your data with customizable 4-8 digit PIN codes</li>
+                        <li>• <strong>Password Security:</strong> Advanced password protection with complex character support</li>
+                        <li>• <strong>Settings Integration:</strong> Professional toggle switches seamlessly integrated into Settings tab</li>
+                        <li>• <strong>Session Management:</strong> Intelligent session handling with automatic lock/unlock features</li>
+                        <li>• <strong>Enhanced Security:</strong> Complete data protection with modal interfaces and secure storage</li>
                       </ul>
                       <div className="bg-green-100 p-3 rounded-lg border border-green-200">
                         <p className="text-sm text-green-800">
-                          <strong>How to use:</strong> Save any counting to get a hash (e.g., #1). Then type "#1" in your notes 
-                          to create a clickable reference! Perfect for keeping track of daily cash counts, till reconciliations, 
-                          and financial documentation.
+                          <strong>How to use:</strong> Go to Settings → Web Lock Settings → Configure Web Lock to set up PIN or password protection. 
+                          Your financial data will be securely locked until browser session ends. Perfect for businesses handling 
+                          sensitive cash data and personal financial management.
                         </p>
                       </div>
                     </div>
@@ -3489,7 +3539,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">Version 10.6.3</span>
+                  <span className="text-gray-400 text-sm">Version 10.7.0</span>
                 </div>
               </div>
             </footer>
