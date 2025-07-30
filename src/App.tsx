@@ -2956,7 +2956,7 @@ function App() {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
             <header className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-4 shadow-lg">
               <div className="container mx-auto flex justify-between items-center">
                 <h1 className="text-xl sm:text-2xl font-bold flex items-center">
@@ -3145,10 +3145,12 @@ function App() {
               </div>
             )}
 
-            {showMenu && <MenuModal />}
-            {showProModal && <ProModal />}
-            {showHashPopup && <HashPopup />}
-            {showNotepad && (
+            {/* Main Content - Takes remaining space */}
+            <div className="flex-1 flex flex-col">
+              {showMenu && <MenuModal />}
+              {showProModal && <ProModal />}
+              {showHashPopup && <HashPopup />}
+              {showNotepad && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                 <div className="bg-white rounded-lg w-full max-w-4xl h-[80vh] flex flex-col shadow-2xl">
                   {/* Header */}
@@ -3325,7 +3327,7 @@ function App() {
               </div>
             )}
 
-            <div className="container mx-auto p-4">
+            <div className="container mx-auto p-4 flex-1">
               {activeTab === 'counter' ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="md:col-span-1">
@@ -3466,8 +3468,11 @@ function App() {
                 <HistoryTab hideAmounts={hideAmounts} selectedCurrency={selectedCurrency} />
               )}
             </div>
+            
+            {/* End of Main Content */}
+            </div>
 
-            <footer className="bg-gray-800 text-white py-6">
+            <footer className="bg-gray-800 text-white py-6 mt-auto">
               <div className="container mx-auto px-4">
                 <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
                   <a 
