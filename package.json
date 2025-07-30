@@ -1,8 +1,8 @@
 {
   "name": "note-counter",
   "private": true,
-  "version": "10.6.0",
-  "description": "Comprehensive free online money counter and cash calculator with hash reference system, PDF export and smart analytics. Count currency notes and coins for 5 major currencies with professional reporting and cross-referencing features.",
+  "version": "10.7.0",
+  "description": "Comprehensive free online money counter and cash calculator with Web Lock security system, PIN/password protection and smart analytics. Count currency notes and coins for 5 major currencies with professional security and data protection features.",
   "type": "module",
   "scripts": {
     "dev": "vite",
