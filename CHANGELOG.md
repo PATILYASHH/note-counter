@@ -2,6 +2,45 @@
 
 All notable changes to the Note Counter project will be documented in this file.
 
+## [10.8.0] - 2025-01-06
+
+### 🌍 Major Feature Release: Custom Currency Creator
+
+### ✨ Added
+- **Custom Currency Creator**: Revolutionary currency creation system
+  - **Unlimited Custom Currencies**: Create as many custom currency systems as needed
+  - **Full Customization**: Set currency code (3 letters), name, symbol, and flag emoji
+  - **Flexible Denominations**: Add both notes and coins with any values you need
+  - **Smart Validation**: Prevents duplicate codes and ensures data integrity
+  - **Persistent Storage**: Custom currencies saved locally with full data integrity
+  - **Seamless Integration**: Use custom currencies exactly like built-in ones
+
+### 🎯 Enhanced User Experience
+- **Focus-Persistent Inputs**: No more clicking repeatedly - smooth typing experience in all forms
+  - **React.memo Optimization**: Optimized DenominationValueInput component with React.memo
+  - **Reduced Re-renders**: Better performance with smart state management
+  - **Smooth Interactions**: Enhanced user interface responsiveness
+
+### 🎛️ Currency Management System
+- **Enable/Disable Currencies**: Show only the currencies you need in the dropdown
+- **Currency Preferences**: Persistent settings for currency visibility
+- **Real-Time Switching**: Switch between built-in and custom currencies seamlessly
+- **Enhanced Dropdown**: Improved currency selection with management controls
+
+### ⚡ Performance Improvements
+- **React Performance**: Optimized components for faster, more responsive interface
+- **Better Validation**: Enhanced error handling and user feedback
+- **Smart State Management**: Improved data flow and component updates
+- **Enhanced UX**: Better visual feedback and loading states
+
+### 📚 Documentation Updates
+- **README.md**: Comprehensive v10.8.0 documentation with custom currency guides
+- **Quick Start Guide**: Updated with custom currency creation instructions
+- **Use Cases**: Expanded scenarios covering gaming, education, and business applications
+- **Release Notes**: Complete feature overview for v10.8.0
+
+---
+
 ## [10.7.0] - 2025-07-30
 
 ### 🔐 Major Security Release: Web Lock System

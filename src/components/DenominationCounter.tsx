@@ -7,7 +7,8 @@ interface DenominationCounterProps {
   count: number;
   onCountChange: (count: number) => void;
   hideAmount: boolean;
-  currency: 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
+  currency: string;
+  currencySymbol?: string;
   inputRef?: (el: HTMLInputElement | null) => void;
   onInputKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -19,6 +20,7 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
   onCountChange,
   hideAmount,
   currency,
+  currencySymbol,
   inputRef,
   onInputKeyDown
 }) => {
@@ -143,11 +145,23 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
   const formatTotal = (amount: number) => {
     if (hideAmount) return '••••••';
     
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: currency === 'USD' || currency === 'GBP' || currency === 'AED' ? 2 : 0,
-    }).format(amount);
+    // Try to use standard currency formatting
+    try {
+      const validCurrencies = ['INR', 'USD', 'EUR', 'GBP', 'AED'];
+      if (validCurrencies.includes(currency)) {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: currency,
+          minimumFractionDigits: currency === 'USD' || currency === 'GBP' || currency === 'AED' ? 2 : 0,
+        }).format(amount);
+      }
+    } catch (error) {
+      // Fallback for custom currencies
+    }
+    
+    // Custom currency formatting using provided symbol
+    const symbol = currencySymbol || currency;
+    return `${symbol}${amount.toLocaleString()}`;
   };
 
   const CurrencyIcon = currency === 'INR' ? IndianRupee : currency === 'USD' ? DollarSign : currency === 'EUR' ? Euro : currency === 'GBP' ? PoundSterling : Coins;

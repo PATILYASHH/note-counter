@@ -2,12 +2,15 @@
 # https://notecounter.shop/ads.txt
 # This file declares authorized digital advertising sellers
 
-# Google AdSense
+# Google AdSense - Make sure this matches your actual AdSense Publisher ID
 google.com, pub-1486700320478884, DIRECT, f08c47fec0942fa0
+
+# Alternative Publisher ID (if you have multiple accounts)
+# google.com, pub-4481160266635546, DIRECT, f08c47fec0942fa0
 
 # Note: This application currently focuses on providing free service
 # Any advertising is minimal and non-intrusive
 # We prioritize user experience over advertising revenue
 
 # Contact for advertising inquiries: patilyasshh@gmail.com
-# Last updated: 2025-07-12
+# Last updated: 2025-08-04
