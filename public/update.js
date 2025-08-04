@@ -151,18 +151,18 @@ setTimeout(() => {
 
       <!-- Main Content -->
       <div class="feature-highlight">
-        <h2 style="margin-top: 0;">🚀 What's New in Version 10.7.0</h2>
-        <p><strong>Major Security Update!</strong> We've introduced comprehensive Web Lock protection to keep your financial data completely secure.</p>
+        <h2 style="margin-top: 0;">🚀 What's New in Version 10.8.0</h2>
+        <p><strong>Revolutionary Custom Currency Creator!</strong> Create unlimited custom currencies with your own denominations, symbols, and values.</p>
       </div>
 
-      <h2>🔐 New Security Features</h2>
+      <h2>🌍 New Custom Currency Features</h2>
       <ul>
-        <li><strong>PIN Protection System:</strong> Set customizable 4-8 digit PIN codes for quick, secure access</li>
-        <li><strong>Password Security:</strong> Advanced password protection with complex character support</li>
-        <li><strong>Smart Session Management:</strong> Automatic lock/unlock with secure browser session handling</li>
-        <li><strong>Settings Integration:</strong> Professional toggle switches seamlessly integrated into Settings tab</li>
-        <li><strong>Enhanced Data Protection:</strong> Complete security with modal interfaces and secure storage</li>
-        <li><strong>⚡ Quick Lock Shortcut:</strong> Press <span class="shortcut-badge">Shift+L</span> for instant app locking from anywhere!</li>
+        <li><strong>Custom Currency Creator:</strong> Create unlimited currency systems with your own codes, names, and symbols</li>
+        <li><strong>Flexible Denominations:</strong> Add both notes and coins with any values you need</li>
+        <li><strong>Focus-Persistent Inputs:</strong> Smooth typing experience without repeated clicking</li>
+        <li><strong>Currency Management System:</strong> Enable/disable currencies to show only what you need</li>
+        <li><strong>Enhanced Performance:</strong> React.memo optimization for faster, more responsive interface</li>
+        <li><strong>🎯 Perfect for:</strong> Gaming tokens, educational currencies, business systems, and specialized applications</li>
       </ul>
 
       <h2>💼 Perfect for Businesses</h2>
@@ -235,7 +235,7 @@ setTimeout(() => {
 
       <div style="text-align: center; margin-top: 15px;">
         <p style="color: #9ca3af; font-size: 0.9rem;">
-          Release Date: July 30, 2025 | Version 10.7.0 | <span class="shortcut-badge">Shift+L</span> to lock!
+          Release Date: January 6, 2025 | Version 10.8.0 | <span class="shortcut-badge">🌍</span> Create Custom Currencies!
         </p>
       </div>
     </div>

@@ -2,6 +2,13 @@
   command = "npm run build"
   publish = "dist"
 
+# Serve ads.txt from root
+[[redirects]]
+  from = "/ads.txt"
+  to = "/ads.txt"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -1,7 +1,7 @@
 {
-  "name": "Note Counter - Advanced Money Counter & Cash Calculator",
+  "name": "Note Counter v10.8.0 - Custom Currency Creator & Money Counter",
   "short_name": "Note Counter",
-  "description": "Comprehensive money counting solution with 5-currency support, smart input system, dual calculator, privacy mode, and history tracking",
+  "description": "Revolutionary money counter with Custom Currency Creator! Create unlimited custom currencies plus 5 built-in (INR, USD, EUR, GBP, AED). Enhanced performance and focus-persistent inputs.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -12,48 +12,48 @@
   "categories": ["finance", "productivity", "business", "utilities"],
   "icons": [
     {
-      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "src": "/icon-144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "src": "/icon-96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "src": "/icon-72.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "src": "/icon-48.png",
       "sizes": "48x48",
       "type": "image/png"
     }
   ],
   "screenshots": [
     {
-      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "src": "/icon-512.png",
       "sizes": "1280x720",
       "type": "image/png",
       "platform": "wide",
       "label": "Note Counter Desktop View"
     },
     {
-      "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+      "src": "/icon-192.png",
       "sizes": "750x1334",
       "type": "image/png",
       "platform": "narrow",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, PoundSterling, Coins, Keyboard, Copy, NotebookPen, Plus, Edit, Trash2, Zap } from 'lucide-react';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
@@ -11,8 +11,8 @@ declare global {
   }
 }
 
-// Update the type definition to include GBP and AED
-type Currency = 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
+// Update the type definition to include GBP, AED and CUSTOM
+type Currency = 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED' | string;
 
 const CURRENCY_DENOMINATIONS = {
   INR: [
@@ -83,6 +83,15 @@ const CURRENCY_DENOMINATIONS = {
 
 interface CountState {
   [key: number]: number;
+}
+
+interface CustomCurrency {
+  code: string;
+  name: string;
+  symbol: string;
+  denominations: Array<{ value: number; type: 'note' | 'coin' }>;
+  flag?: string;
+  createdAt: string;
 }
 
 interface SavedCounting {
@@ -250,11 +259,65 @@ function App() {
     };
   });
 
+  // Custom currencies state
+  const [customCurrencies, setCustomCurrencies] = useState<CustomCurrency[]>(() => {
+    const saved = localStorage.getItem('customCurrencies');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (error) {
+        console.error('Error parsing custom currencies:', error);
+        return [];
+      }
+    }
+    return [];
+  });
+
+  // Custom currency creation state
+  const [showCustomCurrencyModal, setShowCustomCurrencyModal] = useState(false);
+  const [customCurrencyForm, setCustomCurrencyForm] = useState({
+    code: '',
+    name: '',
+    symbol: '',
+    flag: '',
+    denominations: [] as Array<{ id: string; value: number; type: 'note' | 'coin' }>
+  });
+
+  // Get all available denominations for a currency (including custom)
+  const getCurrencyDenominations = (currency: Currency) => {
+    // Check if it's a built-in currency
+    if (CURRENCY_DENOMINATIONS[currency as keyof typeof CURRENCY_DENOMINATIONS]) {
+      return CURRENCY_DENOMINATIONS[currency as keyof typeof CURRENCY_DENOMINATIONS];
+    }
+    
+    // Check if it's a custom currency
+    const customCurrency = customCurrencies.find(c => c.code === currency);
+    if (customCurrency) {
+      return customCurrency.denominations;
+    }
+    
+    // Fallback to INR if currency not found
+    return CURRENCY_DENOMINATIONS.INR;
+  };
+
+  // Get all currencies (built-in + custom)
+  const getAllCurrencies = (): Currency[] => {
+    const builtInCurrencies: Currency[] = ['INR', 'USD', 'EUR', 'GBP', 'AED'];
+    const customCurrencyCodes = customCurrencies.map(c => c.code);
+    return [...builtInCurrencies, ...customCurrencyCodes];
+  };
+
   // Get available currencies (only enabled ones)
   const getAvailableCurrencies = (): Currency[] => {
-    return Object.entries(enabledCurrencies)
-      .filter(([_, enabled]) => enabled)
-      .map(([currency, _]) => currency as Currency);
+    const allCurrencies = getAllCurrencies();
+    return allCurrencies.filter(currency => {
+      // For built-in currencies, check the enabledCurrencies object
+      if (enabledCurrencies[currency] !== undefined) {
+        return enabledCurrencies[currency];
+      }
+      // For custom currencies, they are enabled by default (we can add a toggle later if needed)
+      return customCurrencies.some(c => c.code === currency);
+    });
   };
 
   // Handle currency toggle
@@ -290,10 +353,172 @@ function App() {
   // Initialize counts based on selected currency
   const initializeCounts = (currency: Currency): CountState => {
     const initialCounts: CountState = {};
-    CURRENCY_DENOMINATIONS[currency].forEach(denom => {
+    getCurrencyDenominations(currency).forEach(denom => {
       initialCounts[denom.value] = 0;
     });
     return initialCounts;
+  };
+
+  // Custom currency management functions
+  const handleCreateCustomCurrency = () => {
+    if (!customCurrencyForm.code || !customCurrencyForm.name || !customCurrencyForm.symbol) {
+      showAlert('Please fill in all required fields (code, name, symbol)');
+      return;
+    }
+
+    if (customCurrencyForm.code.length !== 3) {
+      showAlert('Currency code must be exactly 3 characters');
+      return;
+    }
+
+    if (getAllCurrencies().includes(customCurrencyForm.code.toUpperCase())) {
+      showAlert('A currency with this code already exists');
+      return;
+    }
+
+    if (customCurrencyForm.denominations.length === 0) {
+      showAlert('Please add at least one denomination');
+      return;
+    }
+
+    const newCustomCurrency: CustomCurrency = {
+      code: customCurrencyForm.code.toUpperCase(),
+      name: customCurrencyForm.name,
+      symbol: customCurrencyForm.symbol,
+      flag: customCurrencyForm.flag || '🏴',
+      denominations: customCurrencyForm.denominations.map(({ value, type }) => ({ value, type })).sort((a, b) => b.value - a.value),
+      createdAt: new Date().toISOString()
+    };
+
+    const updatedCustomCurrencies = [...customCurrencies, newCustomCurrency];
+    setCustomCurrencies(updatedCustomCurrencies);
+    localStorage.setItem('customCurrencies', JSON.stringify(updatedCustomCurrencies));
+
+    // Reset form
+    setCustomCurrencyForm({
+      code: '',
+      name: '',
+      symbol: '',
+      flag: '',
+      denominations: []
+    });
+
+    setShowCustomCurrencyModal(false);
+    showAlert(`Custom currency "${newCustomCurrency.name}" created successfully!`);
+  };
+
+  const handleDeleteCustomCurrency = (currencyCode: string) => {
+    if (selectedCurrency === currencyCode) {
+      showAlert('Cannot delete the currently selected currency');
+      return;
+    }
+
+    const updatedCustomCurrencies = customCurrencies.filter(c => c.code !== currencyCode);
+    setCustomCurrencies(updatedCustomCurrencies);
+    localStorage.setItem('customCurrencies', JSON.stringify(updatedCustomCurrencies));
+    showAlert('Custom currency deleted successfully');
+  };
+
+  const addDenomination = useCallback(() => {
+    setCustomCurrencyForm(prev => ({
+      ...prev,
+      denominations: [...prev.denominations, { id: Date.now().toString() + Math.random(), value: 0, type: 'note' }]
+    }));
+  }, []);
+
+  const updateDenomination = useCallback((id: string, field: 'value' | 'type', value: number | 'note' | 'coin') => {
+    setCustomCurrencyForm(prev => {
+      const currentDenom = prev.denominations.find(d => d.id === id);
+      if (currentDenom && currentDenom[field] === value) {
+        // No change needed, return same reference to prevent re-render
+        return prev;
+      }
+      return {
+        ...prev,
+        denominations: prev.denominations.map((denom) => 
+          denom.id === id ? { ...denom, [field]: value } : denom
+        )
+      };
+    });
+  }, []);
+
+  const removeDenomination = useCallback((id: string) => {
+    setCustomCurrencyForm(prev => ({
+      ...prev,
+      denominations: prev.denominations.filter((denom) => denom.id !== id)
+    }));
+  }, []);
+
+  // Simple input component to handle denomination value changes without losing focus
+  const DenominationValueInput = React.memo(({ 
+    id, 
+    value, 
+    onUpdate 
+  }: { 
+    id: string; 
+    value: number; 
+    onUpdate: (id: string, value: number) => void; 
+  }) => {
+    const [localValue, setLocalValue] = useState(value === 0 ? '' : value.toString());
+    
+    // Update local value when prop changes from outside
+    useEffect(() => {
+      const newVal = value === 0 ? '' : value.toString();
+      if (newVal !== localValue) {
+        setLocalValue(newVal);
+      }
+    }, [value]);
+
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+      const inputValue = e.target.value;
+      setLocalValue(inputValue);
+      
+      // Allow empty string, numbers, and decimal points
+      if (inputValue === '' || /^\d*\.?\d*$/.test(inputValue)) {
+        const numValue = inputValue === '' ? 0 : parseFloat(inputValue) || 0;
+        onUpdate(id, numValue);
+      }
+    }, [id, onUpdate]);
+
+    return (
+      <input
+        type="text"
+        value={localValue}
+        onChange={handleChange}
+        placeholder="e.g., 100"
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+      />
+    );
+  });
+
+  // Get currency information for both built-in and custom currencies
+  const getCurrencyInfo = (currency: Currency) => {
+    const builtInCurrencyInfo = {
+      INR: { name: 'Indian Rupee', symbol: '₹', icon: IndianRupee, flag: '🇮🇳' },
+      USD: { name: 'US Dollar', symbol: '$', icon: DollarSign, flag: '🇺🇸' },
+      EUR: { name: 'Euro', symbol: '€', icon: Euro, flag: '🇪🇺' },
+      GBP: { name: 'British Pound', symbol: '£', icon: PoundSterling, flag: '🇬🇧' },
+      AED: { name: 'UAE Dirham', symbol: 'د.إ', icon: Coins, flag: '🇦🇪' }
+    };
+
+    // Check if it's a built-in currency
+    if (builtInCurrencyInfo[currency as keyof typeof builtInCurrencyInfo]) {
+      return builtInCurrencyInfo[currency as keyof typeof builtInCurrencyInfo];
+    }
+
+    // Check if it's a custom currency
+    const customCurrency = customCurrencies.find(c => c.code === currency);
+    if (customCurrency) {
+      return {
+        name: customCurrency.name,
+        symbol: customCurrency.symbol,
+        icon: Coins, // Default icon for custom currencies
+        flag: customCurrency.flag || '🏴'
+      };
+    }
+
+    // Fallback
+    return { name: currency, symbol: currency, icon: Coins, flag: '🏴' };
   };
 
   const [counts, setCounts] = useState<CountState>(() => {
@@ -687,9 +912,9 @@ function App() {
   const handleExportData = () => {
     try {
       const exportData = {
-        version: '2.0',
+        version: '2.1',
         exportDate: new Date().toISOString(),
-        currencies: ['INR', 'USD', 'EUR', 'GBP', 'AED'].reduce((acc, currency) => {
+        currencies: getAllCurrencies().reduce((acc, currency) => {
           const counts = localStorage.getItem(`denominationCounts_${currency}`);
           const history = localStorage.getItem(`countNoteHistory_${currency}`);
           
@@ -700,6 +925,7 @@ function App() {
           
           return acc;
         }, {} as any),
+        customCurrencies: customCurrencies,
         settings: {
           selectedCurrency: localStorage.getItem('selectedCurrency') || 'INR',
           enabledCurrencies: localStorage.getItem('enabledCurrencies') ? JSON.parse(localStorage.getItem('enabledCurrencies')!) : null,
@@ -751,6 +977,11 @@ function App() {
           }
           
           if (window.confirm('This will replace all your current data. Are you sure you want to continue?')) {
+            // Import custom currencies first
+            if (importData.customCurrencies) {
+              localStorage.setItem('customCurrencies', JSON.stringify(importData.customCurrencies));
+            }
+            
             // Import data for each currency
             Object.entries(importData.currencies).forEach(([currency, data]: [string, any]) => {
               if (data.currentCounts) {
@@ -891,8 +1122,8 @@ function App() {
     setShowNotepad(!showNotepad);
   };
 
-  const leftColumnDenominations = CURRENCY_DENOMINATIONS[selectedCurrency].slice(0, Math.ceil(CURRENCY_DENOMINATIONS[selectedCurrency].length / 2));
-  const rightColumnDenominations = CURRENCY_DENOMINATIONS[selectedCurrency].slice(Math.ceil(CURRENCY_DENOMINATIONS[selectedCurrency].length / 2));
+  const leftColumnDenominations = getCurrencyDenominations(selectedCurrency).slice(0, Math.ceil(getCurrencyDenominations(selectedCurrency).length / 2));
+  const rightColumnDenominations = getCurrencyDenominations(selectedCurrency).slice(Math.ceil(getCurrencyDenominations(selectedCurrency).length / 2));
 
   const formatAmount = (amount: number) => {
     if (hideAmounts) return '••••••';
@@ -986,15 +1217,11 @@ function App() {
     }
 
     // Add currency name based on original number (not rounded)
-    const currencyNames = {
-      INR: num === 1 ? 'Rupee' : 'Rupees',
-      USD: num === 1 ? 'Dollar' : 'Dollars',
-      EUR: num === 1 ? 'Euro' : 'Euros',
-      GBP: num === 1 ? 'Pound' : 'Pounds',
-      AED: num === 1 ? 'Dirham' : 'Dirhams'
-    };
+    const currencyInfo = getCurrencyInfo(selectedCurrency);
+    const currencyName = currencyInfo.name.toLowerCase();
+    const pluralName = num === 1 ? currencyName : currencyName + 's';
 
-    return result + ' ' + currencyNames[selectedCurrency];
+    return result + ' ' + pluralName;
   };
 
   // Function to copy text to clipboard
@@ -1008,7 +1235,7 @@ function App() {
     }
   };
 
-  const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : selectedCurrency === 'USD' ? DollarSign : selectedCurrency === 'EUR' ? Euro : selectedCurrency === 'GBP' ? PoundSterling : Coins;
+  const CurrencyIcon = getCurrencyInfo(selectedCurrency).icon;
 
   const ProModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -1168,14 +1395,6 @@ function App() {
       );
     }
 
-    const currencySymbols = {
-      INR: '₹',
-      USD: '$',
-      EUR: '€',
-      GBP: '£',
-      AED: 'د.إ'
-    };
-
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -1208,7 +1427,7 @@ function App() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600">
-                    {currencySymbols[counting.currency]}{counting.totalAmount.toLocaleString()}
+                    {getCurrencyInfo(counting.currency).symbol}{counting.totalAmount.toLocaleString()}
                   </div>
                   <div className="text-sm text-gray-600">Total Amount</div>
                 </div>
@@ -1231,10 +1450,10 @@ function App() {
                   .map(([denomination, count]) => (
                     <div key={denomination} className="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
                       <span className="font-medium">
-                        {currencySymbols[counting.currency]}{Number(denomination).toLocaleString()}
+                        {getCurrencyInfo(counting.currency).symbol}{Number(denomination).toLocaleString()}
                       </span>
                       <span className="text-gray-600">
-                        {count} × = {currencySymbols[counting.currency]}{(Number(denomination) * count).toLocaleString()}
+                        {count} × = {getCurrencyInfo(counting.currency).symbol}{(Number(denomination) * count).toLocaleString()}
                       </span>
                     </div>
                   ))}
@@ -1484,7 +1703,7 @@ function App() {
                           Protect your financial data with PIN/password authentication and session management
                         </p>
                         <div className="text-xs text-gray-500">
-                          ✨ <strong>NEW in v10.7.0:</strong> Enhanced Web Lock security for complete data protection
+                          ✨ <strong>Enhanced in v10.8.0:</strong> Improved security with custom currency integration
                         </div>
                       </div>
                       
@@ -1909,11 +2128,7 @@ function App() {
                           <CurrencyIcon size={24} className="mr-3 text-indigo-600" />
                           <div>
                             <div className="font-semibold text-gray-800 text-lg">
-                              {selectedCurrency === 'INR' && 'Indian Rupee (₹)'}
-                              {selectedCurrency === 'USD' && 'US Dollar ($)'}
-                              {selectedCurrency === 'EUR' && 'Euro (€)'}
-                              {selectedCurrency === 'GBP' && 'British Pound (£)'}
-                              {selectedCurrency === 'AED' && 'UAE Dirham (د.إ)'}
+                              {getCurrencyInfo(selectedCurrency).name} ({getCurrencyInfo(selectedCurrency).symbol})
                             </div>
                             <div className="text-sm text-gray-600">Active currency for counting</div>
                           </div>
@@ -1938,16 +2153,10 @@ function App() {
                           Enable or disable currencies to customize your interface. Disabled currencies won't appear in the currency selector dropdown.
                         </p>
                         <div className="grid grid-cols-1 gap-3">
+                          {/* Built-in Currencies */}
                           {Object.entries(enabledCurrencies).map(([currency, enabled]) => {
-                            const currencyInfo = {
-                              INR: { name: 'Indian Rupee', symbol: '₹', icon: IndianRupee, flag: '🇮🇳' },
-                              USD: { name: 'US Dollar', symbol: '$', icon: DollarSign, flag: '🇺🇸' },
-                              EUR: { name: 'Euro', symbol: '€', icon: Euro, flag: '🇪🇺' },
-                              GBP: { name: 'British Pound', symbol: '£', icon: PoundSterling, flag: '🇬🇧' },
-                              AED: { name: 'UAE Dirham', symbol: 'د.إ', icon: Coins, flag: '🇦🇪' }
-                            };
-                            const info = currencyInfo[currency as Currency];
-                            const IconComponent = info.icon;
+                            const currencyInfo = getCurrencyInfo(currency);
+                            const IconComponent = currencyInfo.icon;
                             const isSelected = selectedCurrency === currency;
                             
                             return (
@@ -1962,12 +2171,12 @@ function App() {
                                 }`}
                               >
                                 <div className="flex items-center">
-                                  <div className="mr-3 text-2xl">{info.flag}</div>
+                                  <div className="mr-3 text-2xl">{currencyInfo.flag}</div>
                                   <IconComponent size={20} className="mr-3 text-gray-600" />
                                   <div>
                                     <div className="flex items-center">
-                                      <span className="font-medium text-gray-800">{info.name}</span>
-                                      <span className="text-gray-500 ml-2 text-sm">({info.symbol})</span>
+                                      <span className="font-medium text-gray-800">{currencyInfo.name}</span>
+                                      <span className="text-gray-500 ml-2 text-sm">({currencyInfo.symbol})</span>
                                       {isSelected && (
                                         <span className="ml-2 px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium">
                                           Current
@@ -1991,6 +2200,58 @@ function App() {
                               </div>
                             );
                           })}
+                          
+                          {/* Custom Currencies */}
+                          {customCurrencies.map((currency) => {
+                            const isSelected = selectedCurrency === currency.code;
+                            
+                            return (
+                              <div 
+                                key={currency.code} 
+                                className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all ${
+                                  isSelected 
+                                    ? 'bg-purple-50 border-purple-300' 
+                                    : 'bg-white border-gray-200 hover:border-gray-300'
+                                }`}
+                              >
+                                <div className="flex items-center">
+                                  <div className="mr-3 text-2xl">{currency.flag}</div>
+                                  <Coins size={20} className="mr-3 text-gray-600" />
+                                  <div>
+                                    <div className="flex items-center">
+                                      <span className="font-medium text-gray-800">{currency.name}</span>
+                                      <span className="text-gray-500 ml-2 text-sm">({currency.symbol})</span>
+                                      <span className="ml-2 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+                                        Custom
+                                      </span>
+                                      {isSelected && (
+                                        <span className="ml-2 px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium">
+                                          Current
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="text-sm text-gray-500">
+                                      {currency.denominations.length} denominations • Created {new Date(currency.createdAt).toLocaleDateString()}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <button
+                                    onClick={() => handleCurrencyChange(currency.code)}
+                                    className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 transition-colors text-sm"
+                                  >
+                                    Select
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteCustomCurrency(currency.code)}
+                                    className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors text-sm"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
 
@@ -2000,17 +2261,17 @@ function App() {
                           <div className="text-2xl font-bold text-indigo-600">
                             {getAvailableCurrencies().length}
                           </div>
-                          <div className="text-xs text-gray-600">Enabled</div>
+                          <div className="text-xs text-gray-600">Available</div>
                         </div>
                         <div className="bg-white p-3 rounded-lg border border-gray-200 text-center">
-                          <div className="text-2xl font-bold text-gray-600">
-                            {Object.keys(enabledCurrencies).length - getAvailableCurrencies().length}
+                          <div className="text-2xl font-bold text-purple-600">
+                            {customCurrencies.length}
                           </div>
-                          <div className="text-xs text-gray-600">Disabled</div>
+                          <div className="text-xs text-gray-600">Custom</div>
                         </div>
                         <div className="bg-white p-3 rounded-lg border border-gray-200 text-center">
                           <div className="text-2xl font-bold text-green-600">
-                            {Object.keys(enabledCurrencies).length}
+                            {getAllCurrencies().length}
                           </div>
                           <div className="text-xs text-gray-600">Total</div>
                         </div>
@@ -2045,19 +2306,25 @@ function App() {
                     </div>
                   </section>
 
-                  {/* Upcoming Custom Currency Feature */}
-                  <section className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border-2 border-purple-200 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 text-xs font-bold transform rotate-12 translate-x-1 -translate-y-1">
-                      COMING SOON
-                    </div>
-                    <div className="flex items-center mb-4">
-                      <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
-                        <span className="text-white text-lg">🚀</span>
+                  {/* Custom Currency Creation */}
+                  <section className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border-2 border-purple-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
+                          <Plus className="text-white" size={20} />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-purple-800">Create Custom Currency</h3>
+                          <p className="text-purple-600 text-sm">Design your own currency with custom denominations!</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-purple-800">Revolutionary Custom Currency Feature</h3>
-                        <p className="text-purple-600 text-sm">Create and use your own custom currencies!</p>
-                      </div>
+                      <button
+                        onClick={() => setShowCustomCurrencyModal(true)}
+                        className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
+                      >
+                        <Plus size={16} />
+                        Create Currency
+                      </button>
                     </div>
                     
                     <div className="space-y-4">
@@ -2065,58 +2332,47 @@ function App() {
                         <div className="bg-white p-4 rounded-lg border border-purple-200">
                           <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
                             <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
-                            Create Custom Currencies
+                            What You Can Create
                           </h4>
                           <ul className="text-sm text-gray-600 space-y-1">
-                            <li>• Design your own currency with custom symbols</li>
+                            <li>• Design currency with custom symbol and name</li>
                             <li>• Set custom denominations and values</li>
-                            <li>• Add country/region associations</li>
-                            <li>• Support for multiple counting formats</li>
+                            <li>• Add flag/emoji for visual identification</li>
+                            <li>• Support for notes and coins</li>
                           </ul>
                         </div>
                         
                         <div className="bg-white p-4 rounded-lg border border-purple-200">
                           <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
                             <span className="w-2 h-2 bg-pink-500 rounded-full mr-2"></span>
-                            Smart Integration
+                            Fully Integrated
                           </h4>
                           <ul className="text-sm text-gray-600 space-y-1">
-                            <li>• Seamlessly integrates with existing features</li>
+                            <li>• Works with all existing features</li>
                             <li>• Full history and export support</li>
-                            <li>• Import/export custom currency definitions</li>
-                            <li>• Share currencies with the community</li>
+                            <li>• Saved locally for privacy</li>
+                            <li>• Easy to manage and modify</li>
                           </ul>
                         </div>
                       </div>
                       
-                      <div className="bg-purple-100 p-4 rounded-lg border border-purple-300">
-                        <div className="flex items-center justify-between flex-wrap gap-4">
-                          <div>
-                            <h4 className="font-semibold text-purple-800 mb-1">Expected Launch: Q3 2025</h4>
+                      {customCurrencies.length > 0 && (
+                        <div className="bg-purple-100 p-4 rounded-lg border border-purple-300">
+                          <div className="text-center">
+                            <h4 className="font-semibold text-purple-800 mb-1">You have created {customCurrencies.length} custom currenc{customCurrencies.length === 1 ? 'y' : 'ies'}!</h4>
                             <p className="text-sm text-purple-600">
-                              Want to be notified when this feature launches? Request your custom currency below!
+                              Your custom currencies are shown in the Available Currencies section above.
                             </p>
                           </div>
-                          <a 
-                            href="/blog.html#custom-currency-request" 
-                            target="_blank"
-                            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 text-sm"
-                          >
-                            <span>🎯</span>
-                            Request Currency
-                          </a>
                         </div>
-                      </div>
+                      )}
                       
-                      <div className="text-center">
-                        <a 
-                          href="/blog.html" 
-                          target="_blank"
-                          className="text-purple-600 hover:text-purple-800 font-medium text-sm underline"
-                        >
-                          Read more about upcoming features →
-                        </a>
-                      </div>
+                      {customCurrencies.length === 0 && (
+                        <div className="text-center py-4">
+                          <p className="text-gray-500 mb-2">No custom currencies created yet</p>
+                          <p className="text-sm text-gray-400">Click "Create Currency" to get started!</p>
+                        </div>
+                      )}
                     </div>
                   </section>
                 </div>
@@ -2510,18 +2766,18 @@ function App() {
                         <span className="text-white font-bold text-sm">NEW</span>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-green-800">Version 10.7.0 - Web Lock Security Released!</h3>
-                        <p className="text-sm text-green-600">July 30, 2025 • Major Security Update</p>
+                        <h3 className="text-lg font-bold text-green-800">Version 10.8.0 - Custom Currency Creator!</h3>
+                        <p className="text-sm text-green-600">January 6, 2025 • Major Feature Update</p>
                       </div>
                     </div>
                     <div className="ml-13">
-                      <h4 className="font-semibold text-green-800 mb-2">🔐 What's New:</h4>
+                      <h4 className="font-semibold text-green-800 mb-2">🌍 What's New:</h4>
                       <ul className="text-sm text-green-700 space-y-1 mb-3">
-                        <li>• <strong>PIN Protection:</strong> Secure your data with customizable 4-8 digit PIN codes</li>
-                        <li>• <strong>Password Security:</strong> Advanced password protection with complex character support</li>
-                        <li>• <strong>Settings Integration:</strong> Professional toggle switches seamlessly integrated into Settings tab</li>
-                        <li>• <strong>Session Management:</strong> Intelligent session handling with automatic lock/unlock features</li>
-                        <li>• <strong>Enhanced Security:</strong> Complete data protection with modal interfaces and secure storage</li>
+                        <li>• <strong>Custom Currency Creator:</strong> Create unlimited custom currencies with your own denominations</li>
+                        <li>• <strong>Full Customization:</strong> Set currency code, name, symbol, and flag emoji</li>
+                        <li>• <strong>Focus-Persistent Inputs:</strong> Smooth typing experience without repeated clicking</li>
+                        <li>• <strong>Currency Management:</strong> Enable/disable currencies to show only what you need</li>
+                        <li>• <strong>Enhanced Performance:</strong> React.memo optimization for faster, more responsive interface</li>
                       </ul>
                       <div className="bg-green-100 p-3 rounded-lg border border-green-200">
                         <p className="text-sm text-green-800">
@@ -2955,8 +3211,175 @@ function App() {
       </div>
     );
 
+  // Custom Currency Creation Modal
+  const CustomCurrencyModal = React.memo(() => {
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">Create Custom Currency</h2>
+              <button
+                onClick={() => setShowCustomCurrencyModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* Basic Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Currency Code * <span className="text-gray-500">(3 characters)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={customCurrencyForm.code}
+                    onChange={(e) => setCustomCurrencyForm(prev => ({ ...prev, code: e.target.value.toUpperCase().slice(0, 3) }))}
+                    placeholder="e.g., XYZ"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    maxLength={3}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Currency Name *
+                  </label>
+                  <input
+                    type="text"
+                    value={customCurrencyForm.name}
+                    onChange={(e) => setCustomCurrencyForm(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g., MyCoins"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Currency Symbol *
+                  </label>
+                  <input
+                    type="text"
+                    value={customCurrencyForm.symbol}
+                    onChange={(e) => setCustomCurrencyForm(prev => ({ ...prev, symbol: e.target.value }))}
+                    placeholder="e.g., ♦ or MC"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Flag/Emoji <span className="text-gray-500">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={customCurrencyForm.flag}
+                    onChange={(e) => setCustomCurrencyForm(prev => ({ ...prev, flag: e.target.value }))}
+                    placeholder="🏴 or any emoji"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+              </div>
+
+              {/* Denominations Section */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800">Denominations</h3>
+                  <button
+                    onClick={addDenomination}
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors flex items-center gap-2"
+                  >
+                    <Plus size={16} />
+                    Add Denomination
+                  </button>
+                </div>
+
+                {customCurrencyForm.denominations.length === 0 && (
+                  <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                    <p className="text-gray-500 mb-2">No denominations added yet</p>
+                    <p className="text-sm text-gray-400">Add denominations to define your currency values</p>
+                  </div>
+                )}
+
+                <div className="space-y-3">
+                  {customCurrencyForm.denominations.map((denom) => (
+                    <div key={denom.id} className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Value</label>
+                        <DenominationValueInput
+                          id={denom.id}
+                          value={denom.value}
+                          onUpdate={(id, value) => updateDenomination(id, 'value', value)}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                        <select
+                          value={denom.type}
+                          onChange={(e) => updateDenomination(denom.id, 'type', e.target.value as 'note' | 'coin')}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        >
+                          <option value="note">Note</option>
+                          <option value="coin">Coin</option>
+                        </select>
+                      </div>
+                      <button
+                        onClick={() => removeDenomination(denom.id)}
+                        className="bg-red-100 hover:bg-red-200 text-red-700 p-2 rounded-md transition-colors"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Preview */}
+              {customCurrencyForm.code && customCurrencyForm.name && customCurrencyForm.symbol && (
+                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                  <h3 className="text-lg font-semibold text-purple-800 mb-2">Preview</h3>
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{customCurrencyForm.flag || '🏴'}</span>
+                    <div>
+                      <div className="font-semibold text-gray-800">
+                        {customCurrencyForm.name} ({customCurrencyForm.symbol})
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Code: {customCurrencyForm.code} • {customCurrencyForm.denominations.length} denominations
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+                <button
+                  onClick={() => setShowCustomCurrencyModal(false)}
+                  className="px-6 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreateCustomCurrency}
+                  className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                >
+                  Create Currency
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  });
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
             <header className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-4 shadow-lg">
               <div className="container mx-auto flex justify-between items-center">
                 <h1 className="text-xl sm:text-2xl font-bold flex items-center">
@@ -2979,16 +3402,10 @@ function App() {
                     className="bg-white text-indigo-600 px-3 py-1 rounded-md font-medium"
                   >
                     {getAvailableCurrencies().map(currency => {
-                      const currencyLabels = {
-                        INR: 'INR (₹)',
-                        USD: 'USD ($)',
-                        EUR: 'EUR (€)',
-                        GBP: 'GBP (£)',
-                        AED: 'AED (د.إ)'
-                      };
+                      const currencyInfo = getCurrencyInfo(currency);
                       return (
                         <option key={currency} value={currency}>
-                          {currencyLabels[currency]}
+                          {currency} ({currencyInfo.symbol})
                         </option>
                       );
                     })}
@@ -3066,16 +3483,10 @@ function App() {
                     className="w-full mb-2 bg-white text-indigo-600 px-3 py-2 rounded-md font-medium"
                   >
                     {getAvailableCurrencies().map(currency => {
-                      const currencyLabels = {
-                        INR: 'INR (₹)',
-                        USD: 'USD ($)',
-                        EUR: 'EUR (€)',
-                        GBP: 'GBP (£)',
-                        AED: 'AED (د.إ)'
-                      };
+                      const currencyInfo = getCurrencyInfo(currency);
                       return (
                         <option key={currency} value={currency}>
-                          {currencyLabels[currency]}
+                          {currency} ({currencyInfo.symbol})
                         </option>
                       );
                     })}
@@ -3145,10 +3556,13 @@ function App() {
               </div>
             )}
 
-            {showMenu && <MenuModal />}
-            {showProModal && <ProModal />}
-            {showHashPopup && <HashPopup />}
-            {showNotepad && (
+            {/* Main Content - Takes remaining space */}
+            <div className="flex-1 flex flex-col">
+              {showMenu && <MenuModal />}
+              {showCustomCurrencyModal && <CustomCurrencyModal />}
+              {showProModal && <ProModal />}
+              {showHashPopup && <HashPopup />}
+              {showNotepad && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                 <div className="bg-white rounded-lg w-full max-w-4xl h-[80vh] flex flex-col shadow-2xl">
                   {/* Header */}
@@ -3325,7 +3739,7 @@ function App() {
               </div>
             )}
 
-            <div className="container mx-auto p-4">
+            <div className="container mx-auto p-4 flex-1">
               {activeTab === 'counter' ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="md:col-span-1">
@@ -3350,6 +3764,7 @@ function App() {
                             onCountChange={(count) => handleCountChange(denom.value, count)}
                             hideAmount={hideAmounts}
                             currency={selectedCurrency}
+                            currencySymbol={getCurrencyInfo(selectedCurrency).symbol}
                             inputRef={el => denominationRefs.current[denom.value] = el}
                             onInputKeyDown={e => handleDenominationKeyDown(e, denom.value, 'left', idx)}
                           />
@@ -3371,6 +3786,7 @@ function App() {
                             onCountChange={(count) => handleCountChange(denom.value, count)}
                             hideAmount={hideAmounts}
                             currency={selectedCurrency}
+                            currencySymbol={getCurrencyInfo(selectedCurrency).symbol}
                             inputRef={el => denominationRefs.current[denom.value] = el}
                             onInputKeyDown={e => handleDenominationKeyDown(e, denom.value, 'right', idx)}
                           />
@@ -3466,8 +3882,11 @@ function App() {
                 <HistoryTab hideAmounts={hideAmounts} selectedCurrency={selectedCurrency} />
               )}
             </div>
+            
+            {/* End of Main Content */}
+            </div>
 
-            <footer className="bg-gray-800 text-white py-6">
+            <footer className="bg-gray-800 text-white py-6 mt-auto">
               <div className="container mx-auto px-4">
                 <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
                   <a 
@@ -3530,8 +3949,8 @@ function App() {
                     </svg>
                     <span>Terms</span>
                   </a>
-                  <a 
-                    href="https://github.com/sponsors/PATILYASHH" 
+                  <a
+                    href="https://github.com/sponsors/PATILYASHH"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
@@ -3539,7 +3958,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">Version 10.7.0</span>
+                  <span className="text-gray-400 text-sm">Version 10.8.0</span>
                 </div>
               </div>
             </footer>
@@ -3558,7 +3977,7 @@ function App() {
                 F1 - Help & Shortcuts
               </span>
             </button>
-          </div>
+    </div>
   );
 }
 

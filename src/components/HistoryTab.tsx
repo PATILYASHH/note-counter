@@ -9,7 +9,7 @@ interface HistoryEntry {
   totalCount: number;
   denominationCounts: Record<number, number>;
   note?: string;
-  currency: 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
+  currency: string;
   hash?: string;
 }
 
@@ -21,7 +21,7 @@ interface CalculatorHistory {
 
 interface HistoryTabProps {
   hideAmounts: boolean;
-  selectedCurrency: 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
+  selectedCurrency: string;
 }
 
 type HistoryType = 'money' | 'calculator';
@@ -337,7 +337,8 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
         
         // Currency symbol and denomination
         const currencySymbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', AED: 'د.إ' };
-        pdf.text(`${currencySymbols[entry.currency]} ${value}`, colPositions[0] + 2, yPos + 5.5);
+        const symbol = currencySymbols[entry.currency as keyof typeof currencySymbols] || entry.currency;
+        pdf.text(`${symbol} ${value}`, colPositions[0] + 2, yPos + 5.5);
         pdf.text(type, colPositions[1] + 2, yPos + 5.5);
         pdf.text(itemCount.toString(), colPositions[2] + 2, yPos + 5.5);
         pdf.text(formatAmount(value), colPositions[3] + 2, yPos + 5.5);

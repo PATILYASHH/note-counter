@@ -1,8 +1,9 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "note-counter",
   "private": true,
-  "version": "10.7.0",
-  "description": "Comprehensive free online money counter and cash calculator with Web Lock security system, PIN/password protection and smart analytics. Count currency notes and coins for 5 major currencies with professional security and data protection features.",
+  "version": "10.8.0",
+  "description": "Advanced free online money counter and cash calculator with custom currency support, Web Lock security system, PIN/password protection and smart analytics. Count currency notes and coins for 5 major currencies plus unlimited custom currencies with professional security and data protection features.",
   "type": "module",
   "scripts": {
     "dev": "vite",

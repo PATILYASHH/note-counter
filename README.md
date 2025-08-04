@@ -1,12 +1,24 @@
-# Note Counter
+# Note Counter v10.8.0
 
-**Note Counter** is a comprehensive, free online money counter and cash calculator that helps you count currency notes and coins instantly. Perfect for businesses, retailers, cashiers, banks, and anyone who needs to count money quickly and accurately with advanced features.
+**Note Counter** is an advanced, free online money counter and cash calculator with **custom currency support**. Count currency notes and coins instantly for 5 major currencies plus unlimited custom currencies. Perfect for businesses, retailers, cashiers, banks, and anyone who needs flexible money counting with professional features.
+
+## 🌟 **NEW in v10.8.0: Custom Currency Creator**
+
+🎉 **Create Your Own Currencies**: Build unlimited custom currency systems with your own denominations, symbols, and values!
+
+### ✨ **Latest Features**
+- 🌍 **Custom Currency Creator**: Design your own currency systems
+- 🎛️ **Currency Management**: Enable/disable currencies as needed  
+- 🎯 **Focus-Persistent Inputs**: Smooth typing without repeated clicking
+- ⚡ **Performance Optimized**: Faster, more responsive interface
+- 🔧 **Enhanced UX**: Better validation and error handling
 
 ## 🔓 Open Source & Privacy First
 
 [![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-green.svg)](https://github.com/PATILYASHH/note-counter)
 [![Privacy First](https://img.shields.io/badge/Privacy-No%20Data%20Collection-blue.svg)](/privacy-policy.html)
 [![Local Storage](https://img.shields.io/badge/Storage-Local%20Only-orange.svg)](#)
+[![Version](https://img.shields.io/badge/Version-10.8.0-blue.svg)](#)
 
 ### 🛡️ **Complete Privacy Guarantee**
 - **🔒 Zero Data Collection**: We collect NO personal information whatsoever
@@ -55,11 +67,28 @@
 
 ## 🚀 Features
 
+### 🌍 **Custom Currency System (NEW in v10.8.0)**
+- **Create Unlimited Currencies**: Design your own currency systems with custom denominations
+- **Full Customization**: Set currency code (3 letters), name, symbol, and flag emoji
+- **Flexible Denominations**: Add both notes and coins with any values you need
+- **Smart Validation**: Prevents duplicate codes and ensures data integrity
+- **Persistent Storage**: Custom currencies saved locally with full export/import support
+- **Seamless Integration**: Use custom currencies exactly like built-in ones
+
 ### 💰 **Enhanced Multi-Currency Support**
-- **5 Major Currencies**: INR (Indian Rupees), USD (US Dollars), EUR (Euro), GBP (British Pounds), AED (UAE Dirhams)
+- **5 Built-in Currencies**: INR (Indian Rupees), USD (US Dollars), EUR (Euro), GBP (British Pounds), AED (UAE Dirhams)
+- **Unlimited Custom Currencies**: Create as many custom currency systems as needed
+- **Currency Management**: Enable/disable currencies to show only what you need
 - **Smart Denomination Detection**: Automatic notes and coins categorization
 - **Real-Time Currency Switching**: Switch between currencies without losing data
-- **Currency-Specific Formatting**: Proper formatting for each currency (₹, $, €, £, د.إ)
+- **Currency-Specific Formatting**: Proper formatting for each currency (₹, $, €, £, د.إ, custom symbols)
+
+### 🎯 **Improved User Experience (v10.8.0)**
+- **Focus-Persistent Inputs**: No more clicking repeatedly - smooth typing experience
+- **React Performance**: Optimized with React.memo for faster, more responsive interface
+- **Smart State Management**: Reduced re-renders for better performance
+- **Enhanced Validation**: Better error handling and user feedback
+- **Keyboard Navigation**: Improved Shift+Arrow navigation between fields
 
 ### 🧮 **Advanced Calculator System**
 - **Dual Calculator Interface**: Both compact and full-featured calculators
@@ -71,11 +100,12 @@
 ### 📊 **Smart Counting Features**
 - **Real-Time Calculation**: Instant totals as you count
 - **Smart Input System**: Type +13 to add, -5 to subtract, expressions like "10*5"
-- **Quick Increment/Decrement**: Buttons for fast counting
+- **Quick Increment/Decrement**: Buttons for fast counting + Ctrl+Up/Down shortcuts
 - **Expression Support**: Enter mathematical expressions directly in count fields
-- **Auto-Save**: Automatic saving of current counts
+- **Auto-Save**: Automatic saving of current counts per currency
+- **Hash Reference System**: Save and reference counting sessions with #1, #2, etc.
 
-### 🔐 **Web Lock Security System (NEW in v10.7.0)**
+### 🔐 **Web Lock Security System**
 - **PIN Protection**: Secure your data with customizable 4-8 digit PIN codes for quick access
 - **Password Security**: Advanced password protection with complex character support
 - **Session Management**: Intelligent session handling with automatic lock/unlock features
@@ -106,66 +136,131 @@
 
 ## 💰 Supported Currencies
 
-### 🇮🇳 Indian Rupee (INR)
+### �️ **Built-in Currencies (5 Major)**
+
+#### �🇮🇳 Indian Rupee (INR)
 - **Notes**: ₹500, ₹200, ₹100, ₹50, ₹20, ₹10, ₹5
 - **Coins**: ₹2, ₹1
 
-### 🇺🇸 US Dollar (USD)
+#### 🇺🇸 US Dollar (USD)
 - **Notes**: $100, $50, $20, $10, $5, $1
 - **Coins**: 25¢ (Quarter), 10¢ (Dime), 5¢ (Nickel), 1¢ (Penny)
 
-### 🇪🇺 Euro (EUR)
+#### 🇪🇺 Euro (EUR)
 - **Notes**: €500, €200, €100, €50, €20, €10, €5
 - **Coins**: €2, €1, 50¢, 20¢, 10¢
 
-### 🇬🇧 British Pound (GBP)
+#### 🇬🇧 British Pound (GBP)
 - **Notes**: £50, £20, £10, £5
 - **Coins**: £2, £1, 50p, 20p, 10p, 5p, 2p, 1p
 
-### 🇦🇪 UAE Dirham (AED)
+#### 🇦🇪 UAE Dirham (AED)
 - **Notes**: د.إ1000, د.إ500, د.إ200, د.إ100, د.إ50, د.إ20, د.إ10, د.إ5
 - **Coins**: د.إ1, 50 fils, 25 fils
+
+### 🌍 **Custom Currencies (NEW in v10.8.0)**
+
+#### ✨ **Unlimited Possibilities**
+Create your own currency systems with:
+- **Any denomination values** (1, 5, 10, 25, 100, 1000, etc.)
+- **Custom symbols** (¤, $, €, ¥, ₹, or any character)
+- **Your own names** (Tokens, Credits, Points, etc.)
+- **Note/Coin classification** for each denomination
+- **Flag emojis** for visual identification
+
+#### 🎯 **Popular Custom Currency Examples**
+- **🎮 Gaming Tokens**: Event currencies, arcade tokens, game credits
+- **🏫 Educational**: Classroom money, learning currencies
+- **🏢 Corporate**: Internal currencies, loyalty points, voucher systems  
+- **🎪 Events**: Convention tokens, festival currencies
+- **📚 Historical**: Ancient currencies, discontinued money systems
+- **🔬 Research**: Academic projects, economic simulations
+
+#### 🔧 **Management Features**
+- **Enable/Disable**: Show only the currencies you need
+- **Import/Export**: Share custom currencies or backup your systems
+- **Validation**: Prevents conflicts and ensures data integrity
+- **Persistence**: All custom currencies saved locally
 
 ## 🎯 Use Cases
 
 ### 🏪 **Business & Retail**
 - **Daily Cash Counting**: End-of-day till reconciliation
-- **Register Management**: Quick cash verification during shifts
+- **Register Management**: Quick cash verification during shifts  
 - **Inventory Value**: Calculate cash drawer totals
 - **Multi-Currency Businesses**: Handle different currencies seamlessly
+- **Custom Store Currencies**: Create store credit systems or loyalty point currencies
 
 ### 🏦 **Banking & Financial**
 - **Cash Verification**: Quick verification of cash deposits
 - **Teller Operations**: Fast counting for customer transactions
 - **ATM Reconciliation**: Count cash for ATM loading
 - **Foreign Exchange**: Handle multiple currencies efficiently
+- **Regional Currencies**: Support for local or emerging currencies not in standard set
 
 ### 👤 **Personal Finance**
 - **Savings Tracking**: Count and track your cash savings
 - **Budget Management**: Monitor cash expenses
 - **Travel Money**: Count foreign currency before trips
 - **Piggy Bank Counting**: Fun way to count saved coins and notes
+- **Collecting**: Manage coin and note collections with custom denominations
 
 ### 🎉 **Events & Organizations**
 - **Fundraising**: Count donations and collections
-- **Event Management**: Handle cash transactions at events
-- **Educational**: Teaching money counting and math skills
+- **Event Management**: Handle cash transactions at events with custom event currencies
+- **Educational**: Teaching money counting and math skills with custom classroom currencies
 - **Non-Profit**: Manage charitable donations and funds
+- **Conventions**: Track event tokens, gaming currencies, or convention money
+
+### 🎮 **Gaming & Entertainment**
+- **Arcade Tokens**: Count gaming tokens and arcade currencies
+- **Board Games**: Track game money for various board games
+- **LARP Events**: Manage Live Action Role Playing currencies
+- **Casino Chips**: Professional chip counting for gaming establishments
+
+### 🏫 **Educational & Research**
+- **Classroom Activities**: Create educational currency systems for learning
+- **Economic Simulations**: Research projects with custom economic systems
+- **Historical Studies**: Recreate historical currency systems
+- **Mathematics Education**: Teach counting, addition, and currency concepts
+
+### 🌍 **International & Specialized**
+- **Cryptocurrency**: Create custom crypto token tracking systems
+- **Corporate Internal**: Company-specific internal currencies or voucher systems
+- **Historical Currencies**: Manage collections of discontinued or historical money
+- **Regional Money**: Support for regional currencies not widely recognized
 
 ## 🛠️ Advanced Quick Start
 
 ### 🌐 **Web Access**
 1. Visit [Note Counter](https://notecounter.shop/)
-2. Choose your preferred currency from the dropdown
+2. Choose your preferred currency from the dropdown (built-in or custom)
 3. Start counting using the intuitive interface
 4. Save your sessions for future reference
+
+### 🌍 **Creating Custom Currencies (NEW!)**
+1. Click **Menu** (Ctrl+M) → **Currencies** tab
+2. Click **"Create Custom Currency"**
+3. Fill in details:
+   - **Code**: 3-letter identifier (e.g., "TOK")
+   - **Name**: Full name (e.g., "Gaming Tokens") 
+   - **Symbol**: Currency symbol (e.g., "🎮", "¤", "$")
+   - **Flag**: Optional emoji (e.g., "🎯")
+4. Add denominations:
+   - Click **"Add Denomination"**
+   - Set value (e.g., 1, 5, 10, 25, 100)
+   - Choose Note or Coin type
+5. Click **"Create Currency"** to save
+6. Start using your custom currency immediately!
 
 ### ⚡ **Quick Tips**
 - **Smart Input**: Type `+50` to add 50, `-20` to subtract 20
 - **Expressions**: Use `10*5` for quick calculations in count fields
-- **Keyboard Shortcuts**: Press Enter to apply calculations
+- **Keyboard Shortcuts**: Press Enter to apply calculations, Ctrl+Up/Down to increment/decrement
 - **Privacy Toggle**: Click the eye icon to hide/show amounts
 - **History Access**: Use the History tab to view past sessions
+- **Currency Management**: Enable/disable currencies in Settings to show only what you need
+- **Focus Navigation**: Use Shift+Arrow keys to move between denomination fields
 
 ## 📱 Advanced Key Features
 
@@ -396,9 +491,20 @@ npm run dev
 # Build for production
 npm run build
 
+# Preview production build
+npm run preview
+
 # Run linting
 npm run lint
 ```
+
+### 🚀 **Deployment Options**
+- **Vercel**: Push to GitHub and connect your repository (Recommended)
+- **Static Hosting**: Upload the `dist` folder after building
+- **Custom Server**: Configure for your preferred hosting platform
+
+### 🔧 **Environment Configuration**
+The application works out-of-the-box with no additional configuration required. Custom currencies are automatically saved in browser localStorage for persistence across sessions.
 
 ### 🔧 **Development Guidelines**
 - **Code Style**: Follow existing TypeScript and React patterns
@@ -406,6 +512,7 @@ npm run lint
 - **Documentation**: Update README.md for new features
 - **Responsive**: Test on mobile and desktop devices
 - **Accessibility**: Maintain keyboard navigation and screen reader support
+- **Custom Currencies**: Test custom currency creation and management features
 
 ### 🐛 **Contributing Process**
 1. **Fork** the repository on GitHub
@@ -667,7 +774,7 @@ Made with ❤️ by [Yash Patil](https://yashpatil.tech)
 - **Ctrl + I**: Import data
 - **Ctrl + R**: Reset all counts to zero
 
-### 🔐 **Security Controls (NEW in v10.7.0)**
+### 🔐 **Security Controls (Enhanced in v10.8.0)**
 - **Shift + L**: Instant lock app (Web Lock Security) - Lock immediately when stepping away
 - **F1**: Show help and documentation
 
