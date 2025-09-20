@@ -1,4 +1,3 @@
-
 # Note Counter v10.8.0
 
 **Note Counter** is an advanced, free online money counter and cash calculator with **custom currency support**. Count currency notes and coins instantly for 5 major currencies plus unlimited custom currencies. Perfect for businesses, retailers, cashiers, banks, and anyone who needs flexible money counting with professional features.
