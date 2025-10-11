@@ -4,7 +4,7 @@
 /* TEAM */
   Developer: Yash Patil
   Contact: patilyasshh@gmail.com
-  Website: https://yashpatil.tech
+  Website: https://yashpatil.vercel.app
   GitHub: https://github.com/PATILYASHH
   Location: India
 
@@ -77,7 +77,7 @@
 
 /* CONTACT */
   Email: patilyasshh@gmail.com
-  Website: https://yashpatil.tech
+  Website: https://yashpatil.vercel.app
   GitHub: https://github.com/PATILYASHH
   Issues: https://github.com/PATILYASHH/note-counter/issues
   Discussions: https://github.com/PATILYASHH/note-counter/discussions

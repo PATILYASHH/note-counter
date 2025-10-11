@@ -4,7 +4,7 @@
 Contact: patilyasshh@gmail.com
 Contact: https://github.com/PATILYASHH/note-counter/security/advisories/new
 Expires: 2026-07-12T00:00:00.000Z
-Encryption: https://yashpatil.tech/pgp-key.txt
+Encryption: https://yashpatil.vercel.app/pgp-key.txt
 Acknowledgments: https://github.com/PATILYASHH/note-counter/security/advisories
 Preferred-Languages: en
 Canonical: https://notecounter.shop/.well-known/security.txt
@@ -74,7 +74,7 @@ Security researchers who responsibly disclose vulnerabilities will be:
 ## Contact Information
 Primary Contact: Yash Patil
 Email: patilyasshh@gmail.com
-Website: https://yashpatil.tech
+Website: https://yashpatil.vercel.app
 GitHub: @PATILYASHH
 
 ## Additional Information

@@ -1623,7 +1623,7 @@ function App() {
                     <div className="flex items-center mb-3">
                       <div className="w-16 h-16 rounded-full overflow-hidden mr-4 ring-2 ring-indigo-200">
                         <img 
-                          src="https://yashpatil.tech/assets/images/yash.png" 
+                          src="https://yashpatil.vercel.app/assets/images/yash.png" 
                           alt="Yash Patil"
                           className="w-full h-full object-cover"
                           onError={(e) => {
@@ -1667,7 +1667,7 @@ function App() {
                       <button
                         onClick={() => {
                           // TODO: Replace with actual URL when ready
-                          window.open('https://yashpatil.tech', '_blank');
+                          window.open('https://yashpatil.vercel.app', '_blank');
                           setShowMenu(false);
                         }}
                         className="w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white py-2 px-4 rounded-lg hover:from-indigo-600 hover:to-blue-600 transition-all shadow-md flex items-center justify-center font-medium"
@@ -2952,7 +2952,7 @@ function App() {
                         </div>
                       </a>
                       <a
-                        href="https://yashpatil.tech"
+                        href="https://yashpatil.vercel.app"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center px-4 py-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors border border-green-200"
@@ -2960,7 +2960,7 @@ function App() {
                         <Globe className="mr-3 flex-shrink-0" size={18} />
                         <div>
                           <div className="font-medium">Visit Portfolio</div>
-                          <div className="text-xs text-green-600">yashpatil.tech</div>
+                          <div className="text-xs text-green-600">yashpatil.vercel.app</div>
                         </div>
                       </a>
                     </div>

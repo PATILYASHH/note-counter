@@ -67,8 +67,8 @@ function doBackgroundSync() {
 self.addEventListener('push', (event) => {
   const options = {
     body: event.data ? event.data.text() : 'Note Counter notification',
-    icon: 'https://yashpatil.tech/assets/images/projectimg/countnote.png',
-    badge: 'https://yashpatil.tech/assets/images/projectimg/countnote.png',
+    icon: 'https://yashpatil.vercel.app/assets/images/projectimg/countnote.png',
+    badge: 'https://yashpatil.vercel.app/assets/images/projectimg/countnote.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
@@ -78,12 +78,12 @@ self.addEventListener('push', (event) => {
       {
         action: 'explore',
         title: 'Open Note Counter',
-        icon: 'https://yashpatil.tech/assets/images/projectimg/countnote.png'
+        icon: 'https://yashpatil.vercel.app/assets/images/projectimg/countnote.png'
       },
       {
         action: 'close',
         title: 'Close notification',
-        icon: 'https://yashpatil.tech/assets/images/projectimg/countnote.png'
+        icon: 'https://yashpatil.vercel.app/assets/images/projectimg/countnote.png'
       }
     ]
   };
