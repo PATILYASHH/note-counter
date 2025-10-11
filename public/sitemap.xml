@@ -13,7 +13,7 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://yashpatil.tech/assets/images/projectimg/countnote.png</image:loc>
+      <image:loc>https://yashpatil.vercel.app/assets/images/projectimg/countnote.png</image:loc>
       <image:title>Note Counter - Money Counter Application</image:title>
       <image:caption>Advanced money counting and cash calculator with multi-currency support</image:caption>
     </image:image>

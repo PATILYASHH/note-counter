@@ -538,10 +538,10 @@ The application works out-of-the-box with no additional configuration required. 
 - **Community**: Join discussions in GitHub Discussions
 
 #### 📧 **Direct Contact**
-- **Developer**: [Yash Patil](https://yashpatil.tech)
+- **Developer**: [Yash Patil](https://yashpatil.vercel.app)
 - **Email**: [patilyasshh@gmail.com](mailto:patilyasshh@gmail.com)
 - **GitHub**: [@PATILYASHH](https://github.com/PATILYASHH)
-- **Website**: [yashpatil.tech](https://yashpatil.tech)
+- **Website**: [yashpatil.vercel.app](https://yashpatil.vercel.app)
 
 #### � **Community Support**
 - **GitHub Discussions**: Community-driven help and feature discussions
@@ -629,7 +629,7 @@ Thank you for choosing Note Counter and being part of our community. Your usage,
 
 ---
 
-**Made with ❤️ by [Yash Patil](https://yashpatil.tech) | Making money counting simple, fast, and accurate for everyone worldwide.**
+**Made with ❤️ by [Yash Patil](https://yashpatil.vercel.app) | Making money counting simple, fast, and accurate for everyone worldwide.**
 
 # Note Counter - Free Online Money Counter & Cash Calculator
 
@@ -733,7 +733,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Contact
 
 **Yash Patil**
-- Website: [yashpatil.tech](https://yashpatil.tech)
+- Website: [yashpatil.vercel.app](https://yashpatil.vercel.app)
 - Email: patilyasshh@gmail.com
 - GitHub: [@PATILYASHH](https://github.com/PATILYASHH)
 
@@ -747,7 +747,7 @@ If you find this project helpful, please consider:
 
 ---
 
-Made with ❤️ by [Yash Patil](https://yashpatil.tech)
+Made with ❤️ by [Yash Patil](https://yashpatil.vercel.app)
 
 ## ⌨️ Comprehensive Keyboard Shortcuts
 

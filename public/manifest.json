@@ -80,7 +80,7 @@
       "url": "/",
       "icons": [
         {
-          "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+          "src": "https://yashpatil.vercel.app/assets/images/projectimg/countnote.png",
           "sizes": "96x96"
         }
       ]
@@ -92,7 +92,7 @@
       "url": "/?tab=calculator",
       "icons": [
         {
-          "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+          "src": "https://yashpatil.vercel.app/assets/images/projectimg/countnote.png",
           "sizes": "96x96"
         }
       ]
@@ -104,7 +104,7 @@
       "url": "/?tab=history",
       "icons": [
         {
-          "src": "https://yashpatil.tech/assets/images/projectimg/countnote.png",
+          "src": "https://yashpatil.vercel.app/assets/images/projectimg/countnote.png",
           "sizes": "96x96"
         }
       ]

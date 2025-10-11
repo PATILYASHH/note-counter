@@ -178,7 +178,7 @@ class WebLock {
             <div class="lock-container">
                 <div class="lock-card">
                     <div class="lock-header">
-                        <img src="https://yashpatil.tech/assets/images/projectimg/countnote.png" 
+                        <img src="https://yashpatil.vercel.app/assets/images/projectimg/countnote.png" 
                              alt="Note Counter" class="lock-logo">
                         <h1>Note Counter</h1>
                         <h2>${title}</h2>
