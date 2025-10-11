@@ -73,16 +73,21 @@ setTimeout(() => {
 
     init() {
       console.log('🔄 FeedbackSystem initializing...');
-      // For testing: show feedback immediately
-      console.log('🧪 TEST MODE: Showing feedback immediately');
-      setTimeout(() => {
-        this.showFeedbackModal();
-      }, 1000); // Show after 1 second for testing
+      // Only show feedback if checks pass (rate-limit + dismissals)
+      if (this.shouldShowFeedback()) {
+        // small delay so it doesn't interrupt initial render
+        setTimeout(() => {
+          this.showFeedbackModal();
+        }, 3000);
+      } else {
+        console.log('ℹ️ Feedback will not be shown (timing / previous actions)');
+      }
     }
 
     shouldShowFeedback() {
       console.log('🔍 Checking if should show feedback...');
       const now = new Date();
+      const lastShown = localStorage.getItem('feedback_last_shown');
       const lastRating = localStorage.getItem('feedback_last_rating');
       const lastNoThanks = localStorage.getItem('feedback_last_no_thanks');
       const lastDontShow = localStorage.getItem('feedback_last_dont_show');
@@ -124,14 +129,18 @@ setTimeout(() => {
         }
       }
 
-      // Check if user has used the app enough times (at least 1 session for testing)
-      const sessionCount = parseInt(localStorage.getItem('feedback_session_count') || '0');
-      console.log(`🔢 Session count: ${sessionCount}`);
-      if (sessionCount < 1) {
-        localStorage.setItem('feedback_session_count', (sessionCount + 1).toString());
-        console.log('❌ Not enough sessions - not showing');
-        return false;
+      // If we showed feedback already within last 24 hours, don't show again
+      if (lastShown) {
+        const lastShownDate = new Date(lastShown);
+        const hoursSinceShown = (now - lastShownDate) / (1000 * 60 * 60);
+        console.log(`🕘 Hours since last shown: ${hoursSinceShown.toFixed(1)}`);
+        if (hoursSinceShown < 24) {
+          console.log('❌ Feedback already shown within 24 hours - not showing');
+          return false;
+        }
       }
+
+      // No minimum session requirement; we rely on last_shown/lastNoThanks/lastDontShow
 
       console.log('✅ All checks passed - should show feedback');
       return true;
@@ -149,6 +158,8 @@ setTimeout(() => {
       document.head.appendChild(style);
 
       document.body.appendChild(modal);
+      // Record when feedback was shown to rate-limit re-displays
+      try { localStorage.setItem('feedback_last_shown', new Date().toISOString()); } catch(e) {}
       this.addFeedbackModalListeners();
     }
 
@@ -725,16 +736,5 @@ setTimeout(() => {
 
   // Initialize the feedback system
   new FeedbackSystem();
-
-  // Add test button for debugging (remove in production)
-  const testButton = document.createElement('button');
-  testButton.textContent = 'Test Feedback';
-  testButton.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;padding:5px 10px;background:#007bff;color:white;border:none;border-radius:4px;cursor:pointer;';
-  testButton.onclick = () => {
-    console.log('🧪 Manual feedback test triggered');
-    const feedbackSystem = new FeedbackSystem();
-    feedbackSystem.showFeedbackModal();
-  };
-    document.body.appendChild(testButton);
   }
 }, 3000);
