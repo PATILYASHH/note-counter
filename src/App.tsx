@@ -3419,7 +3419,7 @@ function App() {
               
               <div className="container mx-auto flex justify-between items-center relative z-10 h-full">
                 <h1 className="text-xl sm:text-2xl font-bold flex items-center group relative">
-                  <img src="/logos/xmaslogo.png" alt="Note Counter Logo" className="h-12 sm:h-14 md:h-16 rounded-lg cursor-pointer" />
+                  <img src="/xmaslogo.png" alt="Note Counter Logo" className="h-12 sm:h-14 md:h-16 rounded-lg cursor-pointer" />
                   <div className="absolute left-0 top-full mt-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
                     🎄 Merry Christmas! 🎅
                   </div>
