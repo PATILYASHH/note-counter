@@ -3380,17 +3380,54 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
-            <header className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-4 shadow-lg">
-              <div className="container mx-auto flex justify-between items-center">
-                <h1 className="text-xl sm:text-2xl font-bold flex items-center">
-                  <CurrencyIcon className="mr-2" size={20} />
-                  <span className="hidden xs:inline">Note Counter</span>
-                  <span className="xs:hidden">Counter</span>
+            <header className="bg-black text-white p-4 shadow-lg relative overflow-hidden h-[72px]">
+              {/* Christmas Stars Background */}
+              <div className="absolute inset-0 pointer-events-none">
+                {[...Array(20)].map((_, i) => (
+                  <div
+                    key={`star-${i}`}
+                    className="absolute text-yellow-200 opacity-70"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                      fontSize: `${Math.random() * 8 + 4}px`,
+                      animation: `twinkle ${Math.random() * 3 + 2}s infinite ${Math.random() * 2}s`
+                    }}
+                  >
+                    ★
+                  </div>
+                ))}
+              </div>
+              
+              {/* Falling Snow */}
+              <div className="absolute inset-0 pointer-events-none">
+                {[...Array(30)].map((_, i) => (
+                  <div
+                    key={`snow-${i}`}
+                    className="absolute text-white opacity-80"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `-10px`,
+                      fontSize: `${Math.random() * 10 + 8}px`,
+                      animation: `snowfall ${Math.random() * 5 + 5}s linear infinite ${Math.random() * 5}s`
+                    }}
+                  >
+                    ❄
+                  </div>
+                ))}
+              </div>
+              
+              <div className="container mx-auto flex justify-between items-center relative z-10 h-full">
+                <h1 className="text-xl sm:text-2xl font-bold flex items-center group relative">
+                  <img src="/logos/xmaslogo.png" alt="Note Counter Logo" className="h-12 sm:h-14 md:h-16 rounded-lg cursor-pointer" />
+                  <div className="absolute left-0 top-full mt-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                    🎄 Merry Christmas! 🎅
+                  </div>
                 </h1>
                 <div className="md:hidden">
                   <button 
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="p-2 rounded-md hover:bg-indigo-700/50 transition-colors"
+                    className="p-2 rounded-md hover:bg-gray-800 transition-colors"
                   >
                     <Menu size={24} />
                   </button>
@@ -3399,7 +3436,7 @@ function App() {
                   <select
                     value={selectedCurrency}
                     onChange={(e) => handleCurrencyChange(e.target.value as Currency)}
-                    className="bg-white text-indigo-600 px-3 py-1 rounded-md font-medium"
+                    className="bg-white text-black px-3 py-1 rounded-md font-medium"
                   >
                     {getAvailableCurrencies().map(currency => {
                       const currencyInfo = getCurrencyInfo(currency);
@@ -3413,8 +3450,8 @@ function App() {
                   <button
                     className={`py-2 px-4 rounded-md font-medium transition-all ${
                       activeTab === 'counter'
-                        ? 'bg-white text-indigo-600'
-                        : 'text-white hover:bg-indigo-700/50'
+                        ? 'bg-white text-black'
+                        : 'text-white hover:bg-gray-800'
                     }`}
                     onClick={() => setActiveTab('counter')}
                   >
@@ -3426,8 +3463,8 @@ function App() {
                   <button
                     className={`py-2 px-4 rounded-md font-medium transition-all ${
                       activeTab === 'history'
-                        ? 'bg-white text-indigo-600'
-                        : 'text-white hover:bg-indigo-700/50'
+                        ? 'bg-white text-black'
+                        : 'text-white hover:bg-gray-800'
                     }`}
                     onClick={() => setActiveTab('history')}
                   >
@@ -3438,7 +3475,7 @@ function App() {
                   </button>
                   <button
                     onClick={toggleNotepad}
-                    className="py-2 px-4 rounded-md font-medium text-white hover:bg-indigo-700/50 transition-all group relative"
+                    className="py-2 px-4 rounded-md font-medium text-white hover:bg-gray-800 transition-all group relative"
                     title="Quick Notepad (Shift+N)"
                   >
                     <div className="flex items-center">
@@ -3454,11 +3491,11 @@ function App() {
                   </button>
                   <button
                     onClick={() => setShowMenu(true)}
-                    className="ml-2 p-2 rounded-full hover:bg-indigo-700/50 transition-colors group relative"
+                    className="ml-2 p-2 rounded-full hover:bg-gray-800 transition-colors group relative"
                     title="Menu (Ctrl+M) • Press F1 for all shortcuts"
                   >
                     <MenuIcon size={20} />
-                    <div className="absolute -top-1 -right-1 bg-yellow-400 text-indigo-700 rounded-full w-4 h-4 flex items-center justify-center">
+                    <div className="absolute -top-1 -right-1 bg-yellow-400 text-black rounded-full w-4 h-4 flex items-center justify-center">
                       <Keyboard size={10} />
                     </div>
                     
@@ -3472,7 +3509,7 @@ function App() {
             </header>
 
             {mobileMenuOpen && (
-              <div className="md:hidden bg-indigo-500 text-white">
+              <div className="md:hidden bg-gray-900 text-white">
                 <div className="container mx-auto p-2">
                   <select
                     value={selectedCurrency}
