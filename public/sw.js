@@ -1,16 +1,10 @@
 // Note Counter Service Worker
-// Version 10.8.0
+// Version 10.8.1
 
-const CACHE_NAME = 'note-counter-v10.8.0';
+const CACHE_NAME = 'note-counter-v10.8.1';
+const CACHE_VERSION = 1;
 const urlsToCache = [
   '/',
-  '/src/main.tsx',
-  '/src/App.tsx',
-  '/src/index.css',
-  '/src/components/DenominationCounter.tsx',
-  '/src/components/SimpleCalculator.tsx',
-  '/src/components/HistoryTab.tsx',
-  '/src/components/CalculatorTab.tsx',
   '/manifest.json'
 ];
 
@@ -26,20 +20,25 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event - Network first for HTML, cache first for assets
+// Fetch event - Network first for HTML and JS, cache first for static assets
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
+  const isHTML = event.request.headers.get('accept')?.includes('text/html') || url.pathname === '/';
+  const isJS = url.pathname.endsWith('.js');
+  const isCSS = url.pathname.endsWith('.css');
   
-  // Network-first strategy for HTML files to always get latest version
-  if (event.request.headers.get('accept')?.includes('text/html') || url.pathname === '/') {
+  // Network-first strategy for HTML, JS, and CSS files to always get latest version
+  if (isHTML || isJS || isCSS) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // Cache the new version
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
-          });
+          // Only cache successful responses
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
           return response;
         })
         .catch(() => {
@@ -48,7 +47,7 @@ self.addEventListener('fetch', (event) => {
         })
     );
   } else {
-    // Cache-first strategy for other assets
+    // Cache-first strategy for other static assets (images, fonts, etc.)
     event.respondWith(
       caches.match(event.request)
         .then((response) => {
@@ -56,11 +55,13 @@ self.addEventListener('fetch', (event) => {
             return response;
           }
           return fetch(event.request).then((response) => {
-            // Cache new assets
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone);
-            });
+            // Cache new assets only if successful
+            if (response && response.status === 200) {
+              const responseClone = response.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseClone);
+              });
+            }
             return response;
           });
         })

@@ -2,24 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes snowfall {
+@keyframes riseUp {
+  0% {
+    transform: translateY(0) scale(0.5) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-50vh) scale(1) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0.3) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes firework {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-fall {
   0% {
     transform: translateY(0) rotate(0deg);
     opacity: 1;
   }
   100% {
-    transform: translateY(100vh) rotate(360deg);
+    transform: translateY(calc(100vh + 50px)) rotate(720deg);
     opacity: 0.8;
   }
 }
 
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
+@keyframes rocket-diagonal-right {
+  0% {
+    transform: translate(0, 0) rotate(-45deg) scale(1);
     opacity: 1;
-    transform: scale(1.2);
+  }
+  90% {
+    transform: translate(calc(-100vw - 100px), calc(-100vh - 100px)) rotate(-45deg) scale(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-100vw - 100px), calc(-100vh - 100px)) rotate(-45deg) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes rocket-diagonal-left {
+  0% {
+    transform: translate(0, 0) rotate(45deg) scale(1);
+    opacity: 1;
+  }
+  90% {
+    transform: translate(calc(100vw + 100px), calc(-100vh - 100px)) rotate(45deg) scale(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(100vw + 100px), calc(-100vh - 100px)) rotate(45deg) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes explosion-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  80% {
+    opacity: 0;
+  }
+  85% {
+    opacity: 1;
+    transform: scale(3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(5);
   }
 }

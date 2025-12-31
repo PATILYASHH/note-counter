@@ -222,6 +222,10 @@ function App() {
   const [isEditingNote, setIsEditingNote] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');
   const [noteContent, setNoteContent] = useState('');
+  const [confettiBatches, setConfettiBatches] = useState<number[]>([]);
+  const [logoClickCount, setLogoClickCount] = useState(0);
+  const [logoClickTimer, setLogoClickTimer] = useState<NodeJS.Timeout | null>(null);
+  const [rockets, setRockets] = useState<number[]>([]);
 
   // Hash popup state
   const [showHashPopup, setShowHashPopup] = useState(false);
@@ -3381,47 +3385,87 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
             <header className="bg-black text-white p-4 shadow-lg relative overflow-hidden h-[72px]">
-              {/* Christmas Stars Background */}
+              {/* Fireworks Sparkles */}
               <div className="absolute inset-0 pointer-events-none">
-                {[...Array(20)].map((_, i) => (
+                {[...Array(25)].map((_, i) => (
                   <div
-                    key={`star-${i}`}
-                    className="absolute text-yellow-200 opacity-70"
+                    key={`sparkle-${i}`}
+                    className="absolute opacity-80"
                     style={{
                       left: `${Math.random() * 100}%`,
                       top: `${Math.random() * 100}%`,
-                      fontSize: `${Math.random() * 8 + 4}px`,
-                      animation: `twinkle ${Math.random() * 3 + 2}s infinite ${Math.random() * 2}s`
+                      fontSize: `${Math.random() * 12 + 8}px`,
+                      color: ['#FFD700', '#FF6B6B', '#4ECDC4', '#FF69B4', '#FFA500', '#00CED1'][Math.floor(Math.random() * 6)],
+                      animation: `firework ${Math.random() * 2 + 1}s ease-out infinite ${Math.random() * 3}s`
                     }}
                   >
-                    ★
+                    ✨
                   </div>
                 ))}
               </div>
               
-              {/* Falling Snow */}
+              {/* Firecrackers */}
               <div className="absolute inset-0 pointer-events-none">
-                {[...Array(30)].map((_, i) => (
+                {[...Array(15)].map((_, i) => (
                   <div
-                    key={`snow-${i}`}
-                    className="absolute text-white opacity-80"
+                    key={`cracker-${i}`}
+                    className="absolute opacity-90"
                     style={{
                       left: `${Math.random() * 100}%`,
-                      top: `-10px`,
-                      fontSize: `${Math.random() * 10 + 8}px`,
-                      animation: `snowfall ${Math.random() * 5 + 5}s linear infinite ${Math.random() * 5}s`
+                      bottom: `-20px`,
+                      fontSize: `${Math.random() * 14 + 10}px`,
+                      color: ['#FF4500', '#FFD700', '#FF1493', '#00FF00', '#FF6347'][Math.floor(Math.random() * 5)],
+                      animation: `riseUp ${Math.random() * 3 + 2}s ease-out infinite ${Math.random() * 4}s`
                     }}
                   >
-                    ❄
+                    🎆
                   </div>
                 ))}
               </div>
               
               <div className="container mx-auto flex justify-between items-center relative z-10 h-full">
                 <h1 className="text-xl sm:text-2xl font-bold flex items-center group relative">
-                  <img src="/xmaslogo.png" alt="Note Counter Logo" className="h-12 sm:h-14 md:h-16 rounded-lg cursor-pointer" />
-                  <div className="absolute left-0 top-full mt-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
-                    🎄 Merry Christmas! 🎅
+                  <img 
+                    src="/logos/newyear.png" 
+                    alt="Note Counter Logo" 
+                    className="h-12 sm:h-14 md:h-16 rounded-lg cursor-pointer" 
+                    onClick={() => {
+                      // Add confetti
+                      const batchId = Date.now();
+                      setConfettiBatches(prev => [...prev, batchId]);
+                      setTimeout(() => {
+                        setConfettiBatches(prev => prev.filter(id => id !== batchId));
+                      }, 5000);
+
+                      // Track clicks for triple-click detection
+                      const newClickCount = logoClickCount + 1;
+                      setLogoClickCount(newClickCount);
+
+                      // Clear existing timer
+                      if (logoClickTimer) {
+                        clearTimeout(logoClickTimer);
+                      }
+
+                      // Check if 3 clicks
+                      if (newClickCount === 3) {
+                        // Launch rockets!
+                        const rocketId = Date.now();
+                        setRockets(prev => [...prev, rocketId]);
+                        setTimeout(() => {
+                          setRockets(prev => prev.filter(id => id !== rocketId));
+                        }, 2000);
+                        setLogoClickCount(0);
+                      } else {
+                        // Reset click count after 1 second if not clicked again
+                        const timer = setTimeout(() => {
+                          setLogoClickCount(0);
+                        }, 1000);
+                        setLogoClickTimer(timer);
+                      }
+                    }}
+                  />
+                  <div className="absolute left-0 top-full mt-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                    🎉 Happy New Year 2026! 🎊
                   </div>
                 </h1>
                 <div className="md:hidden">
@@ -4014,6 +4058,116 @@ function App() {
                 F1 - Help & Shortcuts
               </span>
             </button>
+
+            {/* Falling Confetti */}
+            {confettiBatches.map((batchId) => (
+              <div key={batchId} className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
+                {[...Array(100)].map((_, i) => (
+                  <div
+                    key={`confetti-${batchId}-${i}`}
+                    className="absolute"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: '-20px',
+                      width: `${Math.random() * 12 + 6}px`,
+                      height: `${Math.random() * 16 + 8}px`,
+                      backgroundColor: ['#FF6B6B', '#4ECDC4', '#FFD93D', '#6BCF7F', '#A8E6CF', '#FF85A2', '#9B59B6', '#3498DB', '#E74C3C', '#F39C12', '#E91E63', '#00BCD4'][Math.floor(Math.random() * 12)],
+                      animation: `confetti-fall ${Math.random() * 3 + 2}s linear forwards`,
+                      animationDelay: `${Math.random() * 0.3}s`,
+                      borderRadius: '2px',
+                      opacity: 0.9
+                    }}
+                  />
+                ))}
+              </div>
+            ))}
+
+            {/* Diagonal Rockets */}
+            {rockets.map((rocketId) => (
+              <div key={rocketId} className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
+                {/* Rocket from bottom-right to top-left */}
+                <div
+                  className="absolute text-6xl"
+                  style={{
+                    right: '0',
+                    bottom: '0',
+                    animation: 'rocket-diagonal-right 2s ease-out forwards'
+                  }}
+                >
+                  🚀
+                </div>
+                
+                {/* Smoke trail for right rocket */}
+                {[...Array(15)].map((_, i) => (
+                  <div
+                    key={`smoke-right-${i}`}
+                    className="absolute text-3xl opacity-70"
+                    style={{
+                      right: '0',
+                      bottom: '0',
+                      animation: `rocket-diagonal-right 2s ease-out forwards`,
+                      animationDelay: `${i * 0.1}s`,
+                      filter: 'blur(2px)'
+                    }}
+                  >
+                    💨
+                  </div>
+                ))}
+                
+                {/* Rocket from bottom-left to top-right */}
+                <div
+                  className="absolute text-6xl"
+                  style={{
+                    left: '0',
+                    bottom: '0',
+                    animation: 'rocket-diagonal-left 2s ease-out forwards',
+                    transform: 'scaleX(-1)'
+                  }}
+                >
+                  🚀
+                </div>
+
+                {/* Smoke trail for left rocket */}
+                {[...Array(15)].map((_, i) => (
+                  <div
+                    key={`smoke-left-${i}`}
+                    className="absolute text-3xl opacity-70"
+                    style={{
+                      left: '0',
+                      bottom: '0',
+                      animation: `rocket-diagonal-left 2s ease-out forwards`,
+                      animationDelay: `${i * 0.1}s`,
+                      transform: 'scaleX(-1)',
+                      filter: 'blur(2px)'
+                    }}
+                  >
+                    💨
+                  </div>
+                ))}
+
+                {/* Explosion effects at the end */}
+                <div
+                  className="absolute text-5xl"
+                  style={{
+                    left: '100%',
+                    top: '0',
+                    animation: 'explosion-appear 2s ease-out forwards'
+                  }}
+                >
+                  💥
+                </div>
+                <div
+                  className="absolute text-5xl"
+                  style={{
+                    right: '100%',
+                    top: '0',
+                    animation: 'explosion-appear 2s ease-out forwards'
+                  }}
+                >
+                  💥
+                </div>
+              </div>
+            ))}
     </div>
   );
 }

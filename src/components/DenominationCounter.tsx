@@ -66,6 +66,12 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    
+    // Only allow numbers, +, -, and empty string
+    if (value !== '' && !/^[0-9+\-]*$/.test(value)) {
+      return;
+    }
+    
     setInputValue(value);
 
     if (/[+\-]/.test(value)) {
@@ -191,6 +197,8 @@ const DenominationCounter: React.FC<DenominationCounterProps> = ({
         
         <input
           type="text"
+          inputMode="numeric"
+          pattern="[0-9+\-]*"
           value={isFocused ? inputValue : count}
           onChange={handleInputChange}
           onFocus={handleFocus}
