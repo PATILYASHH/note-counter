@@ -1,8 +1,8 @@
-# Note Counter v10.8.0
+# Note Counter v11.0
 
-**Note Counter** is an advanced, free online money counter and cash calculator with **custom currency support**. Count currency notes and coins instantly for 5 major currencies plus unlimited custom currencies. Perfect for businesses, retailers, cashiers, banks, and anyone who needs flexible money counting with professional features.
+**Note Counter** is a professional money counter and cash calculator with **custom currency support**. Count currency notes and coins instantly for 5 major currencies plus unlimited custom currencies. Default currency is USD for global accessibility. Perfect for businesses, retailers, cashiers, banks, and anyone who needs flexible money counting with professional features.
 
-## 🌟 **NEW in v10.8.0: Custom Currency Creator**
+## 🌟 **NEW in v11.0: Commercial Service Launch**
 
 🎉 **Create Your Own Currencies**: Build unlimited custom currency systems with your own denominations, symbols, and values!
 
@@ -13,25 +13,24 @@
 - ⚡ **Performance Optimized**: Faster, more responsive interface
 - 🔧 **Enhanced UX**: Better validation and error handling
 
-## 🔓 Open Source & Privacy First
+## 🔐 Privacy & Security First
 
-[![Open Source](https://img.shields.io/badge/Open%20Source-MIT%20License-green.svg)](https://github.com/PATILYASHH/note-counter)
-[![Privacy First](https://img.shields.io/badge/Privacy-No%20Data%20Collection-blue.svg)](/privacy-policy.html)
-[![Local Storage](https://img.shields.io/badge/Storage-Local%20Only-orange.svg)](#)
-[![Version](https://img.shields.io/badge/Version-10.8.0-blue.svg)](#)
+[![Privacy First](https://img.shields.io/badge/Privacy-GDPR%20Compliant-blue.svg)](/privacy-policy.html)
+[![Local Storage](https://img.shields.io/badge/Storage-Local%20Device-orange.svg)](#)
+[![Version](https://img.shields.io/badge/Version-11.0.0-blue.svg)](#)
+[![Secure](https://img.shields.io/badge/Security-PIN%20Protected-green.svg)](#)
 
-### 🛡️ **Complete Privacy Guarantee**
-- **🔒 Zero Data Collection**: We collect NO personal information whatsoever
-- **💾 Local Storage Only**: All your data stays on YOUR device
-- **🚫 No Tracking**: No cookies, analytics, or user profiling
+### 🛡️ **Privacy & Security**
+- **🔒 Local Data Storage**: Your counting data stays on YOUR device
+- **💾 Secure**: Built-in PIN protection with Web Lock system
+- **🚫 No Personal Financial Data**: We don't access your actual money amounts
 - **👁️ Privacy Mode**: Built-in feature to hide amounts in public
-- **🔓 Open Source**: Complete transparency - [view the code](https://github.com/PATILYASHH/note-counter)
+- **📊 Analytics & Ads**: We use cookies for advertising and analytics (see Privacy Policy)
 
-### 📜 **Full Transparency**
-- **100% Open Source**: Every line of code is publicly available for inspection
-- **MIT License**: Free to use, modify, and distribute
-- **Community Driven**: Built for users, by the community
-- **No Corporate Agenda**: Created by an independent developer
+### 📜 **Transparency & Compliance**
+- **GDPR Compliant**: Full compliance with EU data protection
+- **CCPA Compliant**: California privacy rights respected
+- **COPPA Safe**: Suitable for all ages with proper safeguards
 - **Privacy Policy**: [Read our comprehensive privacy policy](/privacy-policy.html)
 
 ## 📖 Table of Contents
@@ -67,7 +66,7 @@
 
 ## 🚀 Features
 
-### 🌍 **Custom Currency System (NEW in v10.8.0)**
+### 🌍 **Custom Currency System**
 - **Create Unlimited Currencies**: Design your own currency systems with custom denominations
 - **Full Customization**: Set currency code (3 letters), name, symbol, and flag emoji
 - **Flexible Denominations**: Add both notes and coins with any values you need
@@ -83,7 +82,7 @@
 - **Real-Time Currency Switching**: Switch between currencies without losing data
 - **Currency-Specific Formatting**: Proper formatting for each currency (₹, $, €, £, د.إ, custom symbols)
 
-### 🎯 **Improved User Experience (v10.8.0)**
+### 🎯 **Enhanced User Experience (v11.0)**
 - **Focus-Persistent Inputs**: No more clicking repeatedly - smooth typing experience
 - **React Performance**: Optimized with React.memo for faster, more responsive interface
 - **Smart State Management**: Reduced re-renders for better performance
@@ -158,7 +157,7 @@
 - **Notes**: د.إ1000, د.إ500, د.إ200, د.إ100, د.إ50, د.إ20, د.إ10, د.إ5
 - **Coins**: د.إ1, 50 fils, 25 fils
 
-### 🌍 **Custom Currencies (NEW in v10.8.0)**
+### 🌍 **Custom Currencies**
 
 #### ✨ **Unlimited Possibilities**
 Create your own currency systems with:
@@ -299,16 +298,16 @@ Create your own currency systems with:
 - **Accessibility**: Full keyboard navigation and screen reader support
 
 ### 🔐 **Privacy & Security Features**
-- **Local Storage**: All data stored securely in your browser
+- **Local Storage**: Counting data stored securely in your browser
 - **No Registration**: Use immediately without creating accounts
 - **Privacy Mode**: Hide amounts during sensitive counting operations
 - **Secure Connection**: HTTPS encryption for all data transmission
-- **No Data Collection**: Zero personal information collected or stored
+- **Transparent Data Practices**: See Privacy Policy for data usage details
 
-## 🔒 Enhanced Privacy & Security
+## 🔒 Privacy & Security
 
-- **100% Local Storage**: All data stored securely in your browser, never transmitted to servers
-- **Zero Data Collection**: No personal information collected, tracked, or stored
+- **Local Counting Data**: Your money amounts stay in your browser, never transmitted
+- **Privacy Mode**: Hide amounts when needed for sensitive environments
 - **Privacy Mode**: One-click hiding of sensitive amounts with eye toggle button
 - **Secure HTTPS**: All connections encrypted and secure
 - **No Registration Required**: Use immediately without accounts or sign-ups
@@ -531,7 +530,7 @@ The application works out-of-the-box with no additional configuration required. 
 
 ### 🆘 **Getting Help**
 
-#### 🔧 **Technical Support**
+####Email Support**: patilyasshh@gmail.com
 - **GitHub Issues**: [Report bugs and request features](https://github.com/PATILYASHH/note-counter/issues)
 - **Documentation**: Check this README for comprehensive guides
 - **Browser Console**: Press F12 for technical error details
@@ -570,10 +569,11 @@ This project is open source and available under the [MIT License](LICENSE).
 - 📝 Include license text
 
 ### 🛡️ **Privacy Policy**
-- **No Data Collection**: We don't collect any personal information
-- **Local Storage Only**: All data stays in your browser
-- **No Tracking**: No analytics or tracking cookies
-- **Open Source**: Code is publicly auditable
+- **Privacy First**: Counting data stays on your device
+- **No Financial Access**: We don't see your actual money amounts
+- **Cookie Notice**: Cookies used for advertising and analytics
+- **Compliance**: GDPR, CCPA, and COPPA compliant
+- **Full Disclosure**: See [Privacy Policy](/privacy-policy.html) for details
 
 ### ⚖️ **Terms of Use**
 - **Free for All**: No restrictions on personal or commercial use
@@ -774,7 +774,7 @@ Made with ❤️ by [Yash Patil](https://yashpatil.vercel.app)
 - **Ctrl + I**: Import data
 - **Ctrl + R**: Reset all counts to zero
 
-### 🔐 **Security Controls (Enhanced in v10.8.0)**
+### 🔐 **Security Controls (v11.0)**
 - **Shift + L**: Instant lock app (Web Lock Security) - Lock immediately when stepping away
 - **F1**: Show help and documentation
 

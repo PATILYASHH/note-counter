@@ -167,7 +167,7 @@ function App() {
   // Update the state type to include EUR
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(() => {
     const savedCurrency = localStorage.getItem('selectedCurrency');
-    return (savedCurrency === 'INR' || savedCurrency === 'USD' || savedCurrency === 'EUR' || savedCurrency === 'GBP' || savedCurrency === 'AED') ? savedCurrency as Currency : 'INR';
+    return (savedCurrency === 'INR' || savedCurrency === 'USD' || savedCurrency === 'EUR' || savedCurrency === 'GBP' || savedCurrency === 'AED') ? savedCurrency as Currency : 'USD';
   });
 
   const [activeTab, setActiveTab] = useState<'counter' | 'history'>('counter');
@@ -1707,7 +1707,7 @@ function App() {
                           Protect your financial data with PIN/password authentication and session management
                         </p>
                         <div className="text-xs text-gray-500">
-                          ✨ <strong>Enhanced in v10.8.0:</strong> Improved security with custom currency integration
+                          ✨ <strong>Enhanced in v11.0:</strong> Professional service with improved security and privacy compliance
                         </div>
                       </div>
                       
@@ -1743,49 +1743,49 @@ function App() {
                     </div>
                   </section>
 
-                  {/* Open Source & Privacy Section */}
-                  <section className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                  {/* Privacy & Security Section */}
+                  <section className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
                     <div className="flex items-center mb-3">
-                      <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mr-3">
-                        <span className="text-white font-bold text-lg">🔓</span>
+                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-white font-bold text-lg">🔒</span>
                       </div>
                       <div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Open Source & Privacy</h3>
-                        <p className="text-sm text-green-600">100% Transparent & Private</p>
+                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Privacy & Security</h3>
+                        <p className="text-sm text-blue-600">Your Data, Your Control</p>
                       </div>
                     </div>
                     <div className="text-sm sm:text-base text-gray-700 space-y-2">
                       <p>
-                        🔓 <strong>Open Source:</strong> Complete source code is publicly available on GitHub. No hidden tracking or data collection.
+                        🔒 <strong>Privacy First:</strong> All your counting data stays on your device. We never access your actual counting numbers.
                       </p>
                       <p>
-                        🔒 <strong>Privacy First:</strong> All your data stays on your device. We collect ZERO personal information.
+                        🛡️ <strong>Secure:</strong> Built-in Web Lock system protects your data with PIN authentication.
                       </p>
                       <p>
-                        🛡️ <strong>No Tracking:</strong> No cookies, no analytics that identify you, no user profiles.
+                        ✅ <strong>Compliant:</strong> GDPR, CCPA, and COPPA compliant. Transparent data practices.
                       </p>
                       <div className="flex flex-wrap gap-2 mt-3">
-                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">MIT License</span>
                         <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Local Storage</span>
-                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Zero Tracking</span>
+                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">PIN Protected</span>
+                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">GDPR Ready</span>
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-green-200">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-blue-200">
                       <a
-                        href="https://github.com/PATILYASHH/note-counter"
+                        href="/privacy-policy.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition-all shadow-md flex items-center justify-center font-medium"
+                        className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium"
                       >
-                        <Github size={18} className="mr-2" />
-                        View Source Code
+                        <Shield size={18} className="mr-2" />
+                        Privacy Policy
                       </a>
                       <a
                         href="/about.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium"
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-md flex items-center justify-center font-medium"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1793,7 +1793,7 @@ function App() {
                         About Page
                       </a>
                       <a
-                        href="/privacy-policy.html"
+                        href="/contact.html"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 px-4 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-md flex items-center justify-center font-medium"
@@ -2397,11 +2397,11 @@ function App() {
                         <h3 className="text-lg font-semibold text-yellow-800 mb-2">Data Storage Notice</h3>
                         <div className="text-sm text-yellow-700 space-y-2">
                           <p>
-                            <strong>Local Storage:</strong> All your data is stored locally in your browser. This means:
+                            <strong>Local Storage:</strong> Your counting data is stored locally in your browser. This means:
                           </p>
                           <ul className="list-disc list-inside space-y-1 ml-2">
-                            <li>Your data stays private and secure on your device</li>
-                            <li>No data is sent to external servers</li>
+                            <li>Your counting numbers and history stay on your device</li>
+                            <li>We use Google AdSense which collects analytics and cookie data</li>
                             <li>Clearing browser data will delete your counts and history</li>
                             <li>Data won't sync across different devices or browsers</li>
                           </ul>
@@ -2770,14 +2770,17 @@ function App() {
                         <span className="text-white font-bold text-sm">NEW</span>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-green-800">Version 10.8.0 - Custom Currency Creator!</h3>
-                        <p className="text-sm text-green-600">January 6, 2025 • Major Feature Update</p>
+                        <h3 className="text-lg font-bold text-green-800">Version 11.0 - Professional Service Launch!</h3>
+                        <p className="text-sm text-green-600">December 31, 2025 • Major Update</p>
                       </div>
                     </div>
                     <div className="ml-13">
-                      <h4 className="font-semibold text-green-800 mb-2">🌍 What's New:</h4>
+                      <h4 className="font-semibold text-green-800 mb-2">🌟 What's New:</h4>
                       <ul className="text-sm text-green-700 space-y-1 mb-3">
-                        <li>• <strong>Custom Currency Creator:</strong> Create unlimited custom currencies with your own denominations</li>
+                        <li>• <strong>Default Currency:</strong> Now starts with USD for global accessibility</li>
+                        <li>• <strong>Professional Service:</strong> Commercial launch with ongoing support</li>
+                        <li>• <strong>Enhanced Privacy:</strong> GDPR, CCPA, and COPPA compliant</li>
+                        <li>• <strong>All Features Retained:</strong> Custom currencies, Web Lock, and more!</li>
                         <li>• <strong>Full Customization:</strong> Set currency code, name, symbol, and flag emoji</li>
                         <li>• <strong>Focus-Persistent Inputs:</strong> Smooth typing experience without repeated clicking</li>
                         <li>• <strong>Currency Management:</strong> Enable/disable currencies to show only what you need</li>
@@ -2976,16 +2979,16 @@ function App() {
                         Contribute to the Project
                       </h4>
                       <p className="text-sm text-gray-600 mb-3">
-                        Help improve Note Counter! Your contributions are welcome - whether it's bug fixes, new features, or documentation improvements.
+                        Questions or feedback? We'd love to hear from you! Contact us for support, feature requests, or general inquiries.
                       </p>
                       <a
-                        href="https://github.com/PATILYASHH/note-counter"
+                        href="/contact.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors text-sm font-medium"
+                        className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
                       >
-                        <Github className="mr-2" size={16} />
-                        Contribute on GitHub
+                        <Mail className="mr-2" size={16} />
+                        Contact Support
                       </a>
                     </div>
                     
@@ -3034,35 +3037,9 @@ function App() {
                       </div>
                     </div>
                     <p className="text-sm text-gray-700">
-                      Note Counter is designed with <strong>zero data collection</strong> and <strong>complete privacy</strong>. 
-                      Everything stays on your device, and we have no access to your information.
+                      Note Counter prioritizes your privacy. Your counting data stays on your device. We use cookies for advertising 
+                      and collect analytics to improve our service. See our <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Privacy Policy</a> for complete details.
                     </p>
-                  </section>
-
-                  {/* What We DON'T Collect */}
-                  <section>
-                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                      <span className="text-red-500 mr-2">❌</span>
-                      What We DON'T Collect
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="bg-red-50 p-3 rounded-lg border border-red-200">
-                        <div className="text-sm font-medium text-red-800">Personal Information</div>
-                        <div className="text-xs text-red-600">No names, emails, or addresses</div>
-                      </div>
-                      <div className="bg-red-50 p-3 rounded-lg border border-red-200">
-                        <div className="text-sm font-medium text-red-800">Financial Data</div>
-                        <div className="text-xs text-red-600">No actual money amounts tracked</div>
-                      </div>
-                      <div className="bg-red-50 p-3 rounded-lg border border-red-200">
-                        <div className="text-sm font-medium text-red-800">User Behavior</div>
-                        <div className="text-xs text-red-600">No usage analytics or tracking</div>
-                      </div>
-                      <div className="bg-red-50 p-3 rounded-lg border border-red-200">
-                        <div className="text-sm font-medium text-red-800">Device Info</div>
-                        <div className="text-xs text-red-600">No fingerprinting or profiling</div>
-                      </div>
-                    </div>
                   </section>
 
                   {/* What We DO Store */}
@@ -3102,28 +3079,30 @@ function App() {
                     </div>
                   </section>
 
-                  {/* Open Source Transparency */}
+                  {/* Professional Service */}
                   <section>
                     <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                      <span className="mr-2">🔓</span>
-                      Open Source Transparency
+                      <span className="mr-2">💼</span>
+                      Professional Service
                     </h3>
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                       <p className="text-sm text-gray-700 mb-3">
-                        <strong>100% Open Source:</strong> Don't just trust us - verify everything yourself! 
-                        Our complete source code is publicly available for inspection.
+                        <strong>Commercial Service:</strong> Note Counter is a professionally developed money counting tool 
+                        designed for businesses, educators, and individuals who need reliable currency management.
                       </p>
                       <div className="flex flex-wrap gap-2 mb-3">
-                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">MIT License</span>
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Public Repository</span>
-                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Community Driven</span>
+                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Professional Tool</span>
+                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Regular Updates</span>
+                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Support Available</span>
                       </div>
                       <button
-                        onClick={() => window.open('https://github.com/PATILYASHH/note-counter', '_blank')}
-                        className="w-full bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition-all shadow-md flex items-center justify-center font-medium"
+                        onClick={() => window.open('/about.html', '_blank')}
+                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 px-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md flex items-center justify-center font-medium"
                       >
-                        <Github size={18} className="mr-2" />
-                        View Source Code on GitHub
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Learn More About Note Counter
                       </button>
                     </div>
                   </section>
@@ -4002,13 +3981,13 @@ function App() {
                     <span>Contact</span>
                   </a>
                   <a 
-                    href="https://github.com/PATILYASHH/note-counter" 
+                    href="/about.html" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
                   >
-                    <span className="mr-2">🔓</span>
-                    <span>Open Source</span>
+                    <span className="mr-2">ℹ️</span>
+                    <span>About</span>
                   </a>
                   <a 
                     href="/privacy-policy.html" 
@@ -4039,7 +4018,7 @@ function App() {
                     <Heart size={20} className="mr-2" />
                     <span>Sponsor</span>
                   </a>
-                  <span className="text-gray-400 text-sm">Version 10.8.0</span>
+                  <span className="text-gray-400 text-sm">Version 11.0.0</span>
                 </div>
               </div>
             </footer>

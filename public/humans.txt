@@ -36,9 +36,9 @@
   Compatibility: Modern browsers (Chrome 70+, Firefox 65+, Safari 12+, Edge 79+)
   Mobile: Fully responsive and touch-optimized
   Accessibility: WCAG 2.1 compliant, keyboard navigation, screen reader support
-  Privacy: 100% local storage, no data collection
-  License: MIT License
-  Repository: https://github.com/PATILYASHH/note-counter
+  Privacy: Local counting data, transparent data practices (see Privacy Policy)
+  Service: Professional commercial service
+  Developer: https://github.com/PATILYASHH
 
 /* FEATURES */
   Multi-Currency Support: INR, USD, EUR, GBP, AED
@@ -58,9 +58,10 @@
   Build Tool: Vite 5.4.2
   Icons: Lucide React 0.344.0
   Analytics: Plausible Analytics
+  Advertising: Google AdSense
   Deployment: Netlify/Vercel
   Domain: https://notecounter.shop
-  Repository: https://github.com/PATILYASHH/note-counter
+  Developer: https://github.com/PATILYASHH
   Package Manager: npm
   Node Version: 18+
   Browser Support: Modern browsers with ES2020+ support
@@ -79,8 +80,7 @@
   Email: patilyasshh@gmail.com
   Website: https://yashpatil.vercel.app
   GitHub: https://github.com/PATILYASHH
-  Issues: https://github.com/PATILYASHH/note-counter/issues
-  Discussions: https://github.com/PATILYASHH/note-counter/discussions
+  Contact: /contact.html
 
 /* STATS */
   Lines of Code: 5000+

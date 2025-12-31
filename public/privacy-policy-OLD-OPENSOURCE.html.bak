@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Note Counter | Open Source Money Counter</title>
+    <meta name="description" content="Privacy Policy for Note Counter - Learn how we automatically collect country-level location data using enhanced IP-based device tracking with SHA-256 hashing to improve currency support and identify our biggest consumer markets. Full transparency guaranteed.">
+    <meta name="keywords" content="privacy policy, note counter, open source, data protection, privacy, money counter privacy">
+    <link rel="canonical" href="https://notecounter.shop/privacy-policy.html">
+    <link rel="icon" type="image/png" href="https://yashpatil.vercel.app/assets/images/projectimg/countnote.png">
+    
+    <!-- Web Lock System -->
+    <script src="/web-lock.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .privacy-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            margin: 20px 0;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #4F46E5;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .open-source-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #10B981, #059669);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #4F46E5;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #E5E7EB;
+            padding-bottom: 10px;
+        }
+        
+        .section h3 {
+            color: #374151;
+            font-size: 1.2rem;
+            margin: 20px 0 10px 0;
+        }
+        
+        .section p, .section li {
+            margin-bottom: 10px;
+            color: #4B5563;
+        }
+        
+        .section ul {
+            padding-left: 20px;
+        }
+        
+        .highlight-box {
+            background: #F0FDF4;
+            border: 2px solid #10B981;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box h3 {
+            color: #059669;
+            margin-top: 0;
+        }
+        
+        .warning-box {
+            background: #FEF3C7;
+            border: 2px solid #F59E0B;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h3 {
+            color: #D97706;
+            margin-top: 0;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #4F46E5, #7C3AED);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: #6B7280;
+            font-style: italic;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E7EB;
+        }
+        
+        .contact-info {
+            background: #F3F4F6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .data-table th, .data-table td {
+            border: 1px solid #E5E7EB;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .data-table th {
+            background: #F9FAFB;
+            font-weight: bold;
+            color: #374151;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .privacy-card {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="privacy-card">
+            <div class="header">
+                <h1>Privacy Policy</h1>
+                <div class="subtitle">Note Counter - Free Online Money Counter</div>
+                <div class="open-source-badge">🔓 Open Source Project</div>
+            </div>
+            
+            <a href="/" class="back-button">← Back to Note Counter</a>
+            
+            <div class="warning-box">
+                <h3>📍 Important Notice: Automatic Location Data Collection</h3>
+                <p><strong>When you first visit Note Counter, we automatically collect your country location once per device for service improvement.</strong></p>
+                <ul>
+                    <li>🌍 <strong>What:</strong> Country-level location only (no precise location)</li>
+                    <li>⚡ <strong>How:</strong> Automatic IP geolocation (no user interaction required)</li>
+                    <li>🎯 <strong>Why:</strong> To prioritize which currencies to add next and identify our biggest consumer markets</li>
+                    <li>🔒 <strong>When:</strong> Once per browser/device only</li>
+                    <li>❌ <strong>Opt-out:</strong> Not available - collection is automatic and required</li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>🔒 Privacy-First Approach</h3>
+                <p>Note Counter is designed with your privacy as the top priority. We collect <strong>NO personal data</strong>, track <strong>NO user behavior</strong>, and store <strong>EVERYTHING locally</strong> on your device.</p>
+            </div>
+            
+            <div class="section">
+                <h2>1. Open Source Commitment</h2>
+                <p>Note Counter is a <strong>100% open source project</strong> developed and maintained by Yash Patil. This means:</p>
+                <ul>
+                    <li><strong>Complete Transparency</strong>: All source code is publicly available on GitHub</li>
+                    <li><strong>Community Driven</strong>: Anyone can review, contribute, or fork the project</li>
+                    <li><strong>No Hidden Tracking</strong>: You can inspect every line of code to verify our privacy claims</li>
+                    <li><strong>MIT License</strong>: Free to use, modify, and distribute</li>
+                </ul>
+                
+                <div class="contact-info">
+                    <strong>GitHub Repository:</strong> <a href="https://github.com/PATILYASHH/note-counter" target="_blank">https://github.com/PATILYASHH/note-counter</a><br>
+                    <strong>Developer:</strong> Yash Patil (<a href="https://yashpatil.vercel.app" target="_blank">yashpatil.vercel.app</a>)<br>
+                    <strong>License:</strong> MIT License
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>2. Data Collection & Storage</h2>
+                <p>Note Counter automatically collects minimal location data to improve our service and understand our global user base.</p>
+                
+                <h3>What We Collect (Automatically, One-time only):</h3>
+                <ul>
+                    <li>✅ <strong>Country/Region</strong> - Automatically detected and submitted via IP geolocation</li>
+                    <li>✅ <strong>IP Address Hash</strong> - Privacy-friendly hashed identifier to prevent duplicate submissions</li>
+                    <li>✅ <strong>Regional Data</strong> - City and region information for better service localization</li>
+                    <li>✅ <strong>Detection timestamp</strong> - When the country data was collected</li>
+                    <li>✅ <strong>Detection method</strong> - Enhanced IP geolocation service used</li>
+                    <li>✅ <strong>Browser Information</strong> - User agent for compatibility analysis</li>
+                    <li>✅ <strong>Timezone</strong> - User's timezone for better service timing</li>
+                </ul>
+                
+                <h3>Purpose of Automatic Location Data Collection:</h3>
+                <ul>
+                    <li>🔄 <strong>Currency Prioritization</strong> - Determine which currencies to add next based on user regions</li>
+                    <li>📊 <strong>Market Analysis</strong> - Identify which countries are our biggest consumers</li>
+                    <li>🎯 <strong>Feature Development</strong> - Prioritize features relevant to different regions</li>
+                    <li>🌍 <strong>Global Service Improvement</strong> - Better understand our worldwide user distribution</li>
+                </ul>
+                
+                <h3>How We Collect Location Data:</h3>
+                <ul>
+                    <li>🤖 <strong>Automatic Collection</strong> - Uses enhanced IP geolocation service (ipapi.co) automatically on first visit</li>
+                    <li>🔒 <strong>One-time Per IP Address</strong> - Data is collected only once per IP address using hashed device tracking</li>
+                    <li>🛡️ <strong>Privacy-Safe Tracking</strong> - IP addresses are hashed using SHA-256 for anonymous device identification</li>
+                    <li>🚫 <strong>No User Interaction Required</strong> - Happens silently in the background</li>
+                    <li>📱 <strong>Cross-Browser Protection</strong> - Prevents duplicate submissions across different browsers on same device</li>
+                    <li>🚫 <strong>No Precise Location</strong> - Only country and regional data, no exact coordinates</li>
+                    <li>⚡ <strong>No UI Disruption</strong> - Collection happens without showing any popup or form</li>
+                </ul>
+                
+                <h3>What We DON'T Collect:</h3>
+                <ul>
+                    <li>❌ Personal information (name, email, phone, address)</li>
+                    <li>❌ Financial data or actual money amounts</li>
+                    <li>❌ User behavior or usage analytics</li>
+                    <li>❌ Precise location (GPS coordinates, city, address)</li>
+                    <li>❌ Device information or browser fingerprinting</li>
+                    <li>❌ Cookies for tracking purposes</li>
+                    <li>❌ Third-party tracking scripts (beyond Plausible analytics)</li>
+                    <li>❌ IP addresses (only used temporarily for country detection)</li>
+                </ul>
+                
+                <h3>What We DO Store (Locally Only):</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Data Type</th>
+                            <th>Storage Location</th>
+                            <th>Purpose</th>
+                            <th>User Control</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Currency Counts</td>
+                            <td>Browser Local Storage</td>
+                            <td>Remember your counting session</td>
+                            <td>Clear anytime via browser settings</td>
+                        </tr>
+                        <tr>
+                            <td>App Preferences</td>
+                            <td>Browser Local Storage</td>
+                            <td>Remember your settings (currency, text format, etc.)</td>
+                            <td>Reset via app settings or browser clear</td>
+                        </tr>
+                        <tr>
+                            <td>History Sessions</td>
+                            <td>Browser Local Storage</td>
+                            <td>Save your counting history with notes</td>
+                            <td>Delete individual sessions or clear all</td>
+                        </tr>
+                        <tr>
+                            <td>Calculator History</td>
+                            <td>Browser Local Storage</td>
+                            <td>Remember calculator usage</td>
+                            <td>Clear via calculator or app settings</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>3. Enhanced Device Tracking Technology</h2>
+                
+                <h3>🔐 Privacy-Safe IP Tracking:</h3>
+                <ul>
+                    <li>🏠 <strong>Purpose</strong> - Ensure one-time data collection per device/location regardless of browser</li>
+                    <li>🔒 <strong>Method</strong> - IP addresses are immediately hashed using SHA-256 cryptographic algorithm</li>
+                    <li>📱 <strong>Cross-Browser</strong> - Prevents duplicate submissions across Chrome, Firefox, Safari, Edge, etc.</li>
+                    <li>🔑 <strong>Device ID</strong> - Creates anonymous device identifier using first 12 characters of IP hash</li>
+                    <li>🗂️ <strong>Storage</strong> - Hashed device IDs stored locally and submitted with country data</li>
+                </ul>
+                
+                <h3>🛡️ Privacy Protection Measures:</h3>
+                <ul>
+                    <li>❌ <strong>No Plain IP Storage</strong> - Raw IP addresses are never stored or transmitted</li>
+                    <li>🔄 <strong>Irreversible Hashing</strong> - SHA-256 hashes cannot be reversed to original IP</li>
+                    <li>📊 <strong>Anonymous Analytics</strong> - Device tracking is purely for preventing duplicates</li>
+                    <li>⏳ <strong>Temporary Processing</strong> - IP addresses are used only momentarily for hashing</li>
+                    <li>🔍 <strong>No User Profiling</strong> - Device IDs are not linked to user behavior or preferences</li>
+                </ul>
+                
+                <h3>🔄 How Duplicate Prevention Works:</h3>
+                <ol>
+                    <li>🌍 <strong>IP Detection</strong> - Service detects your current IP address via ipapi.co</li>
+                    <li>🔐 <strong>Instant Hashing</strong> - IP is immediately converted to SHA-256 hash</li>
+                    <li>🆔 <strong>Device ID Creation</strong> - First 12 characters form anonymous device identifier</li>
+                    <li>✅ <strong>Duplicate Check</strong> - System checks if this device ID has submitted data before</li>
+                    <li>📤 <strong>Data Submission</strong> - If new device, country data is submitted with device ID</li>
+                    <li>💾 <strong>Local Storage</strong> - Device ID stored in browser to prevent future attempts</li>
+                </ol>
+            </div>
+            
+            <div class="section">
+                <h2>4. Automatic Location Data Details</h2>
+                
+                <h3>Data Retention:</h3>
+                <ul>
+                    <li>🕒 <strong>Retention Period</strong> - Country data is stored indefinitely for analytics purposes</li>
+                    <li>📧 <strong>Data Processor</strong> - Formspree.io processes and stores the country data</li>
+                    <li>🔄 <strong>One-time Collection</strong> - Data is collected only once per browser/device automatically</li>
+                    <li>🗑️ <strong>No Deletion Available</strong> - Country data cannot be deleted once automatically submitted</li>
+                </ul>
+                
+                <h3>Third-Party Services:</h3>
+                <ul>
+                    <li>🌐 <strong>IP Geolocation</strong> - ipapi.co is used for enhanced country and regional detection</li>
+                    <li>📝 <strong>Form Processing</strong> - Formspree.io handles the automatic country data submission</li>
+                    <li>🔒 <strong>Encryption Service</strong> - Browser's built-in Web Crypto API for SHA-256 hashing of IP addresses</li>
+                    <li>📊 <strong>Analytics</strong> - Plausible.io provides privacy-friendly website analytics</li>
+                </ul>
+                
+                <h3>User Rights:</h3>
+                <ul>
+                    <li>✅ <strong>Right to Transparency</strong> - Full disclosure of automatic data collection in this policy</li>
+                    <li>❌ <strong>No Right to Opt-Out</strong> - Country collection is automatic and required for service improvement</li>
+                    <li>❌ <strong>No Right to Change</strong> - Data is submitted automatically based on IP detection</li>
+                    <li>❌ <strong>No Right to Delete</strong> - Country data cannot be removed once submitted</li>
+                    <li>❌ <strong>No Right to Access</strong> - Individual country submissions cannot be retrieved</li>
+                </ul>
+                
+                <h3>Legal Basis for Processing (GDPR Article 6):</h3>
+                <ul>
+                    <li>📋 <strong>Legitimate Interest (Article 6(1)(f))</strong> - Understanding global market distribution</li>
+                    <li>🎯 <strong>Service Enhancement</strong> - Adding relevant currencies for different regions</li>
+                    <li>📊 <strong>Business Analytics</strong> - Identifying our biggest consumer markets</li>
+                    <li>🔄 <strong>Product Development</strong> - Prioritizing features based on geographic demand</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>5. How Your Data Stays Private</h2>
+                
+                <div class="highlight-box">
+                    <h3>🔐 Local Storage Only</h3>
+                    <p>All your data is stored exclusively in your browser's local storage on your device. This means:</p>
+                    <ul>
+                        <li>✅ <strong>No server uploads</strong>: Your data never leaves your device</li>
+                        <li>✅ <strong>No cloud storage</strong>: We don't have access to your information</li>
+                        <li>✅ <strong>Device-specific</strong>: Data is only accessible on the device you used</li>
+                        <li>✅ <strong>You control deletion</strong>: Clear browser data to remove everything</li>
+                    </ul>
+                </div>
+                
+                <h3>Privacy Mode Feature</h3>
+                <p>Note Counter includes a built-in privacy mode that:</p>
+                <ul>
+                    <li>Hides all amounts on screen (displays as "••••••")</li>
+                    <li>Perfect for counting in public or sensitive environments</li>
+                    <li>Functionality continues to work normally while amounts are hidden</li>
+                    <li>Toggle on/off with a single click</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>6. Third-Party Services</h2>
+                
+                <h3>Analytics (Plausible.io)</h3>
+                <p>We use Plausible Analytics, a privacy-focused analytics service that:</p>
+                <ul>
+                    <li>✅ Does NOT use cookies</li>
+                    <li>✅ Does NOT track individual users</li>
+                    <li>✅ Collects only aggregated, anonymous data</li>
+                    <li>✅ Is GDPR, CCPA, and PECR compliant</li>
+                    <li>✅ Data includes only: page views, referrers, and basic device/browser info</li>
+                </ul>
+                <p><strong>Purpose:</strong> Understand general usage patterns to improve the app (e.g., "100 people visited today")</p>
+                
+                <h3>Hosting & CDN</h3>
+                <ul>
+                    <li><strong>Netlify</strong>: Website hosting (privacy policy: <a href="https://www.netlify.com/privacy/" target="_blank">netlify.com/privacy</a>)</li>
+                    <li><strong>GitHub</strong>: Source code hosting (privacy policy: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank">github.com/privacy</a>)</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <h3>⚠️ No Google Analytics</h3>
+                    <p>Unlike many websites, we deliberately chose NOT to use Google Analytics or any tracking that creates user profiles or follows you across the web.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>7. Your Rights & Control</h2>
+                
+                <h3>Complete Data Control</h3>
+                <p>Since all data is stored locally on your device, you have complete control:</p>
+                <ul>
+                    <li><strong>Export Your Data</strong>: Use the export feature to download your data as JSON</li>
+                    <li><strong>Delete Specific Data</strong>: Remove individual history sessions</li>
+                    <li><strong>Clear All Data</strong>: Use browser settings to clear all local storage</li>
+                    <li><strong>Incognito Mode</strong>: Use private browsing for temporary sessions</li>
+                </ul>
+                
+                <h3>No Account Required</h3>
+                <p>Note Counter works without any registration, login, or account creation. This means:</p>
+                <ul>
+                    <li>No email addresses collected</li>
+                    <li>No passwords to manage</li>
+                    <li>No user profiles created</li>
+                    <li>No data associated with your identity</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>8. Security Measures</h2>
+                <ul>
+                    <li><strong>HTTPS Encryption</strong>: All communications are encrypted</li>
+                    <li><strong>No Server-Side Storage</strong>: No database with your information</li>
+                    <li><strong>Client-Side Processing</strong>: All calculations happen in your browser</li>
+                    <li><strong>No External API Calls</strong>: App functions completely offline after loading</li>
+                    <li><strong>Open Source Security</strong>: Code is publicly auditable</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>9. International Privacy Compliance</h2>
+                <p>Note Counter is designed to comply with major privacy regulations:</p>
+                <ul>
+                    <li><strong>GDPR (European Union)</strong>: No personal data processing</li>
+                    <li><strong>CCPA (California)</strong>: No personal information sale or sharing</li>
+                    <li><strong>PIPEDA (Canada)</strong>: Minimal data collection principles</li>
+                    <li><strong>Data Protection Act (UK)</strong>: Privacy by design approach</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>10. Children's Privacy</h2>
+                <p>Note Counter is safe for all ages:</p>
+                <ul>
+                    <li>No personal information is collected from anyone, including children under 13</li>
+                    <li>No registration or account creation required</li>
+                    <li>Educational tool suitable for learning about money and mathematics</li>
+                    <li>COPPA compliant due to no data collection</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>11. Open Source Transparency</h2>
+                <p>As an open source project, Note Counter provides unprecedented transparency:</p>
+                
+                <div class="highlight-box">
+                    <h3>🔍 Verify Our Claims</h3>
+                    <p>Don't just trust us - verify everything yourself:</p>
+                    <ul>
+                        <li><strong>Review the Code</strong>: Every line is open for inspection</li>
+                        <li><strong>Check Dependencies</strong>: See exactly what libraries we use</li>
+                        <li><strong>Audit Privacy</strong>: Verify no tracking or data collection code exists</li>
+                        <li><strong>Fork & Modify</strong>: Create your own version if desired</li>
+                    </ul>
+                </div>
+                
+                <h3>Community Contributions</h3>
+                <ul>
+                    <li>Bug reports and feature requests welcome on GitHub</li>
+                    <li>Code contributions accepted via pull requests</li>
+                    <li>Community-driven development ensures user needs are met</li>
+                    <li>No corporate influence or profit motive affecting privacy</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>12. Contact & Questions</h2>
+                <p>For any privacy questions or concerns:</p>
+                
+                <div class="contact-info">
+                    <strong>Developer:</strong> Yash Patil<br>
+                    <strong>Email:</strong> <a href="mailto:patilyasshh@gmail.com">patilyasshh@gmail.com</a><br>
+                    <strong>Website:</strong> <a href="https://yashpatil.vercel.app" target="_blank">yashpatil.vercel.app</a><br>
+                    <strong>GitHub:</strong> <a href="https://github.com/PATILYASHH" target="_blank">@PATILYASHH</a><br>
+                    <strong>Project Issues:</strong> <a href="https://github.com/PATILYASHH/note-counter/issues" target="_blank">GitHub Issues</a>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>13. Changes to Privacy Policy</h2>
+                <p>Any changes to this privacy policy will be:</p>
+                <ul>
+                    <li>Clearly communicated on this page</li>
+                    <li>Documented in the GitHub repository</li>
+                    <li>Announced through project updates</li>
+                    <li>Always maintaining the same level of privacy protection</li>
+                </ul>
+                <p>As an open source project, all changes are transparent and publicly reviewable.</p>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>🎯 Summary: Maximum Privacy Guaranteed</h3>
+                <p>Note Counter is designed to be the most privacy-respecting money counter available:</p>
+                <ul>
+                    <li><strong>Zero data collection</strong> of personal information</li>
+                    <li><strong>100% local storage</strong> - your data never leaves your device</li>
+                    <li><strong>Open source transparency</strong> - verify everything yourself</li>
+                    <li><strong>No tracking, cookies, or analytics</strong> that identify you</li>
+                    <li><strong>Privacy mode</strong> for sensitive environments</li>
+                    <li><strong>Complete user control</strong> over all data</li>
+                </ul>
+            </div>
+            
+            <div class="last-updated">
+                <p>Last updated: July 12, 2025</p>
+                <p>Effective date: July 12, 2025</p>
+            </div>
+            
+            <a href="/" class="back-button">← Back to Note Counter</a>
+        </div>
+    </div>
+</body>
+</html>

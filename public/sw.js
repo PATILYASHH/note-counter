@@ -1,7 +1,7 @@
 // Note Counter Service Worker
-// Version 10.8.0
+// Version 11.0.0
 
-const CACHE_NAME = 'note-counter-v10.8.0';
+const CACHE_NAME = 'note-counter-v11.0.0';
 const urlsToCache = [
   '/',
   '/src/main.tsx',

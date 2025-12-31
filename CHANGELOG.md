@@ -2,6 +2,40 @@
 
 All notable changes to the Note Counter project will be documented in this file.
 
+## [11.0.0] - 2025-12-31
+
+### 🚀 Major Release: Commercial Service & Monetization
+
+### 🔄 Business Model Transformation
+- **Private Commercial Service**: Transitioned from open-source to professional commercial service
+- **Google AdSense Integration**: Implemented advertising monetization (pub-4481160266635546)
+- **Privacy Compliance**: Full GDPR, CCPA, and COPPA compliance with transparent data practices
+- **Cookie Consent System**: GDPR-compliant cookie banner with user consent management
+
+### 🌎 Default Currency Change
+- **USD as Default**: Changed default currency from INR to USD for global users
+- **Better UX**: New users automatically start with US Dollar currency
+
+### 📋 Legal & Privacy Updates
+- **Privacy Policy Rewrite**: Comprehensive privacy policy with Google AdSense disclosures
+- **Cookie Disclosures**: Full transparency about advertising cookies and third-party data collection
+- **Terms Update**: Updated terms of service for commercial operation
+- **Accurate Claims**: Removed false "zero data collection" statements
+
+### 🔧 Technical Improvements
+- **ads.txt Configuration**: Proper Google AdSense publisher authorization
+- **Cookie Consent Banner**: User-friendly cookie acceptance with opt-out options
+- **Input Validation**: Enhanced denomination counter input (numeric-only validation)
+- **Menu Updates**: Accurate privacy information in app menu
+
+### 📚 Documentation Updates
+- **Commercial Branding**: Removed open-source references across all documentation
+- **Version Updates**: Updated all version references to 11.0.0
+- **Repository Links**: Replaced repo links with developer profile (github.com/PATILYASHH)
+- **Professional Positioning**: Updated README and metadata for commercial service
+
+---
+
 ## [10.8.0] - 2025-01-06
 
 ### 🌍 Major Feature Release: Custom Currency Creator
