@@ -79,7 +79,7 @@ createRoot(document.getElementById('root')!).render(
 );
 
 // Global error handler for chunk loading failures
-window.addEventListener('error', (event) => {
+window.addEventListener('error', (event: ErrorEvent) => {
   if (
     event.message.includes('Failed to fetch dynamically imported module') ||
     event.message.includes('Importing a module script failed') ||
