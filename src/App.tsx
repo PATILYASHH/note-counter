@@ -3363,49 +3363,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
-            <header className="bg-black text-white p-4 shadow-lg relative overflow-hidden h-[72px]">
-              {/* Fireworks Sparkles */}
-              <div className="absolute inset-0 pointer-events-none">
-                {[...Array(25)].map((_, i) => (
-                  <div
-                    key={`sparkle-${i}`}
-                    className="absolute opacity-80"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                      fontSize: `${Math.random() * 12 + 8}px`,
-                      color: ['#FFD700', '#FF6B6B', '#4ECDC4', '#FF69B4', '#FFA500', '#00CED1'][Math.floor(Math.random() * 6)],
-                      animation: `firework ${Math.random() * 2 + 1}s ease-out infinite ${Math.random() * 3}s`
-                    }}
-                  >
-                    ✨
-                  </div>
-                ))}
-              </div>
-              
-              {/* Firecrackers */}
-              <div className="absolute inset-0 pointer-events-none">
-                {[...Array(15)].map((_, i) => (
-                  <div
-                    key={`cracker-${i}`}
-                    className="absolute opacity-90"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      bottom: `-20px`,
-                      fontSize: `${Math.random() * 14 + 10}px`,
-                      color: ['#FF4500', '#FFD700', '#FF1493', '#00FF00', '#FF6347'][Math.floor(Math.random() * 5)],
-                      animation: `riseUp ${Math.random() * 3 + 2}s ease-out infinite ${Math.random() * 4}s`
-                    }}
-                  >
-                    🎆
-                  </div>
-                ))}
-              </div>
-              
-              <div className="container mx-auto flex justify-between items-center relative z-10 h-full">
-                <h1 className="text-xl sm:text-2xl font-bold flex items-center group relative">
+            <header className="bg-black text-white p-4 shadow-lg">
+              <div className="container mx-auto flex justify-between items-center">
+                <h1 className="text-xl sm:text-2xl font-bold flex items-center">
                   <img 
-                    src="/logos/newyear.png" 
+                    src="/logos/Normallogo.png" 
                     alt="Note Counter Logo" 
                     className="h-12 sm:h-14 md:h-16 rounded-lg cursor-pointer" 
                     onClick={() => {
@@ -3443,9 +3405,6 @@ function App() {
                       }
                     }}
                   />
-                  <div className="absolute left-0 top-full mt-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
-                    🎉 Happy New Year 2026! 🎊
-                  </div>
                 </h1>
                 <div className="md:hidden">
                   <button 
