@@ -142,21 +142,6 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
     setSelectedEntry(entry);
   };
 
-  // Format denomination for display
-  const formatDenomination = (value: number, count: number) => {
-    const type = value <= 2 ? 'coin' : 'note';
-    const CurrencyIcon = selectedCurrency === 'INR' ? IndianRupee : selectedCurrency === 'USD' ? DollarSign : Euro;
-    return (
-      <div key={value} className="flex justify-between py-1 border-b border-gray-200">
-        <div className="flex items-center">
-          <CurrencyIcon size={14} className="mr-1" />
-          <span className="font-medium">{value}</span> {type}
-        </div>
-        <div>× {count}</div>
-      </div>
-    );
-  };
-
   // Export history entry as PDF
   const exportToPDF = async (entry: HistoryEntry) => {
     try {
@@ -444,107 +429,98 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Left Column - History List */}
       <div className="md:col-span-2">
-        <div className="bg-white rounded-lg shadow-md p-4 h-full">
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-4">
+        <div className="nc-card-lg p-4 sm:p-5 h-full">
+          <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
+            <div className="inline-flex items-center bg-ink-100 p-1 rounded-lg">
               <button
-                className={`py-2 px-4 rounded-md font-medium ${
+                className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-semibold transition-colors ${
                   activeHistoryType === 'money'
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-white text-ink-900 shadow-card'
+                    : 'text-ink-600 hover:text-ink-900'
                 }`}
                 onClick={() => setActiveHistoryType('money')}
               >
-                <div className="flex items-center">
-                  <CurrencyIcon className="mr-2" size={18} />
-                  Money History
-                </div>
+                <CurrencyIcon size={16} />
+                Money
               </button>
               <button
-                className={`py-2 px-4 rounded-md font-medium ${
+                className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-semibold transition-colors ${
                   activeHistoryType === 'calculator'
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-white text-ink-900 shadow-card'
+                    : 'text-ink-600 hover:text-ink-900'
                 }`}
                 onClick={() => setActiveHistoryType('calculator')}
               >
-                <div className="flex items-center">
-                  <Calculator className="mr-2" size={18} />
-                  Calculator History
-                </div>
+                <Calculator size={16} />
+                Calculator
               </button>
             </div>
             {((activeHistoryType === 'money' && history.length > 0) ||
               (activeHistoryType === 'calculator' && calculatorHistory.length > 0)) && (
-              <button 
+              <button
                 onClick={clearAllHistory}
-                className="text-red-500 hover:text-red-700 text-sm flex items-center"
+                className="inline-flex items-center gap-1.5 text-sm text-rose-600 hover:text-rose-700 font-medium px-2 py-1 rounded hover:bg-rose-50 transition-colors"
               >
-                <Trash2 size={16} className="mr-1" />
-                Clear All
+                <Trash2 size={14} />
+                Clear all
               </button>
             )}
           </div>
 
           {activeHistoryType === 'money' && (
             <>
-              <div className="mb-4">
-                <div className="flex space-x-2">
-                  <input
-                    type="text"
-                    value={note}
-                    onChange={(e) => setNote(e.target.value)}
-                    placeholder="Add a note (optional)"
-                    className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                  <button
-                    onClick={saveCurrentToHistory}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center"
-                  >
-                    <Save size={18} className="mr-2" />
-                    Save Current
-                  </button>
-                </div>
+              <div className="mb-4 flex gap-2">
+                <input
+                  type="text"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="Add a note (optional)"
+                  className="nc-input flex-1"
+                />
+                <button onClick={saveCurrentToHistory} className="nc-btn-primary">
+                  <Save size={16} />
+                  Save current
+                </button>
               </div>
 
               {history.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-12 text-ink-500">
                   <Clock size={48} className="mx-auto mb-2 opacity-30" />
-                  <p>No money counting history entries yet</p>
-                  <p className="text-sm mt-2">Save your current count to see it here</p>
+                  <p className="font-medium text-ink-700">No history yet</p>
+                  <p className="text-sm mt-1">Save your current count to see it here</p>
                 </div>
               ) : (
-                <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+                <div className="space-y-2 max-h-[560px] overflow-y-auto pr-1">
                   {history.map((entry) => (
-                    <div 
+                    <div
                       key={entry.id}
-                      className={`border rounded-lg p-3 cursor-pointer transition-colors ${
-                        selectedEntry?.id === entry.id 
-                          ? 'border-indigo-500 bg-indigo-50' 
-                          : 'border-gray-200 hover:bg-gray-50'
+                      className={`rounded-xl2 border p-3 cursor-pointer transition-all ${
+                        selectedEntry?.id === entry.id
+                          ? 'border-brand-300 bg-brand-50 shadow-card'
+                          : 'border-ink-200 hover:border-ink-300 hover:bg-ink-50'
                       }`}
                       onClick={() => viewHistoryDetails(entry)}
                     >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <div className="font-medium">{entry.date}</div>
+                      <div className="flex justify-between items-start gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <div className="font-semibold text-sm text-ink-900">{entry.date}</div>
                             {entry.hash && (
-                              <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-xs font-mono">
+                              <span className="inline-flex items-center px-1.5 py-0.5 bg-brand-100 text-brand-700 rounded text-[11px] font-mono font-semibold">
                                 {entry.hash}
                               </span>
                             )}
                           </div>
                           {entry.note && (
-                            <div className="text-gray-600 text-sm mt-1">{entry.note}</div>
+                            <div className="text-ink-600 text-sm mt-1 truncate">{entry.note}</div>
                           )}
                         </div>
-                        <div className="text-right">
-                          <div className="font-bold text-indigo-600 flex items-center justify-end">
-                            <CurrencyIcon size={16} className="mr-1" />
+                        <div className="text-right flex-shrink-0">
+                          <div className="font-bold text-brand-700 tabular-nums flex items-center justify-end">
+                            <CurrencyIcon size={14} className="mr-1" />
                             {formatAmount(entry.totalAmount)}
                           </div>
-                          <div className="text-sm text-gray-600">
+                          <div className="text-xs text-ink-500 tabular-nums">
                             {entry.totalCount} items
                           </div>
                           <button
@@ -552,10 +528,10 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
                               e.stopPropagation();
                               exportToPDF(entry);
                             }}
-                            className="mt-2 bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600 transition-colors flex items-center"
+                            className="mt-2 inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[11px] font-semibold transition-colors"
                             title="Export as PDF"
                           >
-                            <FileDown size={12} className="mr-1" />
+                            <FileDown size={11} />
                             PDF
                           </button>
                         </div>
@@ -570,28 +546,23 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
           {activeHistoryType === 'calculator' && (
             <>
               {calculatorHistory.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-12 text-ink-500">
                   <Calculator size={48} className="mx-auto mb-2 opacity-30" />
-                  <p>No calculator history yet</p>
-                  <p className="text-sm mt-2">Use the calculator to see your calculations here</p>
+                  <p className="font-medium text-ink-700">No calculator history yet</p>
+                  <p className="text-sm mt-1">Use the calculator to see your calculations here</p>
                 </div>
               ) : (
-                <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+                <div className="space-y-2 max-h-[560px] overflow-y-auto pr-1">
                   {calculatorHistory.map((entry, index) => (
-                    <div 
+                    <div
                       key={index}
-                      className="border rounded-lg p-3 transition-colors border-gray-200 hover:bg-gray-50"
+                      className="rounded-xl2 border border-ink-200 p-3 hover:bg-ink-50 transition-colors"
                     >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <div className="font-medium text-gray-600">
-                            {entry.expression} = <span className="text-indigo-600">{entry.result}</span>
-                          </div>
-                          <div className="text-sm text-gray-500 mt-1">
-                            {entry.timestamp}
-                          </div>
-                        </div>
+                      <div className="font-mono text-sm text-ink-700 tabular-nums">
+                        {entry.expression} <span className="text-ink-400">=</span>{' '}
+                        <span className="text-brand-700 font-bold">{entry.result}</span>
                       </div>
+                      <div className="text-xs text-ink-500 mt-1">{entry.timestamp}</div>
                     </div>
                   ))}
                 </div>
@@ -600,25 +571,25 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
           )}
         </div>
       </div>
-      
+
       {/* Right Column - Selected Entry Details */}
       <div className="md:col-span-1">
-        <div className="bg-white rounded-lg shadow-md p-4 h-full">
+        <div className="nc-card-lg p-4 sm:p-5 h-full md:sticky md:top-20">
           {activeHistoryType === 'money' && selectedEntry ? (
             <>
-              <h2 className="text-xl font-semibold mb-4">Entry Details</h2>
-              
+              <h2 className="text-lg font-bold text-ink-900 tracking-tight mb-4">Entry details</h2>
+
               <div className="space-y-4">
                 <div>
-                  <div className="text-sm text-gray-600">Date & Time</div>
-                  <div className="font-medium">{selectedEntry.date}</div>
+                  <div className="nc-stat-label">Date &amp; time</div>
+                  <div className="font-semibold text-ink-800 mt-1">{selectedEntry.date}</div>
                 </div>
-                
+
                 {selectedEntry.hash && (
                   <div>
-                    <div className="text-sm text-gray-600">Reference Hash</div>
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm font-mono">
+                    <div className="nc-stat-label">Reference hash</div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="inline-flex items-center px-2 py-1 bg-brand-100 text-brand-700 rounded font-mono text-sm font-semibold">
                         {selectedEntry.hash}
                       </span>
                       <button
@@ -626,7 +597,7 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
                           navigator.clipboard.writeText(selectedEntry.hash!);
                           alert('Hash copied to clipboard!');
                         }}
-                        className="text-xs text-gray-500 hover:text-gray-700"
+                        className="text-xs text-ink-500 hover:text-ink-800 underline-offset-2 hover:underline"
                         title="Copy hash"
                       >
                         Copy
@@ -634,57 +605,65 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
                     </div>
                   </div>
                 )}
-                
+
                 {selectedEntry.note && (
                   <div>
-                    <div className="text-sm text-gray-600">Note</div>
-                    <div className="font-medium">{selectedEntry.note}</div>
+                    <div className="nc-stat-label">Note</div>
+                    <div className="font-medium text-ink-800 mt-1">{selectedEntry.note}</div>
                   </div>
                 )}
-                
-                <div className="bg-indigo-50 p-3 rounded-lg">
-                  <div className="text-sm text-gray-600">Total Count</div>
-                  <div className="text-2xl font-bold text-indigo-600">
-                    {selectedEntry.totalCount}
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="nc-stat bg-ink-50 border-ink-200">
+                    <div className="nc-stat-label">Items</div>
+                    <div className="nc-stat-value text-ink-900">{selectedEntry.totalCount}</div>
+                  </div>
+                  <div className="nc-stat bg-brand-50 border-brand-200/60">
+                    <div className="nc-stat-label text-brand-700/80">Amount</div>
+                    <div className="nc-stat-value text-brand-700 truncate">
+                      {formatAmount(selectedEntry.totalAmount)}
+                    </div>
                   </div>
                 </div>
-                
-                <div className="bg-indigo-50 p-3 rounded-lg">
-                  <div className="text-sm text-gray-600">Total Amount</div>
-                  <div className="text-2xl font-bold text-indigo-600 flex items-center">
-                    <CurrencyIcon className="mr-1" size={20} />
-                    {formatAmount(selectedEntry.totalAmount)}
-                  </div>
-                </div>
-                
+
                 <div>
-                  <div className="text-sm text-gray-600 mb-2">Denomination Breakdown</div>
-                  <div className="max-h-[200px] overflow-y-auto pr-1">
+                  <div className="nc-stat-label mb-2">Denomination breakdown</div>
+                  <div className="max-h-[220px] overflow-y-auto pr-1 rounded-lg border border-ink-200 divide-y divide-ink-100">
                     {Object.entries(selectedEntry.denominationCounts)
                       .filter(([_, count]) => Number(count) > 0)
                       .sort(([a], [b]) => Number(b) - Number(a))
-                      .map(([denom, count]) => formatDenomination(Number(denom), Number(count)))
-                    }
+                      .map(([denom, count]) => (
+                        <div key={denom} className="flex justify-between items-center px-3 py-2 text-sm">
+                          <div className="flex items-center gap-1.5">
+                            <CurrencyIcon size={13} className="text-ink-400" />
+                            <span className="font-semibold tabular-nums">{denom}</span>
+                            <span className="text-ink-400 text-xs uppercase tracking-wide">
+                              {Number(denom) <= 2 ? 'coin' : 'note'}
+                            </span>
+                          </div>
+                          <span className="text-ink-700 tabular-nums">× {count}</span>
+                        </div>
+                      ))}
                   </div>
                 </div>
-                
-                <div className="flex space-x-2 pt-2">
-                  <button 
+
+                <div className="grid grid-cols-3 gap-2 pt-2">
+                  <button
                     onClick={() => loadHistoryEntry(selectedEntry)}
-                    className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors text-sm"
+                    className="nc-btn-primary text-xs"
                   >
-                    Load to Counter
+                    Load
                   </button>
-                  <button 
+                  <button
                     onClick={() => exportToPDF(selectedEntry)}
-                    className="flex-1 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors text-sm flex items-center justify-center"
+                    className="nc-btn-success text-xs"
                   >
-                    <FileDown size={16} className="mr-1" />
-                    Export PDF
+                    <FileDown size={14} />
+                    PDF
                   </button>
-                  <button 
+                  <button
                     onClick={() => deleteHistoryEntry(selectedEntry.id)}
-                    className="flex-1 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors text-sm"
+                    className="nc-btn-danger text-xs"
                   >
                     Delete
                   </button>
@@ -692,15 +671,12 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
               </div>
             </>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-gray-500 py-8">
-              <div className="mb-4">
-                <Clock size={48} className="opacity-30" />
-              </div>
-              <p className="text-center">
-                {activeHistoryType === 'money' 
-                  ? 'Select a money counting entry to view details'
-                  : 'Calculator history details appear in the main panel'
-                }
+            <div className="h-full flex flex-col items-center justify-center text-ink-500 py-12">
+              <Clock size={48} className="opacity-30 mb-3" />
+              <p className="text-center text-sm">
+                {activeHistoryType === 'money'
+                  ? 'Select an entry to view details'
+                  : 'Calculator history details appear in the main panel'}
               </p>
             </div>
           )}

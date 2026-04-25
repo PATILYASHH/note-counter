@@ -1,121 +1,43 @@
 {
-  "name": "Note Counter v11.0 - Professional Money Counter & Custom Currency Creator",
+  "name": "Note Counter — Money & Cash Counter",
   "short_name": "Note Counter",
-  "description": "Revolutionary money counter with Custom Currency Creator! Create unlimited custom currencies plus 5 built-in (INR, USD, EUR, GBP, AED). Enhanced performance and focus-persistent inputs.",
+  "description": "Free, open-source online money counter. Count notes and coins fast in INR, USD, EUR, GBP, AED, or any custom currency. Works offline.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#4F46E5",
-  "orientation": "portrait-primary",
+  "theme_color": "#0f172a",
+  "orientation": "any",
   "scope": "/",
   "lang": "en",
+  "dir": "ltr",
   "categories": ["finance", "productivity", "business", "utilities"],
   "icons": [
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-48.png",
-      "sizes": "48x48",
-      "type": "image/png"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/icon-512.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "platform": "wide",
-      "label": "Note Counter Desktop View"
-    },
-    {
-      "src": "/icon-192.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "platform": "narrow",
-      "label": "Note Counter Mobile View"
-    }
-  ],
-  "features": [
-    "5 Major Currency Support (INR, USD, EUR, GBP, AED)",
-    "Smart Input System with Mathematical Expressions",
-    "Dual Calculator Interface",
-    "Real-time Calculation",
-    "Advanced History Tracking",
-    "Privacy Mode",
-    "Data Export/Import",
-    "Offline Functionality",
-    "Keyboard Shortcuts",
-    "Mobile-First Design"
+    { "src": "/icon.svg",    "sizes": "any",     "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon-48.png", "sizes": "48x48",   "type": "image/png" },
+    { "src": "/icon-72.png", "sizes": "72x72",   "type": "image/png" },
+    { "src": "/icon-96.png", "sizes": "96x96",   "type": "image/png" },
+    { "src": "/icon-144.png","sizes": "144x144", "type": "image/png" },
+    { "src": "/icon-192.png","sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png","sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "shortcuts": [
     {
-      "name": "Count Money",
-      "short_name": "Count",
-      "description": "Start counting currency notes and coins",
+      "name": "Open counter",
+      "short_name": "Counter",
+      "description": "Start counting notes and coins",
       "url": "/",
-      "icons": [
-        {
-          "src": "https://yashpatil.vercel.app/assets/images/projectimg/countnote.png",
-          "sizes": "96x96"
-        }
-      ]
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
-      "name": "Calculator",
-      "short_name": "Calculator",
-      "description": "Use the advanced calculator",
-      "url": "/?tab=calculator",
-      "icons": [
-        {
-          "src": "https://yashpatil.vercel.app/assets/images/projectimg/countnote.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "History",
+      "name": "View history",
       "short_name": "History",
-      "description": "View counting history and saved sessions",
+      "description": "View saved counting sessions",
       "url": "/?tab=history",
-      "icons": [
-        {
-          "src": "https://yashpatil.vercel.app/assets/images/projectimg/countnote.png",
-          "sizes": "96x96"
-        }
-      ]
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ],
   "related_applications": [],
   "prefer_related_applications": false,
-  "edge_side_panel": {
-    "preferred_width": 400
-  },
-  "launch_handler": {
-    "client_mode": "focus-existing"
-  }
+  "edge_side_panel": { "preferred_width": 420 },
+  "launch_handler": { "client_mode": "focus-existing" }
 }

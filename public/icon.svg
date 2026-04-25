@@ -1,9 +1,22 @@
-<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="192" height="192" rx="24" fill="#4F46E5"/>
-<rect x="48" y="72" width="48" height="48" rx="4" fill="white"/>
-<rect x="104" y="72" width="48" height="48" rx="4" fill="white"/>
-<rect x="76" y="48" width="48" height="8" rx="4" fill="white"/>
-<circle cx="72" cy="96" r="6" fill="#4F46E5"/>
-<circle cx="128" cy="96" r="6" fill="#4F46E5"/>
-<path d="M64 136H128M96 124V148" stroke="white" stroke-width="4" stroke-linecap="round"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="512" height="512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#818cf8"/>
+      <stop offset="0.55" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#3730a3"/>
+    </linearGradient>
+    <linearGradient id="n" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e0e7ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="10" fill="url(#g)"/>
+  <rect x="0.5" y="0.5" width="39" height="39" rx="9.5" fill="none" stroke="#ffffff" stroke-opacity="0.12"/>
+  <rect x="8.5" y="11.5" width="23" height="5" rx="1.8" fill="#ffffff" opacity="0.42"/>
+  <rect x="8.5" y="18" width="23" height="5" rx="1.8" fill="#ffffff" opacity="0.72"/>
+  <rect x="8.5" y="24.5" width="23" height="5" rx="1.8" fill="url(#n)"/>
+  <rect x="13" y="25.6" width="3" height="2.8" rx="0.6" fill="#4f46e5" opacity="0.85"/>
+  <circle cx="30.5" cy="11" r="4" fill="#fbbf24" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="30.5" cy="11" r="1.4" fill="#92400e" opacity="0.4"/>
 </svg>

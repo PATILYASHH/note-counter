@@ -3,6 +3,7 @@ import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOf
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
+import BrandLogo, { BrandMark } from './components/BrandLogo';
 
 // Declare global window property for Web Lock
 declare global {
@@ -1242,19 +1243,25 @@ function App() {
   const CurrencyIcon = getCurrencyInfo(selectedCurrency).icon;
 
   const ProModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="nc-card-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center">
-              <Crown className="text-yellow-500 mr-3" size={32} />
-              <h2 className="text-3xl font-bold text-gray-800">Upgrade to Pro Counter</h2>
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-300 to-amber-500 flex items-center justify-center shadow-card">
+                <Crown className="text-white" size={22} />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-ink-900 tracking-tight">Upgrade to Pro</h2>
+                <p className="text-xs text-ink-500 mt-0.5">Cloud sync, backup &amp; priority support</p>
+              </div>
             </div>
             <button
               onClick={() => setShowProModal(false)}
-              className="text-gray-500 hover:text-gray-700"
+              className="p-2 rounded-lg text-ink-500 hover:text-ink-900 hover:bg-ink-100 transition-colors"
+              aria-label="Close"
             >
-              <X size={24} />
+              <X size={20} />
             </button>
           </div>
           
@@ -1372,24 +1379,24 @@ function App() {
 
   const HashPopup = () => {
     if (!selectedCountingHash) return null;
-    
+
     const counting = findCountingByHash(selectedCountingHash);
-    
+
     if (!counting) {
       return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="nc-card-lg max-w-md w-full p-6 animate-slide-up">
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Counting Not Found</h3>
-              <p className="text-gray-600 mb-4">
-                The counting data for hash {selectedCountingHash} could not be found.
+              <h3 className="text-lg font-bold text-ink-900 mb-2">Counting not found</h3>
+              <p className="text-ink-500 mb-5 text-sm">
+                The counting for hash <span className="font-mono font-semibold">{selectedCountingHash}</span> could not be found.
               </p>
               <button
                 onClick={() => {
                   setShowHashPopup(false);
                   setSelectedCountingHash(null);
                 }}
-                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+                className="nc-btn-soft"
               >
                 Close
               </button>
@@ -1400,47 +1407,42 @@ function App() {
     }
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+        <div className="nc-card-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
           <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-gray-800 flex items-center">
-                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md font-mono text-sm mr-3">
+            <div className="flex justify-between items-start mb-5">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="bg-brand-100 text-brand-700 px-2 py-0.5 rounded font-mono text-sm font-semibold">
                     {counting.hash}
                   </span>
-                  Counting Details
-                </h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Created: {counting.date}
-                </p>
+                  <h3 className="text-lg font-bold text-ink-900">Counting details</h3>
+                </div>
+                <p className="text-ink-500 text-sm mt-1">Created {counting.date}</p>
               </div>
               <button
                 onClick={() => {
                   setShowHashPopup(false);
                   setSelectedCountingHash(null);
                 }}
-                className="text-gray-500 hover:text-gray-700 p-1"
+                className="p-2 rounded-lg text-ink-500 hover:text-ink-900 hover:bg-ink-100 transition-colors"
+                aria-label="Close"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
 
             {/* Summary */}
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg border border-green-200 mb-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">
-                    {getCurrencyInfo(counting.currency).symbol}{counting.totalAmount.toLocaleString()}
-                  </div>
-                  <div className="text-sm text-gray-600">Total Amount</div>
+            <div className="grid grid-cols-2 gap-3 mb-5">
+              <div className="nc-stat bg-emerald-50 border-emerald-200/60">
+                <div className="nc-stat-label text-emerald-700/80">Total amount</div>
+                <div className="nc-stat-value text-emerald-700 truncate">
+                  {getCurrencyInfo(counting.currency).symbol}{counting.totalAmount.toLocaleString()}
                 </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">
-                    {counting.totalCount.toLocaleString()}
-                  </div>
-                  <div className="text-sm text-gray-600">Total Count</div>
-                </div>
+              </div>
+              <div className="nc-stat bg-brand-50 border-brand-200/60">
+                <div className="nc-stat-label text-brand-700/80">Total count</div>
+                <div className="nc-stat-value text-brand-700">{counting.totalCount.toLocaleString()}</div>
               </div>
             </div>
 
@@ -1509,113 +1511,59 @@ function App() {
     );
   };
 
-  const MenuModal = () => (
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="p-4 sm:p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Menu</h2>
-              <button
-                onClick={() => setShowMenu(false)}
-                className="text-gray-500 hover:text-gray-700 p-1"
-              >
-                <X size={24} />
-              </button>
-            </div>
+  const MENU_TABS: Array<{ id: string; label: string }> = [
+    { id: 'about',         label: 'About' },
+    { id: 'customization', label: 'Settings' },
+    { id: 'currencies',    label: 'Currencies' },
+    { id: 'data',          label: 'Data' },
+    { id: 'pro',           label: 'Pro' },
+    { id: 'help',          label: 'Help' },
+    { id: 'blog',          label: 'Blog' },
+    { id: 'contact',       label: 'Contact' },
+    { id: 'privacy',       label: 'Privacy' },
+  ];
 
-            {/* Tab Navigation */}
-            <div className="flex flex-wrap gap-1 mb-6 bg-gray-100 p-1 rounded-lg">
-              <button
-                onClick={() => setActiveMenuTab('about')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'about'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                About
-              </button>
-              <button
-                onClick={() => setActiveMenuTab('customization')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'customization'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Settings
-              </button>
-              <button
-                onClick={() => setActiveMenuTab('currencies')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'currencies'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Currencies
-              </button>
-              <button
-                onClick={() => setActiveMenuTab('data')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'data'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Data
-              </button>
-              <button
-                onClick={() => setActiveMenuTab('pro')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'pro'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Pro
-              </button>
-              <button
-                onClick={() => setActiveMenuTab('help')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'help'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Help
-              </button>
-              <button
-                onClick={() => setActiveMenuTab('blog')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'blog'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Blog
-              </button>
-              <button
-                onClick={() => setActiveMenuTab('contact')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'contact'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Contact
-              </button>
-              <button
-                onClick={() => setActiveMenuTab('privacy')}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeMenuTab === 'privacy'
-                    ? 'bg-white text-indigo-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Privacy
-              </button>
+  const MenuModal = () => (
+      <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 animate-fade-in">
+        <div className="bg-white rounded-xl2 shadow-card-lg max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-ink-200/70 animate-slide-up">
+          {/* Sticky modal header */}
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-ink-200 bg-white">
+            <div className="flex items-center gap-3 min-w-0">
+              <BrandMark size={32} title="Note Counter" />
+              <div className="leading-tight min-w-0">
+                <h2 className="text-base sm:text-lg font-bold text-ink-900 tracking-tight">Menu</h2>
+                <p className="text-[11px] text-ink-500">Settings, currencies, data &amp; help</p>
+              </div>
             </div>
+            <button
+              onClick={() => setShowMenu(false)}
+              className="p-2 rounded-lg text-ink-500 hover:text-ink-900 hover:bg-ink-100 transition-colors"
+              aria-label="Close menu"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Sticky tab bar */}
+          <div className="px-3 sm:px-4 pt-3 pb-3 border-b border-ink-200 bg-ink-50/60">
+            <div className="flex flex-wrap gap-1.5">
+              {MENU_TABS.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setActiveMenuTab(t.id)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${
+                    activeMenuTab === t.id
+                      ? 'bg-ink-900 text-white shadow-card'
+                      : 'bg-white text-ink-600 border border-ink-200 hover:border-ink-300 hover:text-ink-900'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="overflow-y-auto px-4 sm:px-6 py-5 flex-1">
 
             {/* Tab Content */}
             <div className="space-y-6">
@@ -1771,35 +1719,32 @@ function App() {
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-blue-200">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-4 pt-3 border-t border-blue-200">
                       <a
                         href="/privacy-policy.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium"
+                        className="nc-btn-ghost"
                       >
-                        <Shield size={18} className="mr-2" />
+                        <Shield size={16} />
                         Privacy Policy
                       </a>
                       <a
                         href="/about.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-md flex items-center justify-center font-medium"
+                        className="nc-btn-ghost"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
                         About Page
                       </a>
                       <a
                         href="/contact.html"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 px-4 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-md flex items-center justify-center font-medium"
+                        className="nc-btn-ghost"
                       >
-                        <Shield size={18} className="mr-2" />
-                        Privacy Policy
+                        <Mail size={16} />
+                        Contact
                       </a>
                     </div>
                   </section>
@@ -3006,17 +2951,32 @@ function App() {
                     </div>
                     
                     {/* Support Section */}
-                    <div className="text-center">
-                      <h4 className="text-base font-semibold text-gray-800 mb-3">Support the Project</h4>
-                      <a
-                        href="https://github.com/sponsors/PATILYASHH"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-pink-50 text-pink-700 rounded-lg hover:bg-pink-100 transition-colors border border-pink-200"
-                      >
-                        <Heart className="mr-2" size={16} />
-                        <span className="text-sm">Sponsor my work on GitHub</span>
-                      </a>
+                    <div className="rounded-xl2 border border-rose-200/70 bg-gradient-to-br from-rose-50 to-amber-50 p-5 text-center">
+                      <Heart size={28} className="mx-auto text-rose-500 mb-2" />
+                      <h4 className="text-base font-bold text-ink-900 mb-1">Support development</h4>
+                      <p className="text-sm text-ink-600 mb-4">
+                        Note Counter is free &amp; open-source. If it saves you time, please consider sponsoring.
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                        <a
+                          href="https://github.com/sponsors/PATILYASHH"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-card transition-colors"
+                        >
+                          <Heart size={16} />
+                          Sponsor on GitHub
+                        </a>
+                        <a
+                          href="https://github.com/PATILYASHH/note-counter"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold bg-white text-ink-800 border border-ink-200 hover:bg-ink-50 transition-colors"
+                        >
+                          <Github size={16} />
+                          Star on GitHub
+                        </a>
+                      </div>
                     </div>
                   </section>
                 </div>
@@ -3198,16 +3158,25 @@ function App() {
   const CustomCurrencyModal = React.memo(() => {
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+        <div className="nc-card-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Create Custom Currency</h2>
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-400 to-purple-600 flex items-center justify-center shadow-card">
+                  <Plus className="text-white" size={22} />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold text-ink-900 tracking-tight">Create custom currency</h2>
+                  <p className="text-xs text-ink-500 mt-0.5">Define your own code, symbol, and denominations</p>
+                </div>
+              </div>
               <button
                 onClick={() => setShowCustomCurrencyModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-2 rounded-lg text-ink-500 hover:text-ink-900 hover:bg-ink-100 transition-colors"
+                aria-label="Close"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
 
@@ -3362,34 +3331,27 @@ function App() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
-            <header className="bg-black text-white p-4 shadow-lg">
-              <div className="container mx-auto flex justify-between items-center">
-                <h1 className="text-xl sm:text-2xl font-bold flex items-center">
-                  <img 
-                    src="/logos/Normallogo.png" 
-                    alt="Note Counter Logo" 
-                    className="h-12 sm:h-14 md:h-16 rounded-lg cursor-pointer" 
+    <div className="min-h-screen bg-ink-50 flex flex-col">
+            <header className="sticky top-0 z-30 bg-ink-900 text-white shadow-card-md backdrop-blur supports-[backdrop-filter]:bg-ink-900/95">
+              <div className="container mx-auto flex justify-between items-center gap-3 px-4 h-16">
+                <h1 className="flex items-center min-w-0">
+                  <button
+                    type="button"
+                    aria-label="Note Counter — home"
+                    className="flex items-center gap-3 rounded-lg p-1 -m-1 hover:bg-white/5 transition-colors cursor-pointer"
                     onClick={() => {
-                      // Add confetti
                       const batchId = Date.now();
                       setConfettiBatches(prev => [...prev, batchId]);
                       setTimeout(() => {
                         setConfettiBatches(prev => prev.filter(id => id !== batchId));
                       }, 5000);
 
-                      // Track clicks for triple-click detection
                       const newClickCount = logoClickCount + 1;
                       setLogoClickCount(newClickCount);
 
-                      // Clear existing timer
-                      if (logoClickTimer) {
-                        clearTimeout(logoClickTimer);
-                      }
+                      if (logoClickTimer) clearTimeout(logoClickTimer);
 
-                      // Check if 3 clicks
                       if (newClickCount === 3) {
-                        // Launch rockets!
                         const rocketId = Date.now();
                         setRockets(prev => [...prev, rocketId]);
                         setTimeout(() => {
@@ -3397,180 +3359,216 @@ function App() {
                         }, 2000);
                         setLogoClickCount(0);
                       } else {
-                        // Reset click count after 1 second if not clicked again
-                        const timer = setTimeout(() => {
-                          setLogoClickCount(0);
-                        }, 1000);
+                        const timer = setTimeout(() => setLogoClickCount(0), 1000);
                         setLogoClickTimer(timer);
                       }
                     }}
-                  />
-                </h1>
-                <div className="md:hidden">
-                  <button 
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="p-2 rounded-md hover:bg-gray-800 transition-colors"
                   >
-                    <Menu size={24} />
+                    <BrandMark size={36} title="Note Counter" />
+                    <span className="hidden sm:flex flex-col leading-none text-left">
+                      <span className="text-base font-extrabold tracking-tight">
+                        Note <span className="text-amber-400">Counter</span>
+                      </span>
+                      <span className="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-ink-300 mt-1">
+                        v11 · open source
+                      </span>
+                    </span>
+                  </button>
+                </h1>
+
+                {/* Mobile right side */}
+                <div className="md:hidden flex items-center gap-1">
+                  <a
+                    href="https://github.com/sponsors/PATILYASHH"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Sponsor on GitHub"
+                    className="nc-icon-btn text-rose-300 hover:text-rose-200"
+                    title="Sponsor on GitHub"
+                  >
+                    <Heart size={18} />
+                  </a>
+                  <button
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className="nc-icon-btn"
+                    aria-label="Open menu"
+                  >
+                    <Menu size={22} />
                   </button>
                 </div>
-                <div className="hidden md:flex space-x-4 items-center">
+
+                {/* Desktop nav */}
+                <div className="hidden md:flex items-center gap-2">
                   <select
                     value={selectedCurrency}
                     onChange={(e) => handleCurrencyChange(e.target.value as Currency)}
-                    className="bg-white text-black px-3 py-1 rounded-md font-medium"
+                    className="bg-white/10 text-white border border-white/15 px-3 py-2 rounded-lg text-sm font-semibold cursor-pointer hover:bg-white/15 transition-colors"
+                    aria-label="Select currency"
                   >
                     {getAvailableCurrencies().map(currency => {
                       const currencyInfo = getCurrencyInfo(currency);
                       return (
-                        <option key={currency} value={currency}>
+                        <option key={currency} value={currency} className="bg-ink-900">
                           {currency} ({currencyInfo.symbol})
                         </option>
                       );
                     })}
                   </select>
+
                   <button
-                    className={`py-2 px-4 rounded-md font-medium transition-all ${
-                      activeTab === 'counter'
-                        ? 'bg-white text-black'
-                        : 'text-white hover:bg-gray-800'
-                    }`}
+                    className={`nc-tab ${activeTab === 'counter' ? 'nc-tab-active' : 'nc-tab-inactive'}`}
                     onClick={() => setActiveTab('counter')}
                   >
-                    <div className="flex items-center">
-                      <CurrencyIcon className="mr-2" size={18} />
-                      Money Counter
-                    </div>
+                    <CurrencyIcon size={16} />
+                    Counter
                   </button>
                   <button
-                    className={`py-2 px-4 rounded-md font-medium transition-all ${
-                      activeTab === 'history'
-                        ? 'bg-white text-black'
-                        : 'text-white hover:bg-gray-800'
-                    }`}
+                    className={`nc-tab ${activeTab === 'history' ? 'nc-tab-active' : 'nc-tab-inactive'}`}
                     onClick={() => setActiveTab('history')}
                   >
-                    <div className="flex items-center">
-                      <History className="mr-2" size={18} />
-                      History
-                    </div>
+                    <History size={16} />
+                    History
                   </button>
                   <button
                     onClick={toggleNotepad}
-                    className="py-2 px-4 rounded-md font-medium text-white hover:bg-gray-800 transition-all group relative"
+                    className="nc-tab nc-tab-inactive relative"
                     title="Quick Notepad (Shift+N)"
                   >
-                    <div className="flex items-center">
-                      <NotebookPen className="mr-2" size={18} />
-                      <span className="hidden lg:inline">Notepad</span>
-                      <span className="lg:hidden">Notes</span>
-                    </div>
+                    <NotebookPen size={16} />
+                    <span className="hidden lg:inline">Notepad</span>
                     {notes.length > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                      <span className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold px-1">
                         {notes.length}
                       </span>
                     )}
                   </button>
+
+                  <div className="w-px h-6 bg-white/15 mx-1" aria-hidden="true" />
+
+                  <a
+                    href="https://github.com/sponsors/PATILYASHH"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="nc-sponsor-dark"
+                    title="Support development on GitHub Sponsors"
+                  >
+                    <Heart size={14} className="text-rose-300" />
+                    <span className="hidden lg:inline">Sponsor</span>
+                  </a>
+                  <a
+                    href="https://github.com/PATILYASHH/note-counter"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Star on GitHub"
+                    className="nc-icon-btn"
+                    title="Star on GitHub"
+                  >
+                    <Github size={18} />
+                  </a>
+
                   <button
                     onClick={() => setShowMenu(true)}
-                    className="ml-2 p-2 rounded-full hover:bg-gray-800 transition-colors group relative"
-                    title="Menu (Ctrl+M) • Press F1 for all shortcuts"
+                    className="nc-icon-btn relative"
+                    title="Menu (Ctrl+M) • F1 for shortcuts"
+                    aria-label="Open menu"
                   >
                     <MenuIcon size={20} />
-                    <div className="absolute -top-1 -right-1 bg-yellow-400 text-black rounded-full w-4 h-4 flex items-center justify-center">
-                      <Keyboard size={10} />
-                    </div>
-                    
-                    {/* Tooltip for keyboard shortcuts */}
-                    <div className="absolute top-12 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                      Press F1 for all shortcuts
-                    </div>
+                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full" />
                   </button>
                 </div>
               </div>
             </header>
 
             {mobileMenuOpen && (
-              <div className="md:hidden bg-gray-900 text-white">
-                <div className="container mx-auto p-2">
+              <div className="md:hidden bg-ink-900 text-white border-t border-white/10 animate-slide-up">
+                <div className="container mx-auto p-3 space-y-2">
                   <select
                     value={selectedCurrency}
                     onChange={(e) => {
                       handleCurrencyChange(e.target.value as Currency);
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full mb-2 bg-white text-indigo-600 px-3 py-2 rounded-md font-medium"
+                    className="w-full bg-white/10 text-white border border-white/15 px-3 py-2.5 rounded-lg font-semibold"
                   >
                     {getAvailableCurrencies().map(currency => {
                       const currencyInfo = getCurrencyInfo(currency);
                       return (
-                        <option key={currency} value={currency}>
+                        <option key={currency} value={currency} className="bg-ink-900">
                           {currency} ({currencyInfo.symbol})
                         </option>
                       );
                     })}
                   </select>
-                  <button
-                    className={`w-full py-2 px-4 rounded-md font-medium mb-2 transition-all ${
-                      activeTab === 'counter'
-                        ? 'bg-white text-indigo-600'
-                        : 'text-white hover:bg-indigo-700/50'
-                    }`}
-                    onClick={() => {
-                      setActiveTab('counter');
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    <div className="flex items-center justify-center">
-                      <CurrencyIcon className="mr-2" size={18} />
-                      Money Counter
-                    </div>
-                  </button>
-                  <button
-                    className={`w-full py-2 px-4 rounded-md font-medium mb-2 transition-all ${
-                      activeTab === 'history'
-                        ? 'bg-white text-indigo-600'
-                        : 'text-white hover:bg-indigo-700/50'
-                    }`}
-                    onClick={() => {
-                      setActiveTab('history');
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    <div className="flex items-center justify-center">
-                      <History className="mr-2" size={18} />
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium transition-all ${
+                        activeTab === 'counter'
+                          ? 'bg-white text-ink-900'
+                          : 'bg-white/5 text-white hover:bg-white/10'
+                      }`}
+                      onClick={() => { setActiveTab('counter'); setMobileMenuOpen(false); }}
+                    >
+                      <CurrencyIcon size={16} />
+                      Counter
+                    </button>
+                    <button
+                      className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium transition-all ${
+                        activeTab === 'history'
+                          ? 'bg-white text-ink-900'
+                          : 'bg-white/5 text-white hover:bg-white/10'
+                      }`}
+                      onClick={() => { setActiveTab('history'); setMobileMenuOpen(false); }}
+                    >
+                      <History size={16} />
                       History
-                    </div>
-                  </button>
-                  <button
-                    onClick={() => {
-                      toggleNotepad();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full py-2 px-4 rounded-md font-medium mb-2 text-white hover:bg-indigo-700/50 transition-all relative"
-                  >
-                    <div className="flex items-center justify-center">
-                      <NotebookPen className="mr-2" size={18} />
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => { toggleNotepad(); setMobileMenuOpen(false); }}
+                      className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium bg-white/5 text-white hover:bg-white/10 transition-all relative"
+                    >
+                      <NotebookPen size={16} />
                       Notepad
                       {notes.length > 0 && (
-                        <span className="ml-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                        <span className="bg-rose-500 text-white rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold px-1">
                           {notes.length}
                         </span>
                       )}
-                    </div>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowMenu(true);
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full py-2 px-4 rounded-md font-medium mb-2 text-white hover:bg-indigo-700/50"
-                  >
-                    <div className="flex items-center justify-center">
-                      <MenuIcon className="mr-2" size={18} />
+                    </button>
+                    <button
+                      onClick={() => { setShowMenu(true); setMobileMenuOpen(false); }}
+                      className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium bg-white/5 text-white hover:bg-white/10"
+                    >
+                      <MenuIcon size={16} />
                       Menu
-                    </div>
-                  </button>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <a
+                      href="https://github.com/sponsors/PATILYASHH"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-semibold bg-rose-500/15 text-rose-200 border border-rose-400/20 hover:bg-rose-500/25 transition-colors"
+                    >
+                      <Heart size={16} />
+                      Sponsor
+                    </a>
+                    <a
+                      href="https://github.com/PATILYASHH/note-counter"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-semibold bg-white/5 text-white hover:bg-white/10 transition-colors"
+                    >
+                      <Github size={16} />
+                      GitHub
+                    </a>
+                  </div>
                 </div>
               </div>
             )}
@@ -3758,22 +3756,29 @@ function App() {
               </div>
             )}
 
-            <div className="container mx-auto p-4 flex-1">
+            <div className="container mx-auto p-3 sm:p-4 flex-1">
               {activeTab === 'counter' ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
+                  {/* Denominations — left column */}
                   <div className="md:col-span-1">
-                    <div className="bg-white rounded-lg shadow-lg p-4 h-full border border-gray-200">
+                    <div className="nc-card-lg p-4 sm:p-5 h-full">
                       <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-semibold text-gray-800">Count Your Money</h2>
+                        <div>
+                          <h2 className="text-lg font-bold text-ink-900 tracking-tight">Count Your Money</h2>
+                          <p className="text-xs text-ink-500 mt-0.5">
+                            {getCurrencyInfo(selectedCurrency).flag} {getCurrencyInfo(selectedCurrency).name}
+                          </p>
+                        </div>
                         <button
                           onClick={() => setHideAmounts(!hideAmounts)}
-                          className="text-gray-600 hover:text-indigo-600 transition-colors"
-                          title={hideAmounts ? "Show amounts" : "Hide amounts"}
+                          className="p-2 rounded-lg text-ink-500 hover:text-brand-600 hover:bg-brand-50 transition-colors"
+                          title={hideAmounts ? "Show amounts (Ctrl+H)" : "Hide amounts (Ctrl+H)"}
+                          aria-label={hideAmounts ? "Show amounts" : "Hide amounts"}
                         >
-                          {hideAmounts ? <EyeOff size={20} /> : <Eye size={20} />}
+                          {hideAmounts ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                       </div>
-                      <div className="space-y-3">
+                      <div className="space-y-2.5">
                         {leftColumnDenominations.map((denom, idx) => (
                           <DenominationCounter
                             key={denom.value}
@@ -3791,11 +3796,17 @@ function App() {
                       </div>
                     </div>
                   </div>
-                  
+
+                  {/* Denominations — right column */}
                   <div className="md:col-span-1">
-                    <div className="bg-white rounded-lg shadow-lg p-4 h-full border border-gray-200">
-                      <h2 className="text-xl font-semibold mb-4 text-gray-800">&nbsp;</h2>
-                      <div className="space-y-3">
+                    <div className="nc-card-lg p-4 sm:p-5 h-full">
+                      <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-bold text-ink-900 tracking-tight invisible md:visible">Continued</h2>
+                        <span className="nc-chip bg-ink-100 text-ink-600">
+                          {getCurrencyDenominations(selectedCurrency).length} denominations
+                        </span>
+                      </div>
+                      <div className="space-y-2.5">
                         {rightColumnDenominations.map((denom, idx) => (
                           <DenominationCounter
                             key={denom.value}
@@ -3813,171 +3824,172 @@ function App() {
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="md:col-span-1">
-                    <div className="bg-white rounded-lg shadow-lg p-4 h-full border border-gray-200">
-                      <h2 className="text-xl font-semibold mb-4 text-gray-800">Summary</h2>
-                      
-                      <div className="space-y-4">
-                        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-lg border border-indigo-100">
-                          <h3 className="text-lg font-medium text-gray-700">Total Count</h3>
-                          <p className="text-3xl font-bold text-indigo-600">
-                            {totalCount}
-                          </p>
-                        </div>
-                        
-                        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-lg border border-indigo-100">
-                          <h3 className="text-lg font-medium text-gray-700">Total Amount</h3>
-                          <p className="text-3xl font-bold text-indigo-600">
-                            {formatAmount(totalAmount)}
-                          </p>
-                        </div>
 
-                        {showAmountInText && (
-                          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-100">
-                            <div className="flex items-center justify-between mb-2">
-                              <h3 className="text-lg font-medium text-gray-700">Amount in Words</h3>
-                              <button
-                                onClick={() => copyToClipboard(numberToText(totalAmount))}
-                                className="text-green-600 hover:text-green-700 transition-colors p-1 rounded-md hover:bg-green-100"
-                                title="Copy to clipboard"
-                              >
-                                <Copy size={18} />
-                              </button>
-                            </div>
-                            <p className="text-sm font-medium text-green-700 leading-relaxed">
-                              {numberToText(totalAmount)}
-                            </p>
+                  {/* Summary */}
+                  <div className="md:col-span-1">
+                    <div className="nc-card-lg p-4 sm:p-5 h-full md:sticky md:top-20">
+                      <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-bold text-ink-900 tracking-tight">Summary</h2>
+                        <a
+                          href="https://github.com/sponsors/PATILYASHH"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="nc-sponsor"
+                          title="Support development"
+                        >
+                          <Heart size={14} />
+                          Sponsor
+                        </a>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <div className="nc-stat bg-ink-50 border-ink-200">
+                          <div className="nc-stat-label">Total Count</div>
+                          <div className="nc-stat-value text-ink-900">{totalCount}</div>
+                        </div>
+                        <div className="nc-stat bg-brand-50 border-brand-200/60">
+                          <div className="nc-stat-label text-brand-700/80">Total Amount</div>
+                          <div className="nc-stat-value text-brand-700 truncate">
+                            {formatAmount(totalAmount)}
                           </div>
-                        )}
-                        
-                        <div className="flex space-x-2">
-                          <button 
-                            onClick={handleReset}
-                            className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md transition-all shadow-md active:transform active:scale-95"
-                          >
-                            Reset All
-                          </button>
-                          <button 
-                            onClick={handleSave}
-                            className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition-all shadow-md active:transform active:scale-95 flex items-center justify-center"
-                          >
-                            <Save size={18} className="mr-2" />
-                            Save
-                          </button>                        </div>
-                        
-                        {showCalculator && (
-                          <>
-                            <div className="flex items-center mb-2">
+                        </div>
+                      </div>
+
+                      {showAmountInText && (
+                        <div className="nc-stat bg-emerald-50 border-emerald-200/60 mb-4">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <div className="nc-stat-label text-emerald-700/80">Amount in Words</div>
+                            <button
+                              onClick={() => copyToClipboard(numberToText(totalAmount))}
+                              className="p-1 rounded text-emerald-700 hover:bg-emerald-100 transition-colors"
+                              title="Copy to clipboard"
+                              aria-label="Copy amount in words"
+                            >
+                              <Copy size={14} />
+                            </button>
+                          </div>
+                          <p className="text-sm font-semibold text-emerald-800 leading-snug">
+                            {numberToText(totalAmount)}
+                          </p>
+                        </div>
+                      )}
+
+                      <div className="flex gap-2">
+                        <button
+                          onClick={handleReset}
+                          className="nc-btn-ghost flex-1"
+                          title="Reset all counts (Ctrl+R)"
+                        >
+                          Reset
+                        </button>
+                        <button
+                          onClick={handleSave}
+                          className="nc-btn-success flex-1"
+                          title="Save current count (Ctrl+S)"
+                        >
+                          <Save size={16} />
+                          Save
+                        </button>
+                      </div>
+
+                      {showCalculator && (
+                        <div className="mt-5 pt-5 border-t border-ink-200">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <Calculator size={16} className="text-brand-600" />
+                              <h3 className="text-sm font-bold text-ink-900 uppercase tracking-wider">Calculator</h3>
+                            </div>
+                            <label className="inline-flex items-center gap-1.5 text-xs text-ink-600 cursor-pointer select-none">
                               <input
                                 type="checkbox"
                                 id="sendToCalculator"
                                 checked={sendToCalculator}
                                 onChange={(e) => setSendToCalculator(e.target.checked)}
-                                className="mr-2"
+                                className="rounded border-ink-300 text-brand-600 focus:ring-brand-500/30"
                               />
-                              <label htmlFor="sendToCalculator" className="text-sm text-gray-600">
-                                Use total amount in calculator
-                              </label>
-                            </div>
-
-                            <div className="mt-4">
-                              <div className="flex items-center mb-2">
-                                <Calculator size={18} className="mr-2 text-indigo-600" />
-                                <h3 className="text-lg font-medium text-gray-700">Calculator</h3>
-                              </div>
-                              <SimpleCalculator 
-                                initialValue={sendToCalculator ? totalAmount.toString() : ''} 
-                                showPad={showCalculatorPad}
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
+                              Use total
+                            </label>
+                          </div>
+                          <SimpleCalculator
+                            initialValue={sendToCalculator ? totalAmount.toString() : ''}
+                            showPad={showCalculatorPad}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               ) : (
-                <HistoryTab hideAmounts={hideAmounts} selectedCurrency={selectedCurrency} />
+                <div className="animate-fade-in">
+                  <HistoryTab hideAmounts={hideAmounts} selectedCurrency={selectedCurrency} />
+                </div>
               )}
             </div>
             
             {/* End of Main Content */}
             </div>
 
-            <footer className="bg-gray-800 text-white py-6 mt-auto">
-              <div className="container mx-auto px-4">
-                <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
-                  <a 
-                    href="/about.html" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>About</span>
-                  </a>
-                  <a 
-                    href="/blog.html" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                    <span>Blog</span>
-                  </a>
-                  <a 
-                    href="/contact.html" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <Mail size={20} className="mr-2" />
-                    <span>Contact</span>
-                  </a>
-                  <a 
-                    href="/about.html" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <span className="mr-2">ℹ️</span>
-                    <span>About</span>
-                  </a>
-                  <a 
-                    href="/privacy-policy.html" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <Shield size={20} className="mr-2" />
-                    <span>Privacy</span>
-                  </a>
-                  <a 
-                    href="/terms.html" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span>Terms</span>
-                  </a>
-                  <a
-                    href="https://github.com/sponsors/PATILYASHH"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <Heart size={20} className="mr-2" />
-                    <span>Sponsor</span>
-                  </a>
-                  <span className="text-gray-400 text-sm">Version 11.0.0</span>
+            <footer className="bg-ink-900 text-ink-300 mt-auto border-t border-white/5">
+              <div className="container mx-auto px-4 py-8">
+                <div className="grid gap-6 md:grid-cols-3 mb-6">
+                  {/* Brand + sponsor */}
+                  <div>
+                    <div className="mb-3">
+                      <BrandLogo size={36} tone="dark" title="Note Counter" />
+                    </div>
+                    <p className="text-sm text-ink-400 leading-relaxed mb-4">
+                      Free and open-source money counter. Count notes and coins fast for INR, USD, EUR, GBP, AED or any custom currency.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <a
+                        href="https://github.com/sponsors/PATILYASHH"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold bg-rose-500/15 text-rose-200 border border-rose-400/20 hover:bg-rose-500/25 transition-colors"
+                      >
+                        <Heart size={14} />
+                        Sponsor on GitHub
+                      </a>
+                      <a
+                        href="https://github.com/PATILYASHH/note-counter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-colors"
+                      >
+                        <Github size={14} />
+                        Star on GitHub
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Quick links */}
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-ink-400 mb-3">Project</h3>
+                    <ul className="space-y-2 text-sm">
+                      <li><a href="/about.html" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">About</a></li>
+                      <li><a href="/blog.html" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Blog</a></li>
+                      <li><a href="/contact.html" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Contact</a></li>
+                      <li><a href="https://github.com/PATILYASHH/note-counter/issues" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Report an issue</a></li>
+                    </ul>
+                  </div>
+
+                  {/* Legal */}
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-ink-400 mb-3">Legal</h3>
+                    <ul className="space-y-2 text-sm">
+                      <li><a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Privacy policy</a></li>
+                      <li><a href="/terms.html" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Terms of service</a></li>
+                      <li><a href="/disclaimer.html" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Disclaimer</a></li>
+                      <li><a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">MIT License</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink-500">
+                  <p>© {new Date().getFullYear()} Yash Patil · Note Counter v11.0 · Open source under MIT</p>
+                  <p className="flex items-center gap-1">
+                    Made with <Heart size={12} className="text-rose-400" /> in India
+                  </p>
                 </div>
               </div>
             </footer>
