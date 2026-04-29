@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Crown, Cloud, Smartphone, Shield, FileText, Printer, Download, Upload, Euro, PoundSterling, Coins, Keyboard, Copy, NotebookPen, Plus, Edit, Trash2, Zap } from 'lucide-react';
+import { IndianRupee, Menu, Github, Globe, History, Calculator, Save, Eye, EyeOff, X, Mail, Heart, DollarSign, MenuIcon, Smartphone, Shield, FileText, Download, Upload, Euro, PoundSterling, Coins, Keyboard, Copy, NotebookPen, Plus, Edit, Trash2, Zap, Receipt, Landmark, TrendingUp, ArrowLeftRight } from 'lucide-react';
 import DenominationCounter from './components/DenominationCounter';
 import HistoryTab from './components/HistoryTab';
 import SimpleCalculator from './components/SimpleCalculator';
+import TaxCalculator from './components/TaxCalculator';
+import EMICalculator from './components/EMICalculator';
+import SipCalculator from './components/SipCalculator';
+import CurrencyConverter from './components/CurrencyConverter';
+import FeedbackForm from './components/FeedbackForm';
+import ReviewPrompt from './components/ReviewPrompt';
 import BrandLogo, { BrandMark } from './components/BrandLogo';
 
 // Declare global window property for Web Lock
@@ -171,12 +177,14 @@ function App() {
     return (savedCurrency === 'INR' || savedCurrency === 'USD' || savedCurrency === 'EUR' || savedCurrency === 'GBP' || savedCurrency === 'AED') ? savedCurrency as Currency : 'USD';
   });
 
-  const [activeTab, setActiveTab] = useState<'counter' | 'history'>('counter');
+  const [activeTab, setActiveTab] = useState<'counter' | 'history' | 'tax' | 'emi' | 'sip' | 'fx'>('counter');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sendToCalculator, setSendToCalculator] = useState(false);
   const [hideAmounts, setHideAmounts] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showProModal, setShowProModal] = useState(false);
+  const [showSponsorModal, setShowSponsorModal] = useState(false);
+  const [sponsorAmount, setSponsorAmount] = useState<string>('500');
+  const [sponsorCopied, setSponsorCopied] = useState(false);
   const [showCalculatorPad, setShowCalculatorPad] = useState(() => {
     return localStorage.getItem('showCalculatorPad') === 'true';
   });
@@ -225,7 +233,7 @@ function App() {
   const [noteContent, setNoteContent] = useState('');
   const [confettiBatches, setConfettiBatches] = useState<number[]>([]);
   const [logoClickCount, setLogoClickCount] = useState(0);
-  const [logoClickTimer, setLogoClickTimer] = useState<NodeJS.Timeout | null>(null);
+  const [logoClickTimer, setLogoClickTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
   const [rockets, setRockets] = useState<number[]>([]);
 
   // Hash popup state
@@ -670,9 +678,9 @@ function App() {
         event.preventDefault();
         setShowMenu(false);
         setShowCalculatorPad(false);
-        setShowProModal(false);
         setMobileMenuOpen(false);
         setShowNotepad(false);
+        setShowSponsorModal(false);
         return;
       }
 
@@ -1048,12 +1056,6 @@ function App() {
     input.click();
   };
 
-  const handleProUpgrade = () => {
-    // For now, just show an alert. In a real app, this would redirect to payment
-    showAlert('Pro features coming soon! This would redirect to the upgrade page.');
-    setShowProModal(false);
-  };
-
   // Notepad functions
   const saveNotesToLocalStorage = (updatedNotes: Note[]) => {
     localStorage.setItem('quickNotes', JSON.stringify(updatedNotes));
@@ -1242,141 +1244,6 @@ function App() {
 
   const CurrencyIcon = getCurrencyInfo(selectedCurrency).icon;
 
-  const ProModal = () => (
-    <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-      <div className="nc-card-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-300 to-amber-500 flex items-center justify-center shadow-card">
-                <Crown className="text-white" size={22} />
-              </div>
-              <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-ink-900 tracking-tight">Upgrade to Pro</h2>
-                <p className="text-xs text-ink-500 mt-0.5">Cloud sync, backup &amp; priority support</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowProModal(false)}
-              className="p-2 rounded-lg text-ink-500 hover:text-ink-900 hover:bg-ink-100 transition-colors"
-              aria-label="Close"
-            >
-              <X size={20} />
-            </button>
-          </div>
-          
-          <div className="mb-8">
-            <p className="text-lg text-gray-600 mb-4">
-              Unlock powerful features to take your money counting to the next level!
-            </p>
-            
-            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-lg border border-yellow-200 mb-6">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-orange-600 mb-2">$1/months</div>
-                <div className="text-gray-600">or $10/year</div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">Pro Features</h3>
-                
-                <div className="flex items-start space-x-3">
-                  <Cloud className="text-blue-500 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-medium text-gray-800">Free Cloud Storage</h4>
-                    <p className="text-gray-600 text-sm">Unlimited cloud storage for all your counting data</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Smartphone className="text-green-500 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-medium text-gray-800">Multi-Device Access</h4>
-                    <p className="text-gray-600 text-sm">Access your data from any device, anywhere</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Shield className="text-purple-500 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-medium text-gray-800">Daily Data Backup</h4>
-                    <p className="text-gray-600 text-sm">Automatic daily backups ensure your data is never lost</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <FileText className="text-red-500 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-medium text-gray-800">PDF Export</h4>
-                    <p className="text-gray-600 text-sm">Export your counting reports as professional PDFs</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Printer className="text-indigo-500 mt-1" size={20} />
-                  <div>
-                    <h4 className="font-medium text-gray-800">Print Reports</h4>
-                    <p className="text-gray-600 text-sm">Print detailed reports directly from the app</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">Additional Benefits</h3>
-                
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      Priority customer support
-                    </li>
-                    <li className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      Advanced analytics and insights
-                    </li>
-                    <li className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      Custom branding options
-                    </li>
-                    <li className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      Team collaboration features
-                    </li>
-                    <li className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      No ads or promotional content
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <h4 className="font-medium text-blue-800 mb-2">7-Day Free Trial</h4>
-                  <p className="text-blue-700 text-sm">
-                    Try Pro risk-free! If you're not completely satisfied, get a full refund within 7 days.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center">
-              <button
-                onClick={handleProUpgrade}
-                className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-4 px-8 rounded-lg font-bold text-lg hover:from-yellow-600 hover:to-orange-600 transition-all shadow-lg transform hover:scale-105 flex items-center justify-center mx-auto"
-              >
-                <Crown size={24} className="mr-2" />
-                Comming Soon
-              </button>
-              <p className="text-gray-500 text-sm mt-2">
-                Cancel anytime • Secure payment • Instant activation
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   const HashPopup = () => {
     if (!selectedCountingHash) return null;
 
@@ -1516,14 +1383,12 @@ function App() {
     { id: 'customization', label: 'Settings' },
     { id: 'currencies',    label: 'Currencies' },
     { id: 'data',          label: 'Data' },
-    { id: 'pro',           label: 'Pro' },
     { id: 'help',          label: 'Help' },
-    { id: 'blog',          label: 'Blog' },
     { id: 'contact',       label: 'Contact' },
     { id: 'privacy',       label: 'Privacy' },
   ];
 
-  const MenuModal = () => (
+  const menuModalElement = showMenu ? (
       <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 animate-fade-in">
         <div className="bg-white rounded-xl2 shadow-card-lg max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-ink-200/70 animate-slide-up">
           {/* Sticky modal header */}
@@ -1570,6 +1435,27 @@ function App() {
               {/* About Tab */}
               {activeMenuTab === 'about' && (
                 <div className="space-y-6">
+                  {/* Free-forever pledge */}
+                  <section className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-lg border border-emerald-200">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                        <Heart size={18} className="text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-emerald-900 tracking-tight">
+                          100% free forever — no ads, no tracking of your data
+                        </h3>
+                        <p className="text-sm text-emerald-800 mt-1 leading-relaxed">
+                          Note Counter is open-source under the MIT license and will always be free. There are no
+                          advertisements, no premium tier, and your counts, history, notes and custom currencies stay
+                          on your device — nothing about your amounts is sent anywhere. Anonymous page-view
+                          counts are kept by Vercel Insights so I can see roughly how many people use the site;
+                          that's the only analytics.
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+
                   {/* Developer Introduction Section */}
                   <section className="bg-gradient-to-r from-indigo-50 to-blue-50 p-4 rounded-lg border border-indigo-200">
                     <div className="flex items-center mb-3">
@@ -2495,63 +2381,6 @@ function App() {
                 </div>
               )}
 
-              {/* Pro Tab */}
-              {activeMenuTab === 'pro' && (
-                <div className="space-y-6">
-                  {/* Pro Version Promotion */}
-                  <section className="bg-gradient-to-br from-yellow-50 to-orange-50 p-4 rounded-lg border-2 border-yellow-300">
-                    <div className="text-center mb-4">
-                      <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full mb-3">
-                        <Crown size={32} className="text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">Upgrade to Pro Counter</h3>
-                      <div className="text-2xl font-bold text-orange-600 mb-1">$1/month</div>
-                      <div className="text-sm text-gray-600">or $10/year (Save 17%)</div>
-                    </div>
-                    
-                    <div className="space-y-3 mb-4">
-                      <div className="flex items-center text-sm">
-                        <Cloud className="text-blue-500 mr-2 flex-shrink-0" size={16} />
-                        <span><strong>Cloud Sync:</strong> Access your data from any device</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Shield className="text-green-500 mr-2 flex-shrink-0" size={16} />
-                        <span><strong>Auto Backup:</strong> Never lose your data again</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Printer className="text-purple-500 mr-2 flex-shrink-0" size={16} />
-                        <span><strong>PDF Export:</strong> Professional reports & printing</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Heart className="text-red-500 mr-2 flex-shrink-0" size={16} />
-                        <span><strong>Support Developer:</strong> Help me create more tools</span>
-                      </div>
-                    </div>
-
-                    <div className="bg-green-100 p-3 rounded-lg mb-4">
-                      <div className="text-center">
-                        <div className="text-green-700 font-semibold">🎉 Special Launch Offer</div>
-                        <div className="text-sm text-green-600">7-day free trial + 30% off first year!</div>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => {
-                        setShowMenu(false);
-                        setShowProModal(true);
-                      }}
-                      className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 px-4 rounded-lg hover:from-yellow-600 hover:to-orange-600 transition-all shadow-lg transform hover:scale-105 flex items-center justify-center font-bold"
-                    >
-                      <Crown size={20} className="mr-2" />
-                      Start Free Trial
-                    </button>
-                    <p className="text-xs text-center text-gray-500 mt-2">
-                      No credit card required • Cancel anytime
-                    </p>
-                  </section>
-                </div>
-              )}
-
               {/* Help Tab */}
               {activeMenuTab === 'help' && (
                 <div className="space-y-6">
@@ -2705,278 +2534,80 @@ function App() {
                 </div>
               )}
 
-              {/* Blog Tab */}
-              {activeMenuTab === 'blog' && (
-                <div className="space-y-6">
-                  {/* Latest Update Banner */}
-                  <section className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border-2 border-green-300">
-                    <div className="flex items-center mb-3">
-                      <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mr-3">
-                        <span className="text-white font-bold text-sm">NEW</span>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-green-800">Version 11.0 - Professional Service Launch!</h3>
-                        <p className="text-sm text-green-600">December 31, 2025 • Major Update</p>
-                      </div>
-                    </div>
-                    <div className="ml-13">
-                      <h4 className="font-semibold text-green-800 mb-2">🌟 What's New:</h4>
-                      <ul className="text-sm text-green-700 space-y-1 mb-3">
-                        <li>• <strong>Default Currency:</strong> Now starts with USD for global accessibility</li>
-                        <li>• <strong>Professional Service:</strong> Commercial launch with ongoing support</li>
-                        <li>• <strong>Enhanced Privacy:</strong> GDPR, CCPA, and COPPA compliant</li>
-                        <li>• <strong>All Features Retained:</strong> Custom currencies, Web Lock, and more!</li>
-                        <li>• <strong>Full Customization:</strong> Set currency code, name, symbol, and flag emoji</li>
-                        <li>• <strong>Focus-Persistent Inputs:</strong> Smooth typing experience without repeated clicking</li>
-                        <li>• <strong>Currency Management:</strong> Enable/disable currencies to show only what you need</li>
-                        <li>• <strong>Enhanced Performance:</strong> React.memo optimization for faster, more responsive interface</li>
-                      </ul>
-                      <div className="bg-green-100 p-3 rounded-lg border border-green-200">
-                        <p className="text-sm text-green-800">
-                          <strong>How to use:</strong> Go to Settings → Web Lock Settings → Configure Web Lock to set up PIN or password protection. 
-                          Your financial data will be securely locked until browser session ends. Perfect for businesses handling 
-                          sensitive cash data and personal financial management.
-                        </p>
-                      </div>
-                    </div>
-                  </section>
-
-                  {/* Blog Introduction Section */}
-                  <section className="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-lg border border-purple-200">
-                    <div className="flex items-center mb-3">
-                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-800">Financial Knowledge Hub</h3>
-                        <p className="text-sm text-gray-600">Expert insights on money management and counting</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-700 text-sm leading-relaxed">
-                      Discover practical tips, industry insights, and expert advice to improve your financial management skills. Our blog covers everything from money counting techniques to business finance strategies.
-                    </p>
-                  </section>
-
-                  {/* Featured Blog Posts */}
-                  <section>
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Latest Articles</h3>
-                    <div className="space-y-3">
-                      <a
-                        href="/blog/money-counting-tips-small-business.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all cursor-pointer"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-gray-800 mb-1">10 Essential Money Counting Tips for Small Businesses</h4>
-                            <p className="text-sm text-gray-600 mb-2">Proven strategies to streamline your cash handling process and reduce errors</p>
-                            <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Business Tips</span>
-                          </div>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </div>
-                      </a>
-                      
-                      <a
-                        href="/blog/cash-flow-management-entrepreneurs.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md transition-all cursor-pointer"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-gray-800 mb-1">Cash Flow Management: A Complete Guide for Entrepreneurs</h4>
-                            <p className="text-sm text-gray-600 mb-2">Master cash flow forecasting, management strategies, and financial planning</p>
-                            <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Finance Guide</span>
-                          </div>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </div>
-                      </a>
-                    </div>
-                  </section>
-
-                  {/* Blog Navigation */}
-                  <section>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <a
-                        href="/blog.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-md flex items-center justify-center font-medium cursor-pointer"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        View All Articles
-                      </a>
-                      <a
-                        href="/about.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-all shadow-md flex items-center justify-center font-medium border border-gray-300 cursor-pointer"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        About Note Counter
-                      </a>
-                    </div>
-                  </section>
-
-                  {/* Important Links */}
-                  <section>
-                    <h3 className="text-lg font-semibold text-gray-700 mb-4">📋 Important Information</h3>
-                    <div className="grid grid-cols-2 gap-3">
-                      <a
-                        href="/privacy-policy.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-green-50 text-green-700 py-2 px-3 rounded-lg hover:bg-green-100 transition-all border border-green-200 flex items-center justify-center text-sm font-medium cursor-pointer"
-                      >
-                        🔒 Privacy Policy
-                      </a>
-                      <a
-                        href="/disclaimer.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-yellow-50 text-yellow-700 py-2 px-3 rounded-lg hover:bg-yellow-100 transition-all border border-yellow-200 flex items-center justify-center text-sm font-medium cursor-pointer"
-                      >
-                        ⚠️ Disclaimer
-                      </a>
-                      <a
-                        href="/terms.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-blue-50 text-blue-700 py-2 px-3 rounded-lg hover:bg-blue-100 transition-all border border-blue-200 flex items-center justify-center text-sm font-medium cursor-pointer"
-                      >
-                        📄 Terms
-                      </a>
-                      <a
-                        href="/contact.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-purple-50 text-purple-700 py-2 px-3 rounded-lg hover:bg-purple-100 transition-all border border-purple-200 flex items-center justify-center text-sm font-medium cursor-pointer"
-                      >
-                        ✉️ Contact
-                      </a>
-                    </div>
-                  </section>
-
-                  {/* Newsletter Signup */}
-                  <section className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Stay Updated</h4>
-                    <p className="text-sm mb-3 text-indigo-100">Get the latest financial tips and Note Counter updates delivered to your inbox.</p>
-                    <div className="flex gap-2">
-                      <input 
-                        type="email" 
-                        placeholder="Enter your email" 
-                        className="flex-1 px-3 py-2 rounded-md text-gray-800 text-sm"
-                      />
-                      <button className="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors">
-                        Subscribe
-                      </button>
-                    </div>
-                  </section>
-                </div>
-              )}
-
               {/* Contact Tab */}
               {activeMenuTab === 'contact' && (
                 <div className="space-y-6">
-                  {/* Contact & Feedback Section */}
+                  {/* Inline feedback / contact / bug / feature form */}
                   <section>
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Get in Touch</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                      <a
-                        href="mailto:patilyasshh@gmail.com"
-                        className="flex items-center px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors border border-blue-200"
-                      >
-                        <Mail className="mr-3 flex-shrink-0" size={18} />
-                        <div>
-                          <div className="font-medium">Send Feedback</div>
-                          <div className="text-xs text-blue-600">patilyasshh@gmail.com</div>
-                        </div>
-                      </a>
-                      <a
-                        href="https://yashpatil.vercel.app"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center px-4 py-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors border border-green-200"
-                      >
-                        <Globe className="mr-3 flex-shrink-0" size={18} />
-                        <div>
-                          <div className="font-medium">Visit Portfolio</div>
-                          <div className="text-xs text-green-600">yashpatil.vercel.app</div>
-                        </div>
-                      </a>
-                    </div>
-                    
-                    {/* Contribute Section */}
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
-                      <h4 className="text-base font-semibold text-gray-800 mb-3 flex items-center">
-                        <Github className="mr-2" size={18} />
-                        Contribute to the Project
-                      </h4>
-                      <p className="text-sm text-gray-600 mb-3">
-                        Questions or feedback? We'd love to hear from you! Contact us for support, feature requests, or general inquiries.
-                      </p>
-                      <a
-                        href="/contact.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
-                      >
-                        <Mail className="mr-2" size={16} />
-                        Contact Support
-                      </a>
-                    </div>
-                    
-                    {/* Contact Page Link */}
-                    <div className="text-center mb-4">
-                      <a
-                        href="/contact.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md font-medium"
-                      >
-                        <Mail className="mr-2" size={18} />
-                        Visit Full Contact Page
-                      </a>
-                    </div>
-                    
-                    {/* Support Section */}
-                    <div className="rounded-xl2 border border-rose-200/70 bg-gradient-to-br from-rose-50 to-amber-50 p-5 text-center">
-                      <Heart size={28} className="mx-auto text-rose-500 mb-2" />
-                      <h4 className="text-base font-bold text-ink-900 mb-1">Support development</h4>
-                      <p className="text-sm text-ink-600 mb-4">
-                        Note Counter is free &amp; open-source. If it saves you time, please consider sponsoring.
-                      </p>
-                      <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                        <a
-                          href="https://github.com/sponsors/PATILYASHH"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-card transition-colors"
-                        >
-                          <Heart size={16} />
-                          Sponsor on GitHub
-                        </a>
-                        <a
-                          href="https://github.com/PATILYASHH/note-counter"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold bg-white text-ink-800 border border-ink-200 hover:bg-ink-50 transition-colors"
-                        >
-                          <Github size={16} />
-                          Star on GitHub
-                        </a>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-1">Get in touch</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Found a bug, have an idea, or just want to say hi? Send a message right from here — feedback, bug reports, and feature requests all land in the developer's inbox.
+                    </p>
+                    <FeedbackForm compact />
+                  </section>
+
+                  {/* Quick links */}
+                  <section className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <a
+                      href="https://github.com/PATILYASHH/note-counter/issues/new/choose"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center px-4 py-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
+                    >
+                      <Github className="mr-3 flex-shrink-0" size={18} />
+                      <div className="min-w-0">
+                        <div className="font-medium text-sm">Open a GitHub issue</div>
+                        <div className="text-xs text-gray-500 truncate">For technical bug reports</div>
                       </div>
+                    </a>
+                    <a
+                      href="mailto:patilyasshh@gmail.com"
+                      className="flex items-center px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors border border-blue-200"
+                    >
+                      <Mail className="mr-3 flex-shrink-0" size={18} />
+                      <div className="min-w-0">
+                        <div className="font-medium text-sm">Email directly</div>
+                        <div className="text-xs text-blue-600 truncate">patilyasshh@gmail.com</div>
+                      </div>
+                    </a>
+                    <a
+                      href="https://yashpatil.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center px-4 py-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors border border-green-200"
+                    >
+                      <Globe className="mr-3 flex-shrink-0" size={18} />
+                      <div className="min-w-0">
+                        <div className="font-medium text-sm">Developer portfolio</div>
+                        <div className="text-xs text-green-600 truncate">yashpatil.vercel.app</div>
+                      </div>
+                    </a>
+                  </section>
+
+                  {/* Support Section */}
+                  <section className="rounded-xl2 border border-rose-200/70 bg-gradient-to-br from-rose-50 to-amber-50 p-5 text-center">
+                    <Heart size={28} className="mx-auto text-rose-500 mb-2" />
+                    <h4 className="text-base font-bold text-ink-900 mb-1">Support development</h4>
+                    <p className="text-sm text-ink-600 mb-4">
+                      Note Counter is free &amp; open-source. If it saves you time, please consider sponsoring — UPI for India, GitHub for international.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                      <button
+                        onClick={() => { setShowMenu(false); setShowSponsorModal(true); }}
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-card transition-colors"
+                      >
+                        <Heart size={16} />
+                        Sponsor (UPI / GitHub)
+                      </button>
+                      <a
+                        href="https://github.com/PATILYASHH/note-counter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold bg-white text-ink-800 border border-ink-200 hover:bg-ink-50 transition-colors"
+                      >
+                        <Github size={16} />
+                        Star on GitHub
+                      </a>
                     </div>
                   </section>
                 </div>
@@ -2986,84 +2617,108 @@ function App() {
               {activeMenuTab === 'privacy' && (
                 <div className="space-y-6">
                   {/* Privacy Header */}
-                  <section className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                  <section className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-lg border border-emerald-200">
                     <div className="flex items-center mb-3">
-                      <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mr-3">
+                      <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mr-3">
                         <Shield size={24} className="text-white" />
                       </div>
                       <div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Privacy First Guarantee</h3>
-                        <p className="text-sm text-green-600">Your privacy is our top priority</p>
+                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Privacy at a glance</h3>
+                        <p className="text-sm text-emerald-700">Free forever · No ads · No tracking of your data</p>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-700">
-                      Note Counter prioritizes your privacy. Your counting data stays on your device. We use cookies for advertising 
-                      and collect analytics to improve our service. See our <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Privacy Policy</a> for complete details.
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      Note Counter is a free, open-source project. There are no advertisements, no AdSense, no third-party trackers, and no cookies set by this site. Your counts, history, GST/EMI records, notes and custom currencies live <strong>only in your browser</strong> — nothing about the amounts you enter is sent anywhere. The only telemetry is anonymous, cookieless page-view counts via Vercel Analytics so the developer can see roughly how many people visit the site. Full detail in the <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline hover:text-emerald-800">Privacy Policy</a>.
                     </p>
                   </section>
 
-                  {/* What We DO Store */}
+                  {/* What stays on your device */}
                   <section>
                     <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                      <span className="text-green-500 mr-2">✅</span>
-                      What We Store (Locally Only)
+                      <span className="text-emerald-500 mr-2">✅</span>
+                      Stored only on your device (browser localStorage)
                     </h3>
                     <div className="space-y-3">
                       <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                        <div className="flex justify-between items-start">
+                        <div className="flex justify-between items-start gap-3">
                           <div>
-                            <div className="text-sm font-medium text-blue-800">App Preferences</div>
-                            <div className="text-xs text-blue-600">Your settings like currency choice, text format</div>
+                            <div className="text-sm font-medium text-blue-800">Counts &amp; saved sessions</div>
+                            <div className="text-xs text-blue-600">Active denomination counts and saved counting history</div>
                           </div>
-                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">Browser Only</span>
+                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded whitespace-nowrap">Your device</span>
                         </div>
                       </div>
                       <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                        <div className="flex justify-between items-start">
+                        <div className="flex justify-between items-start gap-3">
                           <div>
-                            <div className="text-sm font-medium text-blue-800">Session History</div>
-                            <div className="text-xs text-blue-600">Your saved counting sessions with notes</div>
+                            <div className="text-sm font-medium text-blue-800">Tax &amp; EMI history</div>
+                            <div className="text-xs text-blue-600">Saved GST / VAT and Loan EMI calculations</div>
                           </div>
-                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">Local Storage</span>
+                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded whitespace-nowrap">Your device</span>
                         </div>
                       </div>
                       <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                        <div className="flex justify-between items-start">
+                        <div className="flex justify-between items-start gap-3">
                           <div>
-                            <div className="text-sm font-medium text-blue-800">Current Counts</div>
-                            <div className="text-xs text-blue-600">Your active denomination counts</div>
+                            <div className="text-sm font-medium text-blue-800">Notes &amp; custom currencies</div>
+                            <div className="text-xs text-blue-600">Quick notepad entries and custom currency definitions</div>
                           </div>
-                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">Your Device</span>
+                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded whitespace-nowrap">Your device</span>
+                        </div>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                        <div className="flex justify-between items-start gap-3">
+                          <div>
+                            <div className="text-sm font-medium text-blue-800">Preferences &amp; Web Lock</div>
+                            <div className="text-xs text-blue-600">Currency choice, hide-amount toggle, optional PIN/password (stored hashed)</div>
+                          </div>
+                          <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded whitespace-nowrap">Your device</span>
                         </div>
                       </div>
                     </div>
                   </section>
 
-                  {/* Professional Service */}
+                  {/* What does NOT happen */}
                   <section>
                     <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                      <span className="mr-2">💼</span>
-                      Professional Service
+                      <span className="text-rose-500 mr-2">🚫</span>
+                      What this site does <em>not</em> do
                     </h3>
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <p className="text-sm text-gray-700 mb-3">
-                        <strong>Commercial Service:</strong> Note Counter is a professionally developed money counting tool 
-                        designed for businesses, educators, and individuals who need reliable currency management.
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Professional Tool</span>
-                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">Regular Updates</span>
-                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Support Available</span>
+                    <div className="bg-rose-50 p-4 rounded-lg border border-rose-200 space-y-2 text-sm text-rose-900">
+                      <div>• <strong>No advertisements.</strong> No AdSense, no sponsored content, no banner ads.</div>
+                      <div>• <strong>No accounts or sign-up.</strong> No email collection, no newsletter.</div>
+                      <div>• <strong>No third-party trackers.</strong> No Google Analytics, no Facebook Pixel, no Mixpanel, no Plausible.</div>
+                      <div>• <strong>No cookies set</strong> by Note Counter. There's no cookie banner because there's nothing to consent to.</div>
+                      <div>• <strong>No premium tier.</strong> Every feature is free, forever.</div>
+                    </div>
+                  </section>
+
+                  {/* What IS sent over the network */}
+                  <section>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <span className="mr-2">📡</span>
+                      What is sent over the network
+                    </h3>
+                    <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 text-sm text-amber-900 space-y-3">
+                      <div>
+                        <div className="font-bold mb-1">1. Vercel Analytics — page-view counts</div>
+                        <p className="leading-relaxed">
+                          Anonymous, cookieless page-view counts. Records URL path, referrer, country, browser, OS, and device type. No cookies, no behaviour profile, no cross-site tracking. The developer uses this only to see how many people visit overall.
+                          <a href="https://vercel.com/docs/analytics/privacy-policy" target="_blank" rel="noopener noreferrer" className="block text-amber-800 underline hover:text-amber-900 text-xs mt-1">Vercel's analytics privacy policy →</a>
+                        </p>
                       </div>
-                      <button
-                        onClick={() => window.open('/about.html', '_blank')}
-                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 px-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md flex items-center justify-center font-medium"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Learn More About Note Counter
-                      </button>
+                      <div className="pt-2 border-t border-amber-200/70">
+                        <div className="font-bold mb-1">2. Currency Converter — exchange rates</div>
+                        <p className="leading-relaxed">
+                          When you open the FX tab, the app fetches mid-market exchange rates from <a href="https://www.floatrates.com" target="_blank" rel="noopener noreferrer" className="underline">floatrates.com</a> via a public GET request. The response is cached in your browser for 24 hours, so subsequent visits don't hit the network. The request sends no user data, no cookies, no amounts you've entered.
+                        </p>
+                      </div>
+                      <div className="pt-2 border-t border-amber-200/70">
+                        <div className="font-bold mb-1">3. Feedback / Contact form — only when you click Send</div>
+                        <p className="leading-relaxed">
+                          If you fill out the Contact form (Menu → Contact, or <code className="bg-amber-100 px-1 rounded">/contact.html</code>) and click <strong>Send</strong>, your submission is delivered to the developer's inbox via <a href="https://formspree.io" target="_blank" rel="noopener noreferrer" className="underline">Formspree</a>. The submission contains exactly what you typed (name, email, subject, message, category) plus minor triage metadata (app version, current page URL, browser user-agent, timestamp). Nothing is sent until you press Send. See <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer" className="underline">Formspree's privacy policy</a>.
+                        </p>
+                      </div>
                     </div>
                   </section>
 
@@ -3071,61 +2726,64 @@ function App() {
                   <section>
                     <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
                       <span className="mr-2">🛡️</span>
-                      Your Privacy Controls
+                      Your controls
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-                        <div className="text-sm font-medium text-yellow-800 mb-1">Privacy Mode</div>
-                        <div className="text-xs text-yellow-700">Hide amounts with eye toggle</div>
+                        <div className="text-sm font-medium text-yellow-800 mb-1">Hide amounts</div>
+                        <div className="text-xs text-yellow-700">Toggle the eye icon in the navbar (Ctrl+H)</div>
                       </div>
                       <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-                        <div className="text-sm font-medium text-yellow-800 mb-1">Data Export</div>
-                        <div className="text-xs text-yellow-700">Download your data anytime</div>
+                        <div className="text-sm font-medium text-yellow-800 mb-1">Export data</div>
+                        <div className="text-xs text-yellow-700">JSON export from the Data tab</div>
                       </div>
                       <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-                        <div className="text-sm font-medium text-yellow-800 mb-1">Clear Data</div>
-                        <div className="text-xs text-yellow-700">Delete via browser settings</div>
+                        <div className="text-sm font-medium text-yellow-800 mb-1">Clear data</div>
+                        <div className="text-xs text-yellow-700">"Clear all" in History or your browser's site-data settings</div>
                       </div>
                       <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-                        <div className="text-sm font-medium text-yellow-800 mb-1">Incognito Mode</div>
-                        <div className="text-xs text-yellow-700">Use private browsing</div>
+                        <div className="text-sm font-medium text-yellow-800 mb-1">Web Lock</div>
+                        <div className="text-xs text-yellow-700">Optional PIN/password gate, stored hashed in your browser</div>
                       </div>
                     </div>
                   </section>
 
-                  {/* Compliance & Standards */}
+                  {/* Open source */}
                   <section>
                     <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                      <span className="mr-2">📋</span>
-                      Privacy Compliance
+                      <span className="mr-2">🐙</span>
+                      Open source — verify it yourself
                     </h3>
-                    <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
-                      <p className="text-sm text-indigo-800 mb-3">
-                        Our privacy-first design automatically complies with major privacy regulations:
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <p className="text-sm text-gray-700 mb-3">
+                        Released under the <strong>MIT License</strong>. The full source code is on GitHub — you can read it, fork it, run your own copy, or audit exactly what data leaves your browser.
                       </p>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-center">GDPR</span>
-                        <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-center">CCPA</span>
-                        <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-center">COPPA</span>
-                        <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-center">PIPEDA</span>
-                      </div>
+                      <a
+                        href="https://github.com/PATILYASHH/note-counter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full inline-flex items-center justify-center bg-gray-900 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors shadow-sm font-medium"
+                      >
+                        <Github size={18} className="mr-2" />
+                        github.com/PATILYASHH/note-counter
+                      </a>
                     </div>
                   </section>
 
-                  {/* Privacy Policy Link */}
+                  {/* Legal documents */}
                   <section className="text-center">
-                    <h4 className="text-base font-semibold text-gray-800 mb-3">Complete Legal Documents</h4>
+                    <h4 className="text-base font-semibold text-gray-800 mb-3">Full legal documents</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                       <button
                         onClick={() => window.open('/privacy-policy.html', '_blank')}
-                        className="inline-flex items-center px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg font-medium"
+                        className="inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg hover:from-emerald-600 hover:to-teal-600 transition-all shadow-md font-medium"
                       >
                         <FileText size={18} className="mr-2" />
                         Privacy Policy
                       </button>
                       <button
                         onClick={() => window.open('/disclaimer.html', '_blank')}
-                        className="inline-flex items-center px-4 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:from-yellow-600 hover:to-orange-600 transition-all shadow-lg font-medium"
+                        className="inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-md font-medium"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -3134,7 +2792,7 @@ function App() {
                       </button>
                       <button
                         onClick={() => window.open('/terms.html', '_blank')}
-                        className="inline-flex items-center px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-lg font-medium"
+                        className="inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-md font-medium"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -3143,7 +2801,7 @@ function App() {
                       </button>
                     </div>
                     <p className="text-xs text-gray-500 mt-2">
-                      All documents open in a new tab • Last updated: July 12, 2025
+                      All documents open in a new tab • Last updated: April 29, 2026
                     </p>
                   </section>
                 </div>
@@ -3152,12 +2810,172 @@ function App() {
           </div>
         </div>
       </div>
-    );
+    ) : null;
+
+  // Sponsor Modal — UPI quick-pay + GitHub Sponsors
+  const UPI_ID = 'yashpatil0305@ybl';
+  const UPI_PAYEE_NAME = 'Yash Patil';
+  const sponsorAmountNum = Math.max(0, parseFloat(sponsorAmount) || 0);
+  const upiPayLink =
+    `upi://pay?pa=${encodeURIComponent(UPI_ID)}` +
+    `&pn=${encodeURIComponent(UPI_PAYEE_NAME)}` +
+    (sponsorAmountNum > 0 ? `&am=${sponsorAmountNum}` : '') +
+    `&cu=INR&tn=${encodeURIComponent('Note Counter sponsor')}`;
+  const sponsorPresets = [100, 500, 1000, 2000, 5000];
+
+  const sponsorModalElement = showSponsorModal ? (
+    <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="bg-white rounded-xl2 shadow-card-lg max-w-lg w-full max-h-[92vh] overflow-y-auto animate-slide-up border border-ink-200/70">
+        <div className="p-5 sm:p-6">
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center shadow-card">
+                <Heart className="text-white" size={20} />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-bold text-ink-900 tracking-tight">Support Note Counter</h2>
+                <p className="text-xs text-ink-500 mt-0.5">Help keep this free, ad-free, and open source</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowSponsorModal(false)}
+              className="p-2 rounded-lg text-ink-500 hover:text-ink-900 hover:bg-ink-100 transition-colors"
+              aria-label="Close"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* UPI section (India) */}
+          <section className="mb-5 p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-base">🇮🇳</span>
+                <h3 className="text-sm font-bold text-emerald-900">Pay with UPI</h3>
+              </div>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-700/80 bg-emerald-100 px-2 py-0.5 rounded">
+                Instant · 0% fee
+              </span>
+            </div>
+            <p className="text-xs text-emerald-900/80 mb-3">
+              Works with PhonePe, Google Pay, Paytm, BHIM and any other UPI app. No account, no sign-up.
+            </p>
+
+            {/* Amount picker */}
+            <div className="mb-3">
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-700/80 mb-1.5">
+                Amount (₹)
+              </div>
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                {sponsorPresets.map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setSponsorAmount(String(p))}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
+                      sponsorAmountNum === p
+                        ? 'bg-emerald-600 text-white border-emerald-600'
+                        : 'bg-white text-emerald-800 border-emerald-200 hover:border-emerald-400'
+                    }`}
+                  >
+                    ₹{p}
+                  </button>
+                ))}
+              </div>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-700 font-semibold">₹</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min="1"
+                  step="1"
+                  value={sponsorAmount}
+                  onChange={(e) => setSponsorAmount(e.target.value)}
+                  placeholder="Custom amount"
+                  className="w-full pl-8 pr-3 py-2 rounded-lg border border-emerald-200 bg-white text-emerald-900 font-semibold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                />
+              </div>
+            </div>
+
+            {/* UPI ID display + copy */}
+            <div className="mb-3 p-2.5 rounded-lg bg-white border border-emerald-200 flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-emerald-700/80">UPI ID</div>
+                <div className="text-sm font-mono font-bold text-emerald-900 truncate">{UPI_ID}</div>
+              </div>
+              <button
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(UPI_ID);
+                    setSponsorCopied(true);
+                    setTimeout(() => setSponsorCopied(false), 1500);
+                  } catch {
+                    // ignore
+                  }
+                }}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors flex-shrink-0 ${
+                  sponsorCopied
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                }`}
+              >
+                <Copy size={12} />
+                {sponsorCopied ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+
+            <a
+              href={upiPayLink}
+              className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-4 rounded-lg font-bold text-sm transition-colors shadow-sm"
+            >
+              <Heart size={15} />
+              Open UPI app to pay {sponsorAmountNum > 0 ? `₹${sponsorAmountNum}` : ''}
+            </a>
+            <p className="text-[10px] text-emerald-800/70 mt-2 leading-relaxed">
+              On mobile this opens your default UPI app with the amount pre-filled. On desktop, copy the UPI ID and pay
+              from your phone, or scan it via your UPI app's "pay to UPI ID" option.
+            </p>
+          </section>
+
+          {/* GitHub Sponsors */}
+          <section className="mb-3 p-4 rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-base">🌍</span>
+              <h3 className="text-sm font-bold text-rose-900">GitHub Sponsors (international)</h3>
+            </div>
+            <p className="text-xs text-rose-900/80 mb-3">
+              Card payments worldwide via GitHub. Requires a free GitHub account. Recurring or one-time.
+            </p>
+            <a
+              href="https://github.com/sponsors/PATILYASHH"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 text-white py-2.5 px-4 rounded-lg font-bold text-sm transition-colors shadow-sm"
+            >
+              <Github size={15} />
+              Sponsor on GitHub
+            </a>
+          </section>
+
+          {/* Star on GitHub fallback */}
+          <p className="text-center text-xs text-ink-500">
+            Don't want to send money?{' '}
+            <a
+              href="https://github.com/PATILYASHH/note-counter"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-600 hover:text-brand-700 font-semibold underline"
+            >
+              Star the repo
+            </a>{' '}
+            — that helps too. ⭐
+          </p>
+        </div>
+      </div>
+    </div>
+  ) : null;
 
   // Custom Currency Creation Modal
-  const CustomCurrencyModal = React.memo(() => {
-
-    return (
+  const customCurrencyModalElement = showCustomCurrencyModal ? (
       <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
         <div className="nc-card-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
           <div className="p-6">
@@ -3327,13 +3145,12 @@ function App() {
           </div>
         </div>
       </div>
-    );
-  });
+    ) : null;
 
   return (
     <div className="min-h-screen bg-ink-50 flex flex-col">
             <header className="sticky top-0 z-30 bg-ink-900 text-white shadow-card-md backdrop-blur supports-[backdrop-filter]:bg-ink-900/95">
-              <div className="container mx-auto flex justify-between items-center gap-3 px-4 h-16">
+              <div className="container mx-auto flex justify-between items-center gap-3 px-4 h-16 md:h-[60px]">
                 <h1 className="flex items-center min-w-0">
                   <button
                     type="button"
@@ -3378,16 +3195,14 @@ function App() {
 
                 {/* Mobile right side */}
                 <div className="md:hidden flex items-center gap-1">
-                  <a
-                    href="https://github.com/sponsors/PATILYASHH"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Sponsor on GitHub"
+                  <button
+                    onClick={() => setShowSponsorModal(true)}
+                    aria-label="Sponsor"
                     className="nc-icon-btn text-rose-300 hover:text-rose-200"
-                    title="Sponsor on GitHub"
+                    title="Sponsor (UPI / GitHub)"
                   >
                     <Heart size={18} />
-                  </a>
+                  </button>
                   <button
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     className="nc-icon-btn"
@@ -3399,62 +3214,116 @@ function App() {
 
                 {/* Desktop nav */}
                 <div className="hidden md:flex items-center gap-2">
-                  <select
-                    value={selectedCurrency}
-                    onChange={(e) => handleCurrencyChange(e.target.value as Currency)}
-                    className="bg-white/10 text-white border border-white/15 px-3 py-2 rounded-lg text-sm font-semibold cursor-pointer hover:bg-white/15 transition-colors"
-                    aria-label="Select currency"
-                  >
-                    {getAvailableCurrencies().map(currency => {
-                      const currencyInfo = getCurrencyInfo(currency);
-                      return (
-                        <option key={currency} value={currency} className="bg-ink-900">
-                          {currency} ({currencyInfo.symbol})
-                        </option>
-                      );
-                    })}
-                  </select>
+                  {/* Segmented calculator tabs */}
+                  <nav className="nc-segment" aria-label="Calculator views">
+                    <button
+                      className={`nc-segment-btn ${activeTab === 'counter' ? 'nc-segment-btn-active' : ''}`}
+                      onClick={() => setActiveTab('counter')}
+                      title="Money counter"
+                    >
+                      <CurrencyIcon size={15} />
+                      <span className="hidden lg:inline">Counter</span>
+                    </button>
+                    <button
+                      className={`nc-segment-btn ${activeTab === 'tax' ? 'nc-segment-btn-active' : ''}`}
+                      onClick={() => setActiveTab('tax')}
+                      title={selectedCurrency === 'INR' ? 'GST calculator' : 'Tax / VAT calculator'}
+                    >
+                      <Receipt size={15} />
+                      <span className="hidden lg:inline">{selectedCurrency === 'INR' ? 'GST' : 'Tax'}</span>
+                    </button>
+                    <button
+                      className={`nc-segment-btn ${activeTab === 'emi' ? 'nc-segment-btn-active' : ''}`}
+                      onClick={() => setActiveTab('emi')}
+                      title="Loan EMI calculator"
+                    >
+                      <Landmark size={15} />
+                      <span className="hidden lg:inline">EMI</span>
+                    </button>
+                    <button
+                      className={`nc-segment-btn ${activeTab === 'sip' ? 'nc-segment-btn-active' : ''}`}
+                      onClick={() => setActiveTab('sip')}
+                      title="SIP / Compound interest calculator"
+                    >
+                      <TrendingUp size={15} />
+                      <span className="hidden lg:inline">SIP</span>
+                    </button>
+                    <button
+                      className={`nc-segment-btn ${activeTab === 'fx' ? 'nc-segment-btn-active' : ''}`}
+                      onClick={() => setActiveTab('fx')}
+                      title="Currency converter (live rates)"
+                    >
+                      <ArrowLeftRight size={15} />
+                      <span className="hidden lg:inline">FX</span>
+                    </button>
+                    <button
+                      className={`nc-segment-btn ${activeTab === 'history' ? 'nc-segment-btn-active' : ''}`}
+                      onClick={() => setActiveTab('history')}
+                      title="Saved counting history"
+                    >
+                      <History size={15} />
+                      <span className="hidden lg:inline">History</span>
+                    </button>
+                  </nav>
 
+                  <div className="w-px h-6 bg-white/15 mx-0.5" aria-hidden="true" />
+
+                  {/* Currency picker chip */}
+                  <label className="nc-currency-chip" title="Active currency (Ctrl+1..5)">
+                    <span className="text-base leading-none" aria-hidden="true">
+                      {getCurrencyInfo(selectedCurrency).flag}
+                    </span>
+                    <select
+                      value={selectedCurrency}
+                      onChange={(e) => handleCurrencyChange(e.target.value as Currency)}
+                      className="bg-transparent border-0 text-sm font-semibold cursor-pointer focus:outline-none pr-1"
+                      aria-label="Select currency"
+                    >
+                      {getAvailableCurrencies().map(currency => {
+                        const currencyInfo = getCurrencyInfo(currency);
+                        return (
+                          <option key={currency} value={currency} className="bg-ink-900">
+                            {currency} ({currencyInfo.symbol})
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </label>
+
+                  {/* Quick utilities */}
                   <button
-                    className={`nc-tab ${activeTab === 'counter' ? 'nc-tab-active' : 'nc-tab-inactive'}`}
-                    onClick={() => setActiveTab('counter')}
+                    onClick={() => setHideAmounts(!hideAmounts)}
+                    className="nc-icon-btn"
+                    title={hideAmounts ? 'Show amounts (Ctrl+H)' : 'Hide amounts (Ctrl+H)'}
+                    aria-label={hideAmounts ? 'Show amounts' : 'Hide amounts'}
                   >
-                    <CurrencyIcon size={16} />
-                    Counter
-                  </button>
-                  <button
-                    className={`nc-tab ${activeTab === 'history' ? 'nc-tab-active' : 'nc-tab-inactive'}`}
-                    onClick={() => setActiveTab('history')}
-                  >
-                    <History size={16} />
-                    History
+                    {hideAmounts ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                   <button
                     onClick={toggleNotepad}
-                    className="nc-tab nc-tab-inactive relative"
+                    className="nc-icon-btn relative"
                     title="Quick Notepad (Shift+N)"
+                    aria-label="Open notepad"
                   >
-                    <NotebookPen size={16} />
-                    <span className="hidden lg:inline">Notepad</span>
+                    <NotebookPen size={18} />
                     {notes.length > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold px-1">
-                        {notes.length}
+                      <span className="absolute -top-0.5 -right-0.5 bg-rose-500 text-white rounded-full min-w-[16px] h-[16px] flex items-center justify-center text-[9px] font-bold px-0.5 ring-2 ring-ink-900">
+                        {notes.length > 9 ? '9+' : notes.length}
                       </span>
                     )}
                   </button>
 
-                  <div className="w-px h-6 bg-white/15 mx-1" aria-hidden="true" />
+                  <div className="w-px h-6 bg-white/15 mx-0.5" aria-hidden="true" />
 
-                  <a
-                    href="https://github.com/sponsors/PATILYASHH"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="nc-sponsor-dark"
-                    title="Support development on GitHub Sponsors"
+                  {/* External + menu */}
+                  <button
+                    onClick={() => setShowSponsorModal(true)}
+                    className="nc-icon-btn text-rose-300 hover:text-rose-200"
+                    title="Sponsor (UPI / GitHub)"
+                    aria-label="Sponsor"
                   >
-                    <Heart size={14} className="text-rose-300" />
-                    <span className="hidden lg:inline">Sponsor</span>
-                  </a>
+                    <Heart size={17} />
+                  </button>
                   <a
                     href="https://github.com/PATILYASHH/note-counter"
                     target="_blank"
@@ -3465,7 +3334,6 @@ function App() {
                   >
                     <Github size={18} />
                   </a>
-
                   <button
                     onClick={() => setShowMenu(true)}
                     className="nc-icon-btn relative"
@@ -3477,18 +3345,19 @@ function App() {
                   </button>
                 </div>
               </div>
-            </header>
+              <div className="nc-header-accent" aria-hidden="true" />
 
-            {mobileMenuOpen && (
-              <div className="md:hidden bg-ink-900 text-white border-t border-white/10 animate-slide-up">
-                <div className="container mx-auto p-3 space-y-2">
+              {/* Mobile: always-visible segmented tabs + currency chip */}
+              <div className="md:hidden bg-ink-900/95 border-t border-white/5 px-3 py-2 flex items-center gap-2 overflow-x-auto scrollbar-hide">
+                <label className="nc-currency-chip flex-shrink-0" title="Active currency">
+                  <span className="text-base leading-none" aria-hidden="true">
+                    {getCurrencyInfo(selectedCurrency).flag}
+                  </span>
                   <select
                     value={selectedCurrency}
-                    onChange={(e) => {
-                      handleCurrencyChange(e.target.value as Currency);
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full bg-white/10 text-white border border-white/15 px-3 py-2.5 rounded-lg font-semibold"
+                    onChange={(e) => handleCurrencyChange(e.target.value as Currency)}
+                    className="bg-transparent border-0 text-xs font-semibold cursor-pointer focus:outline-none pr-1"
+                    aria-label="Select currency"
                   >
                     {getAvailableCurrencies().map(currency => {
                       const currencyInfo = getCurrencyInfo(currency);
@@ -3499,33 +3368,65 @@ function App() {
                       );
                     })}
                   </select>
+                </label>
+                <nav className="nc-segment flex-shrink-0" aria-label="Calculator views">
+                  <button
+                    className={`nc-segment-btn justify-center ${activeTab === 'counter' ? 'nc-segment-btn-active' : ''}`}
+                    onClick={() => setActiveTab('counter')}
+                  >
+                    <CurrencyIcon size={14} />
+                    <span className="text-xs">Counter</span>
+                  </button>
+                  <button
+                    className={`nc-segment-btn justify-center ${activeTab === 'tax' ? 'nc-segment-btn-active' : ''}`}
+                    onClick={() => setActiveTab('tax')}
+                  >
+                    <Receipt size={14} />
+                    <span className="text-xs">{selectedCurrency === 'INR' ? 'GST' : 'Tax'}</span>
+                  </button>
+                  <button
+                    className={`nc-segment-btn justify-center ${activeTab === 'emi' ? 'nc-segment-btn-active' : ''}`}
+                    onClick={() => setActiveTab('emi')}
+                  >
+                    <Landmark size={14} />
+                    <span className="text-xs">EMI</span>
+                  </button>
+                  <button
+                    className={`nc-segment-btn justify-center ${activeTab === 'sip' ? 'nc-segment-btn-active' : ''}`}
+                    onClick={() => setActiveTab('sip')}
+                  >
+                    <TrendingUp size={14} />
+                    <span className="text-xs">SIP</span>
+                  </button>
+                  <button
+                    className={`nc-segment-btn justify-center ${activeTab === 'fx' ? 'nc-segment-btn-active' : ''}`}
+                    onClick={() => setActiveTab('fx')}
+                  >
+                    <ArrowLeftRight size={14} />
+                    <span className="text-xs">FX</span>
+                  </button>
+                  <button
+                    className={`nc-segment-btn justify-center ${activeTab === 'history' ? 'nc-segment-btn-active' : ''}`}
+                    onClick={() => setActiveTab('history')}
+                  >
+                    <History size={14} />
+                    <span className="text-xs">Saved</span>
+                  </button>
+                </nav>
+              </div>
+            </header>
 
+            {mobileMenuOpen && (
+              <div className="md:hidden bg-ink-900 text-white border-t border-white/10 animate-slide-up">
+                <div className="container mx-auto p-3 space-y-2">
                   <div className="grid grid-cols-2 gap-2">
                     <button
-                      className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium transition-all ${
-                        activeTab === 'counter'
-                          ? 'bg-white text-ink-900'
-                          : 'bg-white/5 text-white hover:bg-white/10'
-                      }`}
-                      onClick={() => { setActiveTab('counter'); setMobileMenuOpen(false); }}
+                      onClick={() => { setHideAmounts(!hideAmounts); setMobileMenuOpen(false); }}
+                      className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium bg-white/5 text-white hover:bg-white/10 transition-all"
                     >
-                      <CurrencyIcon size={16} />
-                      Counter
+                      {hideAmounts ? <EyeOff size={16} /> : <Eye size={16} />}
+                      {hideAmounts ? 'Show amounts' : 'Hide amounts'}
                     </button>
-                    <button
-                      className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium transition-all ${
-                        activeTab === 'history'
-                          ? 'bg-white text-ink-900'
-                          : 'bg-white/5 text-white hover:bg-white/10'
-                      }`}
-                      onClick={() => { setActiveTab('history'); setMobileMenuOpen(false); }}
-                    >
-                      <History size={16} />
-                      History
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => { toggleNotepad(); setMobileMenuOpen(false); }}
                       className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium bg-white/5 text-white hover:bg-white/10 transition-all relative"
@@ -3538,26 +3439,24 @@ function App() {
                         </span>
                       )}
                     </button>
-                    <button
-                      onClick={() => { setShowMenu(true); setMobileMenuOpen(false); }}
-                      className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium bg-white/5 text-white hover:bg-white/10"
-                    >
-                      <MenuIcon size={16} />
-                      Menu
-                    </button>
                   </div>
 
+                  <button
+                    onClick={() => { setShowMenu(true); setMobileMenuOpen(false); }}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-medium bg-white/5 text-white hover:bg-white/10"
+                  >
+                    <MenuIcon size={16} />
+                    Settings & shortcuts
+                  </button>
+
                   <div className="grid grid-cols-2 gap-2 pt-1">
-                    <a
-                      href="https://github.com/sponsors/PATILYASHH"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setMobileMenuOpen(false)}
+                    <button
+                      onClick={() => { setMobileMenuOpen(false); setShowSponsorModal(true); }}
                       className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg font-semibold bg-rose-500/15 text-rose-200 border border-rose-400/20 hover:bg-rose-500/25 transition-colors"
                     >
                       <Heart size={16} />
                       Sponsor
-                    </a>
+                    </button>
                     <a
                       href="https://github.com/PATILYASHH/note-counter"
                       target="_blank"
@@ -3575,9 +3474,10 @@ function App() {
 
             {/* Main Content - Takes remaining space */}
             <div className="flex-1 flex flex-col">
-              {showMenu && <MenuModal />}
-              {showCustomCurrencyModal && <CustomCurrencyModal />}
-              {showProModal && <ProModal />}
+              {menuModalElement}
+              {customCurrencyModalElement}
+              {sponsorModalElement}
+              <ReviewPrompt />
               {showHashPopup && <HashPopup />}
               {showNotepad && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -3830,16 +3730,14 @@ function App() {
                     <div className="nc-card-lg p-4 sm:p-5 h-full md:sticky md:top-20">
                       <div className="flex justify-between items-center mb-4">
                         <h2 className="text-lg font-bold text-ink-900 tracking-tight">Summary</h2>
-                        <a
-                          href="https://github.com/sponsors/PATILYASHH"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          onClick={() => setShowSponsorModal(true)}
                           className="nc-sponsor"
-                          title="Support development"
+                          title="Support development (UPI / GitHub)"
                         >
                           <Heart size={14} />
                           Sponsor
-                        </a>
+                        </button>
                       </div>
 
                       <div className="grid grid-cols-2 gap-3 mb-4">
@@ -3919,6 +3817,40 @@ function App() {
                     </div>
                   </div>
                 </div>
+              ) : activeTab === 'tax' ? (
+                <TaxCalculator
+                  currency={selectedCurrency}
+                  currencySymbol={getCurrencyInfo(selectedCurrency).symbol}
+                  currencyName={getCurrencyInfo(selectedCurrency).name}
+                  currencyFlag={getCurrencyInfo(selectedCurrency).flag}
+                />
+              ) : activeTab === 'emi' ? (
+                <EMICalculator
+                  currency={selectedCurrency}
+                  currencySymbol={getCurrencyInfo(selectedCurrency).symbol}
+                  currencyName={getCurrencyInfo(selectedCurrency).name}
+                  currencyFlag={getCurrencyInfo(selectedCurrency).flag}
+                />
+              ) : activeTab === 'sip' ? (
+                <SipCalculator
+                  currency={selectedCurrency}
+                  currencySymbol={getCurrencyInfo(selectedCurrency).symbol}
+                  currencyName={getCurrencyInfo(selectedCurrency).name}
+                  currencyFlag={getCurrencyInfo(selectedCurrency).flag}
+                />
+              ) : activeTab === 'fx' ? (
+                <CurrencyConverter
+                  selectedCurrency={selectedCurrency}
+                  availableCurrencies={getAvailableCurrencies().map((code) => {
+                    const info = getCurrencyInfo(code);
+                    return {
+                      code,
+                      name: info.name,
+                      symbol: info.symbol,
+                      flag: info.flag,
+                    };
+                  })}
+                />
               ) : (
                 <div className="animate-fade-in">
                   <HistoryTab hideAmounts={hideAmounts} selectedCurrency={selectedCurrency} />
@@ -3941,15 +3873,13 @@ function App() {
                       Free and open-source money counter. Count notes and coins fast for INR, USD, EUR, GBP, AED or any custom currency.
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      <a
-                        href="https://github.com/sponsors/PATILYASHH"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => setShowSponsorModal(true)}
                         className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold bg-rose-500/15 text-rose-200 border border-rose-400/20 hover:bg-rose-500/25 transition-colors"
                       >
                         <Heart size={14} />
-                        Sponsor on GitHub
-                      </a>
+                        Sponsor (UPI / GitHub)
+                      </button>
                       <a
                         href="https://github.com/PATILYASHH/note-counter"
                         target="_blank"

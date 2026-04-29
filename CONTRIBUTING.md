@@ -1,225 +1,113 @@
 # Contributing to Note Counter
 
-Thank you for considering contributing to Note Counter! We welcome contributions from developers of all skill levels. This document provides guidelines for contributing to our open-source money counting application.
+Thanks for taking the time to contribute! Note Counter is a free, open-source finance toolkit, and improvements of any size are welcome — bug fixes, new currencies, new calculators, docs, accessibility, translations.
 
-## 🚀 Recent Updates (v10.5.0)
+## Project values
 
-We've recently implemented several major features:
-- **PDF Export**: Professional PDF report generation with watermarks
-- **Smart Analytics**: Automatic country detection for usage insights
-- **Enhanced Documentation**: Updated privacy policies and user guides
+Before opening a PR, please make sure your change respects the project's commitments:
 
-## 📋 Table of Contents
+1. **Free forever, no ads.** No advertising scripts, sponsored content, or paywalled features.
+2. **No tracking of user data.** No new analytics providers beyond the existing anonymous Vercel Analytics page-view counter. No cookies, no fingerprinting, no behavioural profiling.
+3. **Local-first.** Counts, history, GST/EMI records, notes, and custom currencies stay in the user's browser (`localStorage`). No new server calls without a very clear reason.
+4. **Open source under MIT.** All contributions are accepted under the same license.
 
-- [Getting Started](#getting-started)
-- [Development Setup](#development-setup)
-- [Contributing Guidelines](#contributing-guidelines)
-- [Code Style](#code-style)
-- [Testing](#testing)
-- [Documentation](#documentation)
-- [Reporting Issues](#reporting-issues)
-- [Feature Requests](#feature-requests)
+If your change adds an external network request, a new dependency, or any kind of telemetry, call it out explicitly in the PR description.
 
-## 🏁 Getting Started
+## Getting started
 
 ### Prerequisites
+- Node.js 18 or newer
+- npm
+- A modern browser (Chrome, Firefox, Safari, Edge)
 
-- Node.js (v16 or higher)
-- npm or yarn
-- Git
-- A modern web browser for testing
+### Setup
+```bash
+git clone https://github.com/PATILYASHH/note-counter.git
+cd note-counter
+npm install
+npm run dev
+```
+The dev server runs at <http://localhost:5173>.
 
-### Development Setup
+### Useful scripts
+| Command | What it does |
+|---|---|
+| `npm run dev` | Vite dev server with HMR |
+| `npm run build` | TypeScript check + production build to `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
 
-1. **Fork the repository** on GitHub
-2. **Clone your fork** to your local machine:
+## How to propose a change
+
+1. **Open an issue first** for non-trivial changes (new feature, bigger refactor, new dependency). For obvious bug fixes you can skip straight to a PR.
+2. **Fork** the repo and create a branch off `main`:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/note-counter.git
-   cd note-counter
+   git checkout -b feature/short-description
    ```
-
-3. **Install dependencies**:
+3. **Code the change.** Keep PRs focused — one logical change per PR.
+4. **Run the build** locally before pushing:
    ```bash
-   npm install
+   npm run build
    ```
+5. **Open a PR** against `main`. Fill in the PR template. Link the issue if there is one.
 
-4. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
+## Code style
 
-5. **Open your browser** and navigate to `http://localhost:5173`
+- **TypeScript + React function components.** No class components.
+- **Tailwind CSS** for styling. Reuse the existing `nc-*` utility classes in `src/index.css` where they fit.
+- **Lucide icons** (`lucide-react`) for all icons. Don't add a second icon set.
+- **Keep `src/App.tsx` reasonable.** New self-contained features (like `TaxCalculator`, `EMICalculator`) belong in their own component file under `src/components/`.
+- **No comments on obvious code.** Only add a comment when *why* is non-obvious.
+- **Inline JSX modals, not sub-components.** Modals defined as components inside `App` get remounted on every render and lose state — see `menuModalElement`, `customCurrencyModalElement`, and `sponsorModalElement` for the pattern to follow.
 
-## 🤝 Contributing Guidelines
-
-### Pull Request Process
-
-1. **Create a feature branch** from `main`:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make your changes** following our code style guidelines
-3. **Test thoroughly** on different devices and browsers
-4. **Update documentation** if needed
-5. **Commit with clear messages**:
-   ```bash
-   git commit -m "feat: add PDF export functionality"
-   ```
-
-6. **Push to your fork** and create a Pull Request
-
-### Commit Message Convention
-
-We follow conventional commits format:
-- `feat:` - New features
-- `fix:` - Bug fixes
-- `docs:` - Documentation updates
-- `style:` - Code style changes (formatting, etc.)
-- `refactor:` - Code refactoring
-- `test:` - Adding or updating tests
-- `chore:` - Maintenance tasks
-
-## 🎨 Code Style
-
-### TypeScript/React Guidelines
-
-- Use TypeScript for type safety
-- Follow React best practices and hooks patterns
-- Use Tailwind CSS for styling
-- Maintain component modularity
-- Include proper error handling
-
-### Key Technologies
-
-- **Frontend**: React 18 + TypeScript + Vite
-- **Styling**: Tailwind CSS
-- **PDF Generation**: jsPDF library
-- **Storage**: localStorage for client-side persistence
-- **Analytics**: IP-based geolocation (ipapi.co)
-
-### File Structure
+## Project layout
 
 ```
-src/
-├── components/         # Reusable React components
-├── lib/               # Utility functions and configurations
-├── pages/             # Page components
-├── App.tsx            # Main application component
-└── main.tsx          # Application entry point
+note-counter/
+├── public/                   # Static assets served as-is (favicons, manifest, html docs, sw.js)
+├── src/
+│   ├── components/           # React components
+│   │   ├── BrandLogo.tsx
+│   │   ├── CalculatorTab.tsx
+│   │   ├── DenominationCounter.tsx
+│   │   ├── EMICalculator.tsx
+│   │   ├── HistoryTab.tsx
+│   │   ├── SimpleCalculator.tsx
+│   │   ├── TaxCalculator.tsx
+│   │   └── TransferSummary.tsx
+│   ├── App.tsx               # Top-level app shell, navbar, modals
+│   ├── main.tsx              # Entry point, service worker registration
+│   ├── index.css             # Tailwind + nc-* utility classes
+│   └── vite-env.d.ts
+├── index.html                # HTML entry, SEO meta, Vercel Analytics
+├── tailwind.config.js
+├── vite.config.ts
+└── package.json
 ```
 
-## 🧪 Testing
+## Where data is stored
 
-### Manual Testing Checklist
+All user data is stored in `localStorage` under these keys:
 
-- [ ] Test all currency calculations (INR, USD, EUR, GBP, AED)
-- [ ] Verify PDF export functionality
-- [ ] Test responsive design on mobile devices
-- [ ] Check keyboard shortcuts functionality
-- [ ] Validate privacy mode (hide/show amounts)
-- [ ] Test data export/import features
-- [ ] Verify analytics collection compliance
+| Key | What |
+|---|---|
+| `denominationCounts_<CURRENCY>` | Active counts per currency |
+| `countNoteHistory_<CURRENCY>` | Saved counting sessions per currency |
+| `taxHistory` | Saved tax / GST calculations (cross-currency) |
+| `emiHistory` | Saved EMI calculations (cross-currency) |
+| `calculatorHistory` | Built-in calculator history |
+| `quickNotes` | Notepad entries |
+| `customCurrencies` | User-created currencies |
+| `selectedCurrency`, `showCalculator`, etc. | Preferences |
 
-### Cross-Browser Testing
+If you change the shape of any of these, make the change backward-compatible (parse old shape into new shape) — users may have data from older versions.
 
-Please test your changes on:
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+## Reporting bugs / requesting features
 
-## 📚 Documentation
+Open an issue using the templates at <https://github.com/PATILYASHH/note-counter/issues/new/choose>.
 
-### Documentation Files to Update
+For **questions** (not bugs), please use Discussions instead so issues stay focused on actionable work.
 
-When making changes, ensure you update relevant documentation:
+## License
 
-- `README.md` - Main project documentation
-- `CHANGELOG.md` - Version history
-- Component JSDoc comments
-- Privacy policy (if data handling changes)
-- User guides and help sections
-
-### Documentation Standards
-
-- Use clear, concise language
-- Include code examples where relevant
-- Update version numbers consistently
-- Maintain changelog with all significant changes
-
-## 🐛 Reporting Issues
-
-### Bug Reports
-
-When reporting bugs, please include:
-
-1. **Steps to reproduce** the issue
-2. **Expected behavior** vs actual behavior
-3. **Browser and device** information
-4. **Screenshots or screen recordings** if applicable
-5. **Console errors** (if any)
-
-### Issue Templates
-
-Use our GitHub issue templates for:
-- Bug reports
-- Feature requests
-- Documentation improvements
-- Security vulnerabilities
-
-## 💡 Feature Requests
-
-We welcome feature suggestions! When proposing new features:
-
-1. **Check existing issues** to avoid duplicates
-2. **Describe the problem** you're trying to solve
-3. **Propose a solution** with implementation details
-4. **Consider impact** on privacy and performance
-5. **Provide use cases** and user stories
-
-### Current Feature Roadmap
-
-- Enhanced currency management
-- Advanced reporting features
-- Improved accessibility
-- Mobile app development
-- API integration options
-
-## 🔒 Security Considerations
-
-### Privacy-First Development
-
-- All data processing must happen locally
-- No personal information collection without explicit consent
-- Transparent documentation of any external API usage
-- Regular security audits of dependencies
-
-### Reporting Security Issues
-
-For security vulnerabilities, please email: security@notecounter.shop
-
-## 🏆 Recognition
-
-Contributors are recognized in:
-- GitHub contributors list
-- Release notes and changelog
-- Project documentation
-- Annual contributor appreciation
-
-## 📞 Getting Help
-
-- **GitHub Discussions**: For general questions
-- **GitHub Issues**: For bugs and feature requests
-- **Email**: contact@notecounter.shop
-- **Discord**: [Join our community](https://discord.gg/notecounter)
-
-## 📄 License
-
-By contributing to Note Counter, you agree that your contributions will be licensed under the same license as the project.
-
----
-
-**Thank you for helping make Note Counter better for everyone!** 🎉
-
-For more information, visit [notecounter.shop](https://notecounter.shop) or check our [documentation](https://github.com/PATILYASHH/note-counter).
+By contributing, you agree that your contributions will be licensed under the [MIT License](LICENSE).

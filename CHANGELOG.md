@@ -2,6 +2,38 @@
 
 All notable changes to the Note Counter project will be documented in this file.
 
+## [12.0.0] - 2026-04-29
+
+### 🆓 Free-forever, no-ads relaunch
+
+Note Counter returns to its open-source roots. The brief commercial / AdSense experiment is gone — the app is committed to being free for everyone, with no ads and no tracking of user data, forever.
+
+### Removed
+- **Google AdSense** integration, ad units, and `ads.txt`
+- **Plausible Analytics** script
+- **Cookie consent banner** (`cookie-consent.js`) — there are no cookies to consent to anymore
+- **Pro tier** modal, Pro menu tab, "$1/month" / "$10/year" pricing copy, fake-trial CTAs
+- **Blog tab** and `/blog/*` static articles
+- Stale duplicate root-level `about.html` / `contact.html` / `terms.html` / `disclaimer.html` (the canonical copies live in `public/`)
+
+### Added
+- **GST / Tax / VAT calculator** — currency-aware: GST presets and CGST + SGST split for India, sales-tax presets for US, VAT for EUR / GBP / AED, generic for custom currencies. Add-tax / remove-tax modes.
+- **Loan EMI calculator** — principal, rate, tenure (years/months toggle), monthly EMI, total interest, total payment, principal-vs-interest split bar, and toggleable amortization schedule.
+- **Tax & EMI history** in the History tab, alongside money counts and calculator history. Each entry shows currency, breakdown, and copy/delete actions.
+- **About-tab pledge banner** stating the free-forever, no-ads, no-tracking commitment.
+- **Redesigned navigation bar** with segmented calculator tabs, currency chip with flag, quick-access utilities (hide amounts, notepad), and a mobile always-visible tab strip.
+
+### Changed
+- **Privacy Policy** rewritten — no third-party data collection, no cookies set, only anonymous cookieless page-view counts via Vercel Analytics. GDPR / CCPA sections rewritten to reflect that no personal data is collected.
+- **Terms of Service** rewritten — removed commercial-service / advertising language, now reflects MIT-licensed free-forever open-source project.
+- **README** rewritten — no ads / no tracking positioning, removed "commercial service" framing.
+- **Disclaimer** updated — removed mentions of blog content.
+- **404 page** — removed blog links, added GitHub link.
+- **Modal performance fix**: `MenuModal` and `CustomCurrencyModal` were defined as components inside the `App` body, which caused them to remount on every render (visible blink, lost focus, lost form state when adding a custom currency). They are now inline JSX values, so React reconciles in place.
+
+### Kept
+- **Vercel Analytics** (cookieless page-view counts only) so the developer can see how many people use the site.
+
 ## [11.0.0] - 2025-12-31
 
 ### 🚀 Major Release: Commercial Service & Monetization

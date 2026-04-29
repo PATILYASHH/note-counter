@@ -7,21 +7,35 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Build output
 node_modules
 dist
 dist-ssr
 *.local
+*.tsbuildinfo
 
-# Editor directories and files
+# Editor / OS
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Deploy / env
 .vercel
+.netlify
 .env
+.env.local
+.env.*.local
+
+# Project-specific assets that aren't part of the open-source build
 makarsankranti.png
+
+# AI codegen artifacts (do not commit)
+.bolt/
+.aider*

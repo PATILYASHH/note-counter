@@ -2,8 +2,21 @@
   "$schema": "https://json.schemastore.org/package.json",
   "name": "note-counter",
   "private": true,
-  "version": "11.0.0",
-  "description": "Professional money counter and cash calculator with custom currency support, Web Lock security system, PIN/password protection and smart analytics. Count currency notes and coins for 5 major currencies plus unlimited custom currencies with professional security and data protection features.",
+  "version": "12.0.0",
+  "description": "Free, open-source finance toolkit. Count currency notes and coins, run currency-aware GST / VAT / Sales Tax calculations, and compute Loan EMI with full amortization. No ads, no tracking, no accounts — your data stays on your device.",
+  "license": "MIT",
+  "author": {
+    "name": "Yash Patil",
+    "url": "https://github.com/PATILYASHH"
+  },
+  "homepage": "https://notecounter.shop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PATILYASHH/note-counter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PATILYASHH/note-counter/issues"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,14 +25,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.7",
-    "@vercel/analytics": "^1.5.0",
-    "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.22.3"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

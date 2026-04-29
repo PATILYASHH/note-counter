@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IndianRupee, Trash2, Save, Clock, Calculator, DollarSign, Euro, FileDown } from 'lucide-react';
+import { IndianRupee, Trash2, Save, Clock, Calculator, DollarSign, Euro, FileDown, Receipt, Landmark, Copy, TrendingUp } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 interface HistoryEntry {
@@ -19,16 +19,61 @@ interface CalculatorHistory {
   timestamp: string;
 }
 
+interface TaxHistoryEntry {
+  id: string;
+  timestamp: string;
+  currency: string;
+  currencySymbol: string;
+  taxName: string;
+  rate: number;
+  mode: 'add' | 'remove';
+  net: number;
+  tax: number;
+  gross: number;
+  splitCgstSgst?: boolean;
+}
+
+interface EmiHistoryEntry {
+  id: string;
+  timestamp: string;
+  currency: string;
+  currencySymbol: string;
+  principal: number;
+  annualRate: number;
+  months: number;
+  emi: number;
+  totalInterest: number;
+  totalPayment: number;
+}
+
+interface SipHistoryEntry {
+  id: string;
+  timestamp: string;
+  currency: string;
+  currencySymbol: string;
+  mode: 'sip' | 'lumpsum';
+  amount: number;
+  annualRate: number;
+  years: number;
+  compounding: string | null;
+  invested: number;
+  returns: number;
+  futureValue: number;
+}
+
 interface HistoryTabProps {
   hideAmounts: boolean;
   selectedCurrency: string;
 }
 
-type HistoryType = 'money' | 'calculator';
+type HistoryType = 'money' | 'tax' | 'emi' | 'sip' | 'calculator';
 
 const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }) => {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [calculatorHistory, setCalculatorHistory] = useState<CalculatorHistory[]>([]);
+  const [taxHistory, setTaxHistory] = useState<TaxHistoryEntry[]>([]);
+  const [emiHistory, setEmiHistory] = useState<EmiHistoryEntry[]>([]);
+  const [sipHistory, setSipHistory] = useState<SipHistoryEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<HistoryEntry | null>(null);
   const [note, setNote] = useState('');
   const [activeHistoryType, setActiveHistoryType] = useState<HistoryType>('money');
@@ -36,15 +81,57 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
   // Load histories from localStorage on component mount
   useEffect(() => {
     const savedHistory = localStorage.getItem(`countNoteHistory_${selectedCurrency}`);
-    if (savedHistory) {
-      setHistory(JSON.parse(savedHistory));
-    }
+    setHistory(savedHistory ? JSON.parse(savedHistory) : []);
 
     const savedCalcHistory = localStorage.getItem('calculatorHistory');
-    if (savedCalcHistory) {
-      setCalculatorHistory(JSON.parse(savedCalcHistory));
-    }
+    setCalculatorHistory(savedCalcHistory ? JSON.parse(savedCalcHistory) : []);
+
+    const savedTaxHistory = localStorage.getItem('taxHistory');
+    setTaxHistory(savedTaxHistory ? JSON.parse(savedTaxHistory) : []);
+
+    const savedEmiHistory = localStorage.getItem('emiHistory');
+    setEmiHistory(savedEmiHistory ? JSON.parse(savedEmiHistory) : []);
+
+    const savedSipHistory = localStorage.getItem('sipHistory');
+    setSipHistory(savedSipHistory ? JSON.parse(savedSipHistory) : []);
   }, [selectedCurrency]);
+
+  const fmtMoney = (amount: number, symbol: string) => {
+    if (hideAmounts) return '••••••';
+    return `${symbol}${amount.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  };
+
+  const deleteTaxEntry = (id: string) => {
+    if (!window.confirm('Delete this tax entry?')) return;
+    const updated = taxHistory.filter((e) => e.id !== id);
+    setTaxHistory(updated);
+    localStorage.setItem('taxHistory', JSON.stringify(updated));
+  };
+
+  const deleteEmiEntry = (id: string) => {
+    if (!window.confirm('Delete this EMI entry?')) return;
+    const updated = emiHistory.filter((e) => e.id !== id);
+    setEmiHistory(updated);
+    localStorage.setItem('emiHistory', JSON.stringify(updated));
+  };
+
+  const deleteSipEntry = (id: string) => {
+    if (!window.confirm('Delete this SIP entry?')) return;
+    const updated = sipHistory.filter((e) => e.id !== id);
+    setSipHistory(updated);
+    localStorage.setItem('sipHistory', JSON.stringify(updated));
+  };
+
+  const copyText = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // ignore
+    }
+  };
 
   const formatAmount = (amount: number) => {
     if (hideAmounts) return '••••••';
@@ -123,6 +210,21 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
         setHistory([]);
         setSelectedEntry(null);
         localStorage.removeItem(`countNoteHistory_${selectedCurrency}`);
+      }
+    } else if (activeHistoryType === 'tax') {
+      if (window.confirm('Clear all tax / GST history?')) {
+        setTaxHistory([]);
+        localStorage.removeItem('taxHistory');
+      }
+    } else if (activeHistoryType === 'emi') {
+      if (window.confirm('Clear all EMI history?')) {
+        setEmiHistory([]);
+        localStorage.removeItem('emiHistory');
+      }
+    } else if (activeHistoryType === 'sip') {
+      if (window.confirm('Clear all SIP / Compound interest history?')) {
+        setSipHistory([]);
+        localStorage.removeItem('sipHistory');
       }
     } else {
       clearCalculatorHistory();
@@ -431,31 +533,87 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
       <div className="md:col-span-2">
         <div className="nc-card-lg p-4 sm:p-5 h-full">
           <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
-            <div className="inline-flex items-center bg-ink-100 p-1 rounded-lg">
+            <div className="inline-flex items-center bg-ink-100 p-1 rounded-lg flex-wrap">
               <button
-                className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-semibold transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold transition-colors ${
                   activeHistoryType === 'money'
                     ? 'bg-white text-ink-900 shadow-card'
                     : 'text-ink-600 hover:text-ink-900'
                 }`}
                 onClick={() => setActiveHistoryType('money')}
               >
-                <CurrencyIcon size={16} />
+                <CurrencyIcon size={15} />
                 Money
+                {history.length > 0 && (
+                  <span className="text-[10px] bg-ink-200 text-ink-700 rounded-full px-1.5 py-0.5 tabular-nums">
+                    {history.length}
+                  </span>
+                )}
               </button>
               <button
-                className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-semibold transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold transition-colors ${
+                  activeHistoryType === 'tax'
+                    ? 'bg-white text-ink-900 shadow-card'
+                    : 'text-ink-600 hover:text-ink-900'
+                }`}
+                onClick={() => setActiveHistoryType('tax')}
+              >
+                <Receipt size={15} />
+                Tax
+                {taxHistory.length > 0 && (
+                  <span className="text-[10px] bg-ink-200 text-ink-700 rounded-full px-1.5 py-0.5 tabular-nums">
+                    {taxHistory.length}
+                  </span>
+                )}
+              </button>
+              <button
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold transition-colors ${
+                  activeHistoryType === 'emi'
+                    ? 'bg-white text-ink-900 shadow-card'
+                    : 'text-ink-600 hover:text-ink-900'
+                }`}
+                onClick={() => setActiveHistoryType('emi')}
+              >
+                <Landmark size={15} />
+                EMI
+                {emiHistory.length > 0 && (
+                  <span className="text-[10px] bg-ink-200 text-ink-700 rounded-full px-1.5 py-0.5 tabular-nums">
+                    {emiHistory.length}
+                  </span>
+                )}
+              </button>
+              <button
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold transition-colors ${
+                  activeHistoryType === 'sip'
+                    ? 'bg-white text-ink-900 shadow-card'
+                    : 'text-ink-600 hover:text-ink-900'
+                }`}
+                onClick={() => setActiveHistoryType('sip')}
+              >
+                <TrendingUp size={15} />
+                SIP
+                {sipHistory.length > 0 && (
+                  <span className="text-[10px] bg-ink-200 text-ink-700 rounded-full px-1.5 py-0.5 tabular-nums">
+                    {sipHistory.length}
+                  </span>
+                )}
+              </button>
+              <button
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold transition-colors ${
                   activeHistoryType === 'calculator'
                     ? 'bg-white text-ink-900 shadow-card'
                     : 'text-ink-600 hover:text-ink-900'
                 }`}
                 onClick={() => setActiveHistoryType('calculator')}
               >
-                <Calculator size={16} />
-                Calculator
+                <Calculator size={15} />
+                Calc
               </button>
             </div>
             {((activeHistoryType === 'money' && history.length > 0) ||
+              (activeHistoryType === 'tax' && taxHistory.length > 0) ||
+              (activeHistoryType === 'emi' && emiHistory.length > 0) ||
+              (activeHistoryType === 'sip' && sipHistory.length > 0) ||
               (activeHistoryType === 'calculator' && calculatorHistory.length > 0)) && (
               <button
                 onClick={clearAllHistory}
@@ -538,6 +696,242 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
                       </div>
                     </div>
                   ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {activeHistoryType === 'tax' && (
+            <>
+              {taxHistory.length === 0 ? (
+                <div className="text-center py-12 text-ink-500">
+                  <Receipt size={48} className="mx-auto mb-2 opacity-30" />
+                  <p className="font-medium text-ink-700">No tax / GST history yet</p>
+                  <p className="text-sm mt-1">Use the Tax tab and tap Save to record calculations here</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-[560px] overflow-y-auto pr-1">
+                  {taxHistory.map((entry) => {
+                    const summary = `${entry.taxName} @ ${entry.rate}% on ${fmtMoney(entry.net, entry.currencySymbol)} = ${fmtMoney(entry.tax, entry.currencySymbol)} | Total: ${fmtMoney(entry.gross, entry.currencySymbol)}`;
+                    return (
+                      <div
+                        key={entry.id}
+                        className="rounded-xl2 border border-ink-200 p-3 hover:border-ink-300 hover:bg-ink-50 transition-colors"
+                      >
+                        <div className="flex justify-between items-start gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-800 rounded text-xs font-bold">
+                                <Receipt size={11} />
+                                {entry.taxName} {entry.rate}%
+                              </span>
+                              <span className="text-[11px] font-mono uppercase text-ink-500">
+                                {entry.currency} · {entry.mode === 'add' ? 'Add' : 'Remove'}
+                              </span>
+                            </div>
+                            <div className="mt-1.5 grid grid-cols-3 gap-2 text-xs">
+                              <div>
+                                <div className="text-ink-500">Net</div>
+                                <div className="font-semibold text-ink-900 tabular-nums truncate">
+                                  {fmtMoney(entry.net, entry.currencySymbol)}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-amber-700/80">{entry.splitCgstSgst ? 'CGST+SGST' : 'Tax'}</div>
+                                <div className="font-semibold text-amber-700 tabular-nums truncate">
+                                  {fmtMoney(entry.tax, entry.currencySymbol)}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-brand-700/80">Gross</div>
+                                <div className="font-bold text-brand-700 tabular-nums truncate">
+                                  {fmtMoney(entry.gross, entry.currencySymbol)}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-[11px] text-ink-500 mt-1.5">{entry.timestamp}</div>
+                          </div>
+                          <div className="flex flex-col gap-1 flex-shrink-0">
+                            <button
+                              onClick={() => copyText(summary)}
+                              className="p-1.5 rounded text-ink-500 hover:text-brand-600 hover:bg-brand-50 transition-colors"
+                              title="Copy summary"
+                            >
+                              <Copy size={13} />
+                            </button>
+                            <button
+                              onClick={() => deleteTaxEntry(entry.id)}
+                              className="p-1.5 rounded text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          )}
+
+          {activeHistoryType === 'emi' && (
+            <>
+              {emiHistory.length === 0 ? (
+                <div className="text-center py-12 text-ink-500">
+                  <Landmark size={48} className="mx-auto mb-2 opacity-30" />
+                  <p className="font-medium text-ink-700">No EMI history yet</p>
+                  <p className="text-sm mt-1">Use the EMI tab and tap Save to record loans here</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-[560px] overflow-y-auto pr-1">
+                  {emiHistory.map((entry) => {
+                    const tenure =
+                      entry.months % 12 === 0
+                        ? `${entry.months / 12} yr`
+                        : `${entry.months} mo`;
+                    const summary = `EMI ${fmtMoney(entry.emi, entry.currencySymbol)}/mo for ${tenure} | Principal ${fmtMoney(entry.principal, entry.currencySymbol)} @ ${entry.annualRate}% | Total ${fmtMoney(entry.totalPayment, entry.currencySymbol)}`;
+                    return (
+                      <div
+                        key={entry.id}
+                        className="rounded-xl2 border border-ink-200 p-3 hover:border-ink-300 hover:bg-ink-50 transition-colors"
+                      >
+                        <div className="flex justify-between items-start gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs font-bold">
+                                <Landmark size={11} />
+                                EMI {fmtMoney(entry.emi, entry.currencySymbol)}/mo
+                              </span>
+                              <span className="text-[11px] font-mono uppercase text-ink-500">
+                                {entry.currency} · {entry.annualRate}% · {tenure}
+                              </span>
+                            </div>
+                            <div className="mt-1.5 grid grid-cols-3 gap-2 text-xs">
+                              <div>
+                                <div className="text-ink-500">Principal</div>
+                                <div className="font-semibold text-ink-900 tabular-nums truncate">
+                                  {fmtMoney(entry.principal, entry.currencySymbol)}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-amber-700/80">Interest</div>
+                                <div className="font-semibold text-amber-700 tabular-nums truncate">
+                                  {fmtMoney(entry.totalInterest, entry.currencySymbol)}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-brand-700/80">Total</div>
+                                <div className="font-bold text-brand-700 tabular-nums truncate">
+                                  {fmtMoney(entry.totalPayment, entry.currencySymbol)}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-[11px] text-ink-500 mt-1.5">{entry.timestamp}</div>
+                          </div>
+                          <div className="flex flex-col gap-1 flex-shrink-0">
+                            <button
+                              onClick={() => copyText(summary)}
+                              className="p-1.5 rounded text-ink-500 hover:text-brand-600 hover:bg-brand-50 transition-colors"
+                              title="Copy summary"
+                            >
+                              <Copy size={13} />
+                            </button>
+                            <button
+                              onClick={() => deleteEmiEntry(entry.id)}
+                              className="p-1.5 rounded text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          )}
+
+          {activeHistoryType === 'sip' && (
+            <>
+              {sipHistory.length === 0 ? (
+                <div className="text-center py-12 text-ink-500">
+                  <TrendingUp size={48} className="mx-auto mb-2 opacity-30" />
+                  <p className="font-medium text-ink-700">No SIP / Compound interest history yet</p>
+                  <p className="text-sm mt-1">Use the SIP tab and tap Save to record projections here</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-[560px] overflow-y-auto pr-1">
+                  {sipHistory.map((entry) => {
+                    const summary =
+                      entry.mode === 'sip'
+                        ? `SIP ${fmtMoney(entry.amount, entry.currencySymbol)}/mo × ${entry.years} yr @ ${entry.annualRate}% → ${fmtMoney(entry.futureValue, entry.currencySymbol)}`
+                        : `Lump sum ${fmtMoney(entry.amount, entry.currencySymbol)} @ ${entry.annualRate}% (${entry.compounding ?? ''}) × ${entry.years} yr → ${fmtMoney(entry.futureValue, entry.currencySymbol)}`;
+                    return (
+                      <div
+                        key={entry.id}
+                        className="rounded-xl2 border border-ink-200 p-3 hover:border-ink-300 hover:bg-ink-50 transition-colors"
+                      >
+                        <div className="flex justify-between items-start gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-100 text-violet-800 rounded text-xs font-bold">
+                                <TrendingUp size={11} />
+                                {entry.mode === 'sip' ? 'SIP' : 'Lump sum'} · {entry.annualRate}%
+                              </span>
+                              <span className="text-[11px] font-mono uppercase text-ink-500">
+                                {entry.currency} ·{' '}
+                                {entry.mode === 'sip'
+                                  ? `${fmtMoney(entry.amount, entry.currencySymbol)}/mo`
+                                  : `${fmtMoney(entry.amount, entry.currencySymbol)} once`}{' '}
+                                · {entry.years} yr
+                              </span>
+                            </div>
+                            <div className="mt-1.5 grid grid-cols-3 gap-2 text-xs">
+                              <div>
+                                <div className="text-ink-500">Invested</div>
+                                <div className="font-semibold text-ink-900 tabular-nums truncate">
+                                  {fmtMoney(entry.invested, entry.currencySymbol)}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-emerald-700/80">Returns</div>
+                                <div className="font-semibold text-emerald-700 tabular-nums truncate">
+                                  {fmtMoney(entry.returns, entry.currencySymbol)}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-brand-700/80">Future value</div>
+                                <div className="font-bold text-brand-700 tabular-nums truncate">
+                                  {fmtMoney(entry.futureValue, entry.currencySymbol)}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-[11px] text-ink-500 mt-1.5">{entry.timestamp}</div>
+                          </div>
+                          <div className="flex flex-col gap-1 flex-shrink-0">
+                            <button
+                              onClick={() => copyText(summary)}
+                              className="p-1.5 rounded text-ink-500 hover:text-brand-600 hover:bg-brand-50 transition-colors"
+                              title="Copy summary"
+                            >
+                              <Copy size={13} />
+                            </button>
+                            <button
+                              onClick={() => deleteSipEntry(entry.id)}
+                              className="p-1.5 rounded text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </>
@@ -676,6 +1070,12 @@ const HistoryTab: React.FC<HistoryTabProps> = ({ hideAmounts, selectedCurrency }
               <p className="text-center text-sm">
                 {activeHistoryType === 'money'
                   ? 'Select an entry to view details'
+                  : activeHistoryType === 'tax'
+                  ? 'Tax / GST records appear in the main panel'
+                  : activeHistoryType === 'emi'
+                  ? 'EMI records appear in the main panel'
+                  : activeHistoryType === 'sip'
+                  ? 'SIP / Compound interest records appear in the main panel'
                   : 'Calculator history details appear in the main panel'}
               </p>
             </div>

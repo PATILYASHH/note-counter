@@ -105,6 +105,30 @@
     @apply bg-white text-ink-900 shadow-card;
   }
 
+  /* Segmented nav group (top header — calculator tabs) */
+  .nc-segment {
+    @apply flex items-center gap-1 p-1 rounded-xl bg-white/5 border border-white/10;
+  }
+  .nc-segment-btn {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold text-sm
+           text-ink-300 hover:text-white hover:bg-white/10 transition-all whitespace-nowrap;
+  }
+  .nc-segment-btn-active {
+    @apply bg-white text-ink-900 shadow-sm hover:bg-white hover:text-ink-900;
+  }
+
+  /* Currency picker chip in header */
+  .nc-currency-chip {
+    @apply inline-flex items-center gap-2 pl-2.5 pr-2 py-1.5 rounded-lg
+           bg-white/10 text-white border border-white/15
+           hover:bg-white/15 transition-colors cursor-pointer;
+  }
+
+  /* Header gradient accent bar */
+  .nc-header-accent {
+    @apply h-[2px] w-full bg-gradient-to-r from-brand-500 via-amber-400 to-emerald-400;
+  }
+
   /* Pill chips */
   .nc-chip {
     @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
@@ -145,6 +169,16 @@
     @apply flex items-center justify-center w-10 h-10 bg-white border border-ink-200 text-ink-700
            hover:bg-brand-50 hover:text-brand-700 hover:border-brand-200
            active:bg-brand-100 transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-ink-700;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 

@@ -356,7 +356,7 @@
                 
                 <div id="form-messages"></div>
                 
-                <form id="contact-form" action="https://formspree.io/f/xdoqzqzq" method="POST">
+                <form id="contact-form" action="https://formspree.io/f/mjgjnjgn" method="POST">
                     <div class="form-group">
                         <label for="name">Full Name *</label>
                         <input type="text" id="name" name="name" required>
@@ -507,21 +507,21 @@
             <div class="faq-item">
                 <div class="faq-question">Is Note Counter really free to use?</div>
                 <div class="faq-answer">
-                    Yes, Note Counter is completely free to use with no hidden costs, subscriptions, or premium plans. We believe financial tools should be accessible to everyone. The project is open-source and supported by the community.
+                    Yes — Note Counter is 100% free forever. There are no subscriptions, no premium plans, no advertisements, and no paywalled features. It's open-source under the MIT license.
                 </div>
             </div>
-            
+
             <div class="faq-item">
                 <div class="faq-question">How do you ensure my financial data is secure?</div>
                 <div class="faq-answer">
-                    We take privacy seriously. All calculations are performed locally in your browser - we never store, transmit, or have access to your financial data. We don't use tracking, analytics, or store personal information. Check our privacy policy for complete details.
+                    All calculations are performed locally in your browser. Counts, history, GST/EMI records, notes, and custom currencies live only in your browser's localStorage — nothing about the amounts you enter is sent anywhere. The only telemetry is anonymous, cookieless page-view counts via Vercel Analytics so the developer can see roughly how many people use the site. See the privacy policy for full detail.
                 </div>
             </div>
-            
+
             <div class="faq-item">
                 <div class="faq-question">Can I use Note Counter for commercial purposes?</div>
                 <div class="faq-answer">
-                    Yes! Note Counter is free for both personal and commercial use. Many businesses use our tool for daily cash management, point-of-sale operations, and financial reconciliation. For enterprise features or custom solutions, contact our business team.
+                    Yes. Note Counter is free for both personal and commercial use under the MIT license. Many small businesses use it for daily cash reconciliation. You can fork it, run your own copy, or contribute back on GitHub.
                 </div>
             </div>
             
@@ -553,11 +553,11 @@
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/about.html">About</a>
-                <a href="/blog.html">Blog</a>
                 <a href="/contact.html">Contact</a>
                 <a href="/privacy-policy.html">Privacy Policy</a>
+                <a href="/terms.html">Terms</a>
             </div>
-            <p>&copy; 2025 Note Counter. All rights reserved.</p>
+            <p>&copy; 2026 Note Counter — free &amp; open source (MIT).</p>
             <p style="margin-top: 0.5rem; opacity: 0.8;">
                 Made with ❤️ by <a href="https://yashpatil.vercel.app" style="color: #60a5fa;">Yash Patil</a>
             </p>
@@ -565,29 +565,66 @@
     </footer>
     
     <script>
-        // Contact form handling
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
+        // Contact form handling — posts to Formspree (https://formspree.io/f/mjgjnjgn)
+        const form = document.getElementById('contact-form');
+        const formMessages = document.getElementById('form-messages');
+
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
-            
-            const formMessages = document.getElementById('form-messages');
-            const formData = new FormData(this);
-            
-            // Show loading message
-            formMessages.innerHTML = '<div class="alert">Sending your message...</div>';
-            
-            // Simulate form submission (replace with actual form handling)
-            setTimeout(function() {
-                formMessages.innerHTML = '<div class="alert alert-success"><strong>✅ Message Sent!</strong> Thank you for contacting us. We\'ll get back to you within 24-48 hours.</div>';
-                document.getElementById('contact-form').reset();
-            }, 1500);
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalLabel = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Sending…';
+            }
+
+            formMessages.innerHTML = '<div class="alert">Sending your message…</div>';
+
+            const formData = new FormData(form);
+            // Helpful triage metadata
+            formData.set('page', window.location.href);
+            formData.set('userAgent', navigator.userAgent);
+            formData.set('submittedAt', new Date().toISOString());
+            const subjectVal = formData.get('subject');
+            if (subjectVal) formData.set('_subject', '[Note Counter] ' + subjectVal);
+
+            try {
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData,
+                });
+
+                if (res.ok) {
+                    formMessages.innerHTML = '<div class="alert alert-success"><strong>✅ Message sent!</strong> Thanks for reaching out — I\'ll get back to you when I can.</div>';
+                    form.reset();
+                } else {
+                    let detail = 'Please try again or email patilyasshh@gmail.com directly.';
+                    try {
+                        const data = await res.json();
+                        if (data && data.errors && data.errors[0] && data.errors[0].message) {
+                            detail = data.errors[0].message;
+                        }
+                    } catch (_) {}
+                    formMessages.innerHTML = '<div class="alert" style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;"><strong>❌ Could not send.</strong> ' + detail + '</div>';
+                }
+            } catch (err) {
+                formMessages.innerHTML = '<div class="alert" style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;"><strong>❌ Network error.</strong> Check your connection and try again, or email patilyasshh@gmail.com.</div>';
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalLabel;
+                }
+            }
         });
-        
-        // Auto-fill subject based on URL parameters
+
+        // Auto-fill subject based on URL parameters (e.g. /contact.html?subject=bug)
         const urlParams = new URLSearchParams(window.location.search);
         const subjectParam = urlParams.get('subject');
         if (subjectParam) {
             const subjectSelect = document.getElementById('subject');
-            if (subjectSelect.querySelector(`option[value="${subjectParam}"]`)) {
+            if (subjectSelect && subjectSelect.querySelector('option[value="' + subjectParam + '"]')) {
                 subjectSelect.value = subjectParam;
             }
         }

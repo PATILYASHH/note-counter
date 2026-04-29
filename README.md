@@ -1,37 +1,28 @@
-# Note Counter v11.0
+# Note Counter
 
-**Note Counter** is a professional money counter and cash calculator with **custom currency support**. Count currency notes and coins instantly for 5 major currencies plus unlimited custom currencies. Default currency is USD for global accessibility. Perfect for businesses, retailers, cashiers, banks, and anyone who needs flexible money counting with professional features.
+**Note Counter** is a free, open-source finance toolkit. Count currency notes and coins for 5 built-in currencies (INR, USD, EUR, GBP, AED) or unlimited custom currencies, and run currency-aware **GST / VAT / Sales Tax** and **Loan EMI** calculations — all in one place. Built for shopkeepers, retailers, cashiers, accountants, and anyone who works with cash.
 
-## 🌟 **NEW in v11.0: Commercial Service Launch**
+## 🆓 Free forever — no ads, no tracking of your data
 
-🎉 **Create Your Own Currencies**: Build unlimited custom currency systems with your own denominations, symbols, and values!
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![No Ads](https://img.shields.io/badge/No-Ads-brightgreen.svg)](#)
+[![Local Storage](https://img.shields.io/badge/Storage-Your%20Device-orange.svg)](#)
+[![PWA](https://img.shields.io/badge/PWA-offline%20ready-purple.svg)](#)
 
-### ✨ **Latest Features**
-- 🌍 **Custom Currency Creator**: Design your own currency systems
-- 🎛️ **Currency Management**: Enable/disable currencies as needed  
-- 🎯 **Focus-Persistent Inputs**: Smooth typing without repeated clicking
-- ⚡ **Performance Optimized**: Faster, more responsive interface
-- 🔧 **Enhanced UX**: Better validation and error handling
+### What this means in practice
 
-## 🔐 Privacy & Security First
+- **No advertisements** anywhere on the site, ever. No AdSense, no sponsored content.
+- **No accounts, no sign-up.** Open the page and use it.
+- **No premium tier.** Every feature — money counter, GST/VAT, EMI, history, PDF export, custom currencies, Web Lock — is free.
+- **Your data stays on your device.** Counts, history, GST/EMI records, notes, and custom currencies live in your browser's `localStorage`. Nothing about the amounts you enter is sent anywhere.
+- **The only telemetry** is anonymous, cookieless page-view counts via Vercel Analytics so the developer can see roughly how many people visit the site. No behaviour tracking, no profiles, no third-party trackers. See the [Privacy Policy](/privacy-policy.html) for full detail.
+- **Open source under the MIT license.** Inspect, fork, run your own copy: <https://github.com/PATILYASHH/note-counter>
 
-[![Privacy First](https://img.shields.io/badge/Privacy-GDPR%20Compliant-blue.svg)](/privacy-policy.html)
-[![Local Storage](https://img.shields.io/badge/Storage-Local%20Device-orange.svg)](#)
-[![Version](https://img.shields.io/badge/Version-11.0.0-blue.svg)](#)
-[![Secure](https://img.shields.io/badge/Security-PIN%20Protected-green.svg)](#)
-
-### 🛡️ **Privacy & Security**
-- **🔒 Local Data Storage**: Your counting data stays on YOUR device
-- **💾 Secure**: Built-in PIN protection with Web Lock system
-- **🚫 No Personal Financial Data**: We don't access your actual money amounts
-- **👁️ Privacy Mode**: Built-in feature to hide amounts in public
-- **📊 Analytics & Ads**: We use cookies for advertising and analytics (see Privacy Policy)
-
-### 📜 **Transparency & Compliance**
-- **GDPR Compliant**: Full compliance with EU data protection
-- **CCPA Compliant**: California privacy rights respected
-- **COPPA Safe**: Suitable for all ages with proper safeguards
-- **Privacy Policy**: [Read our comprehensive privacy policy](/privacy-policy.html)
+### 🛡️ Privacy & Security
+- **Local-only storage**: counts, history, custom currencies, notes never leave your browser
+- **Optional Web Lock**: PIN/password gate, stored hashed in your browser
+- **Privacy Mode**: hides all amounts on screen with a single toggle
+- **Works offline**: install as a PWA and it runs without a network
 
 ## 📖 Table of Contents
 
@@ -569,11 +560,11 @@ This project is open source and available under the [MIT License](LICENSE).
 - 📝 Include license text
 
 ### 🛡️ **Privacy Policy**
-- **Privacy First**: Counting data stays on your device
-- **No Financial Access**: We don't see your actual money amounts
-- **Cookie Notice**: Cookies used for advertising and analytics
-- **Compliance**: GDPR, CCPA, and COPPA compliant
-- **Full Disclosure**: See [Privacy Policy](/privacy-policy.html) for details
+- **Local-only**: counts, history, GST/EMI records, notes, and custom currencies live only in your browser
+- **No advertisements**, no AdSense, no sponsored content
+- **No cookies** set by Note Counter
+- **No third-party tracking**: only anonymous, cookieless Vercel page-view counts
+- **Full detail**: See [Privacy Policy](/privacy-policy.html)
 
 ### ⚖️ **Terms of Use**
 - **Free for All**: No restrictions on personal or commercial use
