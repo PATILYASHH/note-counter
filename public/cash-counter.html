@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cash Counter — Free Online Cash Counting Tool (No Machine Needed)</title>
+<meta name="description" content="Free online cash counter for shops, tills and home. Replace expensive cash counting machines — type counts, get totals, export PDF. Works offline." />
+<link rel="canonical" href="https://notecounter.shop/cash-counter.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="theme-color" content="#0f172a" />
+<link rel="icon" type="image/svg+xml" href="/icon.svg" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Note Counter" />
+<meta property="og:url" content="https://notecounter.shop/cash-counter.html" />
+<meta property="og:title" content="Cash Counter — Free Online Cash Counting Tool" />
+<meta property="og:description" content="Online cash counter for shops and home. Free, fast, offline-ready." />
+<meta property="og:image" content="https://yashpatil.vercel.app/assets/images/projectimg/countnote.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Cash Counter — Free Online Tool" />
+<meta name="twitter:description" content="Online cash counter for shops and home. Free, fast, offline-ready." />
+<meta name="twitter:image" content="https://yashpatil.vercel.app/assets/images/projectimg/countnote.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Cash Counter",
+  "alternateName": ["Online Cash Counter", "Free Cash Counting Tool", "Till Counter"],
+  "url": "https://notecounter.shop/cash-counter.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any (modern web browser)",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free online cash counter for tills, shops and home cash-up. Counts notes and coins for any currency."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://notecounter.shop/"},
+    {"@type":"ListItem","position":2,"name":"Cash Counter","item":"https://notecounter.shop/cash-counter.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"What is an online cash counter?","acceptedAnswer":{"@type":"Answer","text":"An online cash counter is a web tool that adds up the value of physical cash by multiplying the number of notes and coins of each denomination. It runs in your browser, so no hardware machine or app store download is needed."}},
+    {"@type":"Question","name":"Can it replace a cash counting machine?","acceptedAnswer":{"@type":"Answer","text":"For low-to-medium cash volumes — small shops, restaurants, market stalls, churches, charities, school fairs — yes. You bundle notes by denomination, type the counts in, and the tool gives you the total instantly. For very high volumes, a hardware counter still wins on raw speed."}},
+    {"@type":"Question","name":"Is it safe to use for business cash-up?","acceptedAnswer":{"@type":"Answer","text":"Yes. All math runs locally in your browser, nothing about your amounts is uploaded, and you can export a PDF cash-up sheet for your records. The source is open under the MIT license."}},
+    {"@type":"Question","name":"Does it work without internet?","acceptedAnswer":{"@type":"Answer","text":"Yes — after the first load it works offline as a Progressive Web App. Install it to your phone or tablet for one-tap access at the till."}}
+  ]
+}
+</script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.7;color:#1f2937;background:#f8fafc}
+.header{background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 100%);color:#fff;padding:3.5rem 1.5rem;text-align:center}
+.header h1{font-size:2.6rem;margin-bottom:.75rem;font-weight:800;letter-spacing:-.02em}
+.header p{font-size:1.15rem;opacity:.9;max-width:680px;margin:0 auto}
+.cta{display:inline-block;background:#10b981;color:#fff;padding:.85rem 1.6rem;border-radius:8px;text-decoration:none;font-weight:600;margin-top:1.25rem}
+.container{max-width:920px;margin:0 auto;padding:0 1.5rem}
+.section{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin:2rem auto;padding:2.25rem}
+.section h2{font-size:1.7rem;color:#0f172a;margin-bottom:1rem;border-left:4px solid #1e40af;padding-left:.85rem}
+.section h3{font-size:1.2rem;color:#0f172a;margin:1.25rem 0 .5rem}
+.section p{margin-bottom:1rem;font-size:1.02rem}
+.section ul{padding-left:1.4rem;margin:.5rem 0 1rem}
+.section li{margin-bottom:.5rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1rem 0}
+.card{background:#f1f5f9;border-radius:8px;padding:1.1rem 1.2rem}
+.card strong{color:#1e40af}
+.linkstrip{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.linkstrip a{background:#e2e8f0;color:#0f172a;padding:.4rem .85rem;border-radius:6px;text-decoration:none;font-size:.92rem}
+.linkstrip a:hover{background:#cbd5e1}
+.footer{background:#0f172a;color:#cbd5e1;text-align:center;padding:2rem 1.5rem;margin-top:3rem;font-size:.95rem}
+.footer a{color:#60a5fa;text-decoration:none;margin:0 .6rem}
+@media(max-width:640px){.header h1{font-size:2rem}.section{padding:1.5rem}}
+</style>
+</head>
+<body>
+<header class="header">
+  <h1>Cash Counter — count cash without a machine</h1>
+  <p>An online cash counter for shops, tills and home. Bundle your notes and coins, type the counts, get a perfect total. Free, offline-ready, no ads.</p>
+  <a class="cta" href="/">Open the cash counter →</a>
+</header>
+
+<main class="container">
+  <section class="section">
+    <h2>The cash counter your till deserves</h2>
+    <p>Cash counting machines are fast, but they cost hundreds of dollars and they break. This <strong>cash counter</strong> is a free web app that does the same job for low and medium cash volumes — perfect for small shops, market traders, food trucks, salons, tutors, fundraisers and home use.</p>
+    <p>Here is the workflow: bundle your bills by denomination, count each pile, type the count into the matching field, and watch the running total. Save the session, export a PDF, and you have a tidy cash-up sheet for your books.</p>
+  </section>
+
+  <section class="section">
+    <h2>Cash counting workflow</h2>
+    <ol style="padding-left:1.4rem">
+      <li>Pick your currency (USD, EUR, GBP, INR, AED, or a custom one).</li>
+      <li>Sort the cash into piles by denomination.</li>
+      <li>Count each pile and type the number into the field — typos can be corrected with math, e.g. <code>+5</code> or <code>-2</code>.</li>
+      <li>Read the running total at the top.</li>
+      <li>Save the session with a hash reference (<code>#1</code>, <code>#2</code>…) and export a PDF if you need a record.</li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <h2>Use cases for an online cash counter</h2>
+    <div class="grid">
+      <div class="card"><strong>Shops &amp; retailers</strong><p>End-of-day till count and float verification.</p></div>
+      <div class="card"><strong>Restaurants &amp; cafés</strong><p>Tip pool splitting and shift hand-over.</p></div>
+      <div class="card"><strong>Market stalls</strong><p>Quick total at the end of a market day on your phone.</p></div>
+      <div class="card"><strong>Churches &amp; charities</strong><p>Donation envelopes counted with a transparent PDF record.</p></div>
+      <div class="card"><strong>Schools &amp; clubs</strong><p>Bake sales, ticket booths, fundraising drives.</p></div>
+      <div class="card"><strong>Cash-only services</strong><p>Tutors, hairdressers, mobile mechanics, taxi drivers.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Why this beats a calculator or spreadsheet</h2>
+    <ul>
+      <li><strong>Pre-loaded denominations</strong> — no risk of multiplying by the wrong value.</li>
+      <li><strong>Multi-currency</strong> — switch between USD, EUR, GBP, INR, AED in one tap.</li>
+      <li><strong>Custom denominations</strong> — supports vouchers, casino chips, tokens.</li>
+      <li><strong>Hash references</strong> — reopen yesterday's count by ID.</li>
+      <li><strong>PDF export</strong> — printable cash-up sheet with totals and timestamp.</li>
+      <li><strong>PIN lock</strong> — keep the till tab safe on a shared device.</li>
+      <li><strong>Offline</strong> — no signal, no problem.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Open the cash counter in a specific currency</h2>
+    <div class="linkstrip">
+      <a href="/?currency=USD">US Dollar (USD)</a>
+      <a href="/?currency=EUR">Euro (EUR)</a>
+      <a href="/?currency=GBP">British Pound (GBP)</a>
+      <a href="/?currency=INR">Indian Rupee (INR)</a>
+      <a href="/?currency=AED">UAE Dirham (AED)</a>
+    </div>
+    <p style="margin-top:1rem">Related: <a href="/money-counter.html">money counter</a> · <a href="/currency-counter.html">multi-currency counter</a>.</p>
+  </section>
+
+  <section class="section">
+    <h2>Cash counter FAQ</h2>
+    <h3>How accurate is it?</h3>
+    <p>The arithmetic is exact. The accuracy depends on you counting the bundles correctly — the tool just removes the multiplication step.</p>
+    <h3>Can I track multiple tills in one session?</h3>
+    <p>Yes — save each till as its own session with a hash reference (<code>#1</code>, <code>#2</code>…) and export each one separately.</p>
+    <h3>Will my cash totals leave my device?</h3>
+    <p>No. All counts are stored in your browser's localStorage. Only anonymous page-view counts (no amounts) are tracked through Vercel Analytics.</p>
+    <h3>Is there an Android or iOS app?</h3>
+    <p>The web app installs directly as a PWA — open the site on your phone, choose "Add to Home Screen," and it behaves like a native app, fully offline.</p>
+  </section>
+
+  <section class="section" style="text-align:center;background:linear-gradient(135deg,#10b981,#059669);color:#fff">
+    <h2 style="color:#fff;border-color:#fff">Try the cash counter</h2>
+    <p style="color:#ecfdf5">Open it once, install it, and never lose a till again.</p>
+    <a class="cta" style="background:#fff;color:#059669" href="/">Open Cash Counter →</a>
+  </section>
+</main>
+
+<footer class="footer">
+  <a href="/">Home</a>
+  <a href="/about.html">About</a>
+  <a href="/contact.html">Contact</a>
+  <a href="/privacy-policy.html">Privacy</a>
+  <a href="/terms.html">Terms</a>
+  <p style="margin-top:1rem">&copy; 2026 Note Counter — free &amp; open source (MIT).</p>
+</footer>
+</body>
+</html>

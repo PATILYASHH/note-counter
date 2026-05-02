@@ -11,7 +11,7 @@
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="About Note Counter - Free Money Counting Tool">
-    <meta property="og:description" content="Discover how Note Counter helps millions count money quickly and accurately with our free, open-source application.">
+    <meta property="og:description" content="Free, open-source money counter for cash, coins and any currency. No ads, no signup, works offline. Built by Yash Patil.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://notecounter.shop/about.html">
     <meta property="og:image" content="https://yashpatil.vercel.app/assets/images/projectimg/countnote.png">
@@ -281,18 +281,18 @@
     <header class="header">
         <div class="container">
             <h1>About Note Counter</h1>
-            <p>Empowering businesses and individuals with free, accurate, and easy-to-use money counting tools</p>
+            <p>A free, open-source money counter for the web — built by one developer, kept simple on purpose.</p>
         </div>
     </header>
-    
+
     <main class="container">
         <section class="section">
-            <h2>Our Mission</h2>
+            <h2>What it is</h2>
             <p>
-                At Note Counter, we believe that everyone deserves access to reliable financial tools. Our mission is to provide free, open-source money counting solutions that help businesses and individuals manage their cash efficiently and accurately.
+                Note Counter is a small web app that adds up the value of physical cash. You type how many notes and coins you have of each denomination, and the running total updates as you go. It supports five built-in currencies (USD, EUR, GBP, INR, AED) plus any custom currency you create.
             </p>
             <p>
-                We understand that accurate money counting is crucial for businesses of all sizes, from small retailers to large enterprises. That's why we've created a platform that combines simplicity with powerful features, ensuring that anyone can count money quickly and confidently.
+                It is built and maintained by Yash Patil as a side project, released under the MIT license, and runs entirely in your browser. There are no accounts, no ads, and nothing about the amounts you count is uploaded.
             </p>
         </section>
         
@@ -343,152 +343,85 @@
         </section>
         
         <section class="section">
-            <h2>Impact & Statistics</h2>
+            <h2>What makes Note Counter different</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <span class="stat-number">50K+</span>
-                    <p>Users Worldwide</p>
+                    <span class="stat-number">Free</span>
+                    <p>No ads, no signup, no paywall</p>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">2M+</span>
-                    <p>Calculations Performed</p>
+                    <span class="stat-number">MIT</span>
+                    <p>Open source on GitHub</p>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">25+</span>
-                    <p>Supported Currencies</p>
+                    <span class="stat-number">5 + ∞</span>
+                    <p>Built-in currencies, plus unlimited custom ones</p>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">99.9%</span>
-                    <p>Accuracy Rate</p>
+                    <span class="stat-number">Offline</span>
+                    <p>Installable PWA, works without internet</p>
                 </div>
             </div>
         </section>
-        
+
         <section class="section">
-            <h2>Our Story</h2>
+            <h2>Project history</h2>
             <p>
-                Note Counter was born from a simple observation: counting money accurately and efficiently shouldn't be complicated or expensive. Our founder, Yash Patil, noticed that many small businesses and individuals struggled with cash management due to lack of proper tools or expensive solutions.
+                Note Counter started in 2024 as a personal project to make end-of-day cash counting easier for shop counters in India, then expanded to support other currencies. It is built and maintained by a single developer alongside studies, with help from the open-source community when people send pull requests.
             </p>
-            
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h4>March 2024</h4>
-                    <p>Initial concept and development began with a focus on creating a simple, effective money counting tool.</p>
-                </div>
-                <div class="timeline-item">
-                    <h4>June 2024</h4>
-                    <p>First public release with basic counting features and support for major currencies.</p>
-                </div>
-                <div class="timeline-item">
-                    <h4>September 2024</h4>
-                    <p>Added mobile optimization and text format display based on user feedback.</p>
-                </div>
-                <div class="timeline-item">
-                    <h4>December 2024</h4>
-                    <p>Implemented PWA features, calculator integration, and history tracking.</p>
-                </div>
-                <div class="timeline-item">
-                    <h4>January 2025</h4>
-                    <p>Open-sourced the project and launched comprehensive privacy protections.</p>
-                </div>
-            </div>
         </section>
         
         <section class="section">
-            <h2>Technology & Innovation</h2>
-            <p>
-                Note Counter is built using modern web technologies to ensure reliability, speed, and accessibility:
-            </p>
-            
-            <h3>Technical Stack</h3>
+            <h2>How it is built</h2>
+            <h3>Tech stack</h3>
             <ul style="margin: 1rem 0; padding-left: 2rem;">
-                <li><strong>Frontend:</strong> React 18, TypeScript, Tailwind CSS</li>
-                <li><strong>Build System:</strong> Vite for fast development and optimized production builds</li>
-                <li><strong>PWA:</strong> Progressive Web App capabilities for offline usage</li>
-                <li><strong>Icons:</strong> Lucide React for consistent, beautiful iconography</li>
-                <li><strong>Deployment:</strong> Netlify for reliable hosting and continuous deployment</li>
+                <li><strong>Frontend:</strong> React, TypeScript, Tailwind CSS.</li>
+                <li><strong>Build:</strong> Vite.</li>
+                <li><strong>PWA:</strong> service worker for offline use.</li>
+                <li><strong>Hosting:</strong> Vercel.</li>
             </ul>
-            
-            <h3>Privacy & Security</h3>
+
+            <h3>Privacy</h3>
             <p>
-                We take privacy seriously. Note Counter operates on a "privacy by design" principle:
+                Counts and custom currencies are stored only in your browser's localStorage. Nothing about the amounts you count is sent to any server. The site uses Vercel Analytics for anonymous, cookieless page-view counts (no behavioural tracking, no user profiles).
             </p>
-            <ul style="margin: 1rem 0; padding-left: 2rem;">
-                <li>All calculations performed locally in your browser</li>
-                <li>No data sent to external servers</li>
-                <li>No tracking, analytics, or user profiling</li>
-                <li>Local storage only for user preferences</li>
-                <li>Open source code for full transparency</li>
-            </ul>
         </section>
         
         <section class="section">
-            <h2>Team</h2>
+            <h2>Who built it</h2>
             <div class="team-grid">
                 <div class="team-card">
                     <div class="team-avatar">YP</div>
                     <h4>Yash Patil</h4>
-                    <p><strong>Founder & Developer</strong></p>
-                    <p>Full-stack developer passionate about creating tools that make financial management accessible to everyone.</p>
-                </div>
-                <div class="team-card">
-                    <div class="team-avatar">OS</div>
-                    <h4>Open Source Community</h4>
-                    <p><strong>Contributors</strong></p>
-                    <p>Amazing developers from around the world who contribute features, bug fixes, and improvements to make Note Counter better.</p>
+                    <p><strong>Developer</strong></p>
+                    <p>Computer Science student and developer. Builds and maintains Note Counter as a side project. <a href="https://yashpatil.vercel.app">Personal site</a> · <a href="https://github.com/PATILYASHH">GitHub</a>.</p>
                 </div>
             </div>
         </section>
         
         <section class="section">
-            <h2>Community & Support</h2>
+            <h2>Support &amp; Contributing</h2>
             <p>
-                Note Counter is more than just a tool - it's a community of users who believe in accessible financial technology. We actively engage with our users through various channels:
+                Note Counter is a single-developer project run as free software. The best ways to help, ask a question, or report a bug:
             </p>
-            
-            <h3>How We Support Our Users</h3>
+
             <ul style="margin: 1rem 0; padding-left: 2rem;">
-                <li><strong>Documentation:</strong> Comprehensive guides and tutorials</li>
-                <li><strong>Blog:</strong> Regular articles on financial management and money counting tips</li>
-                <li><strong>Community Forum:</strong> User discussions and peer support</li>
-                <li><strong>Direct Support:</strong> Contact us for technical issues or feature requests</li>
-                <li><strong>Open Source:</strong> Contribute code, report bugs, or suggest features on GitHub</li>
+                <li><strong>GitHub Issues:</strong> bug reports and feature requests at <a href="https://github.com/PATILYASHH/note-counter/issues">github.com/PATILYASHH/note-counter/issues</a>.</li>
+                <li><strong>Pull requests:</strong> contributions are welcome — the source is MIT-licensed.</li>
+                <li><strong>Sponsor:</strong> if the tool is useful, you can sponsor the developer on <a href="https://github.com/sponsors/PATILYASHH">GitHub Sponsors</a> to help cover hosting and domain costs.</li>
+                <li><strong>Contact:</strong> for anything else, see the <a href="/contact.html">contact page</a>.</li>
             </ul>
-            
-            <h3>Recognition & Trust</h3>
-            <p>
-                Note Counter has been featured in various publications and is trusted by businesses worldwide. Our commitment to quality and transparency has earned us recognition in the fintech community.
-            </p>
         </section>
         
-        <section class="section">
-            <h2>Future Vision</h2>
-            <p>
-                We're constantly working to improve Note Counter and expand its capabilities. Our roadmap includes:
-            </p>
-            
-            <ul style="margin: 1rem 0; padding-left: 2rem;">
-                <li><strong>Advanced Analytics:</strong> Detailed insights into cash flow patterns</li>
-                <li><strong>Team Collaboration:</strong> Multi-user features for businesses</li>
-                <li><strong>API Access:</strong> Integration capabilities for other applications</li>
-                <li><strong>Mobile Apps:</strong> Native iOS and Android applications</li>
-                <li><strong>Enterprise Features:</strong> Advanced tools for large organizations</li>
-                <li><strong>Educational Content:</strong> More resources for financial literacy</li>
-            </ul>
-            
-            <p>
-                Our goal is to become the world's most trusted and comprehensive money counting platform while maintaining our core values of accessibility, privacy, and transparency.
-            </p>
-        </section>
     </main>
     
     <section class="cta-section">
         <div class="container">
-            <h2 style="color: white; margin-bottom: 1rem;">Ready to Get Started?</h2>
+            <h2 style="color: white; margin-bottom: 1rem;">Ready to try it?</h2>
             <p style="font-size: 1.2rem; margin-bottom: 2rem;">
-                Join thousands of users who trust Note Counter for their money counting needs.
+                Free, no signup, no ads. Open it in your browser and start counting.
             </p>
-            <a href="/" class="cta-button">Try Note Counter Now</a>
+            <a href="/" class="cta-button">Open Note Counter</a>
             <a href="https://github.com/PATILYASHH/note-counter" target="_blank" class="cta-button" style="margin-left: 1rem;">View Source on GitHub</a>
         </div>
     </section>

@@ -173,6 +173,11 @@ function App() {
   };
   // Update the state type to include EUR
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fromQuery = params.get('currency')?.toUpperCase();
+    if (fromQuery === 'INR' || fromQuery === 'USD' || fromQuery === 'EUR' || fromQuery === 'GBP' || fromQuery === 'AED') {
+      return fromQuery as Currency;
+    }
     const savedCurrency = localStorage.getItem('selectedCurrency');
     return (savedCurrency === 'INR' || savedCurrency === 'USD' || savedCurrency === 'EUR' || savedCurrency === 'GBP' || savedCurrency === 'AED') ? savedCurrency as Currency : 'USD';
   });

@@ -15,6 +15,26 @@
     </image:image>
   </url>
 
+  <!-- Counter landing pages (high-priority, keyword-targeted) -->
+  <url>
+    <loc>https://notecounter.shop/money-counter.html</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://notecounter.shop/cash-counter.html</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://notecounter.shop/currency-counter.html</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- About -->
   <url>
     <loc>https://notecounter.shop/about.html</loc>
